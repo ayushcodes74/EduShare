@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>DBMS Notes Preview | EduShare</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body class="bg-slate-950 text-white min-h-screen">
+
+
+  <!-- NAVBAR -->
+  <nav class="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-lg border-b border-slate-800">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex items-center justify-between">
+
+      <!-- Logo -->
+      <div class="flex items-center gap-3">
+
+        <div
+          class="w-11 h-11 rounded-2xl bg-cyan-500 flex items-center justify-center text-black font-bold text-xl shadow-lg shadow-cyan-500/30">
+
+          E
+
+        </div>
+
+        <div>
+
+          <h1 class="text-2xl font-bold text-white">
+            EduShare
+          </h1>
+
+          <p class="text-sm text-slate-400">
+            Smart Academic Platform
+          </p>
+
+        </div>
+
+      </div>
+
+      <!-- Nav Links -->
+      <ul class="hidden md:flex items-center gap-10 text-slate-300 font-medium">
+
+        <li class="hover:text-cyan-400 transition duration-300 cursor-pointer">
+
+          Home
+
+        </li>
+
+        <li class="hover:text-cyan-400 transition duration-300 cursor-pointer">
+
+          Notes
+
+        </li>
+
+        <li class="hover:text-cyan-400 transition duration-300 cursor-pointer">
+
+          PYQs
+
+        </li>
+
+        <li class="hover:text-cyan-400 transition duration-300 cursor-pointer">
+
+          AI Tools
+
+        </li>
+
+      </ul>
+
+      <!-- Button -->
+      <button
+        class="bg-cyan-500 hover:bg-cyan-600 px-6 py-3 rounded-2xl font-semibold transition shadow-lg shadow-cyan-500/20">
+
+        Explore Resources
+
+      </button>
+
+    </div>
+
+  </nav>
+
+
+
+  <!-- NOTE PREVIEW SECTION -->
+  <section class="px-4 sm:px-6 lg:px-8 pt-28 pb-20">
+
+    <div class="max-w-7xl mx-auto">
+
+      <!-- Breadcrumb -->
+      <div class="flex items-center gap-3 text-sm text-slate-500 mb-8">
+
+        <a href="browse.html" class="hover:text-cyan-400 transition">
+
+          Browse Notes
+
+        </a>
+
+        <span>
+          /
+        </span>
+
+        <span class="text-cyan-400">
+          DBMS Notes
+        </span>
+
+      </div>
+
+      <!-- Main Grid -->
+      <div class="grid lg:grid-cols-3 gap-10">
+
+        <!-- LEFT : PDF VIEWER -->
+        <div class="lg:col-span-2">
+
+          <!-- Heading -->
+          <div class="flex items-center justify-between mb-6">
+
+            <div>
+
+              <p class="text-cyan-400 text-sm font-semibold mb-2">
+
+                DATABASE MANAGEMENT SYSTEM
+
+              </p>
+
+              <h1 class="text-4xl sm:text-5xl font-bold text-white">
+
+                Complete DBMS Notes
+
+              </h1>
+
+            </div>
+
+            <!-- Badge -->
+            <div
+              class="hidden sm:flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/20 px-5 py-2 rounded-full text-cyan-400 text-sm">
+
+              📄 PDF Preview
+
+            </div>
+
+          </div>
+
+          <!-- PDF Viewer -->
+          <div
+            class="bg-slate-900/60 border border-slate-800 rounded-[2rem] overflow-hidden shadow-2xl shadow-cyan-500/10">
+
+            <!-- Top Bar -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900">
+
+              <div class="flex items-center gap-3">
+
+                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+
+                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+
+                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+
+              </div>
+
+              <p class="text-sm text-slate-500">
+                dbms_notes.pdf
+              </p>
+
+            </div>
+
+            <!-- PDF Area -->
+            <div class="h-[750px] bg-slate-950">
+
+              <iframe src="assets/pdfs/dbms.pdf.pdf" class="w-full h-full">
+              </iframe>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- RIGHT PANEL -->
+        <div>
+
+          <div class="sticky top-28 bg-slate-900/60 border border-slate-800 rounded-[2rem] p-8 backdrop-blur-lg">
+
+            <!-- Badge -->
+            <div
+              class="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/20 px-5 py-2 rounded-full text-cyan-400 text-sm mb-6">
+
+              📘 Notes Resource
+
+            </div>
+
+            <!-- Title -->
+            <h2 class="text-3xl font-bold text-white leading-tight mb-5">
+
+              Complete DBMS Notes
+
+            </h2>
+
+            <!-- Description -->
+            <p class="text-slate-400 leading-relaxed mb-8">
+
+              Comprehensive handwritten + typed notes
+              covering SQL, normalization, ER models,
+              transactions and database architecture.
+
+            </p>
+
+            <!-- Details -->
+            <div class="space-y-5 mb-8">
+
+              <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+
+                <span class="text-slate-500">
+                  College
+                </span>
+
+                <span class="text-white font-medium">
+                  LNCT
+                </span>
+
+              </div>
+
+              <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+
+                <span class="text-slate-500">
+                  Branch
+                </span>
+
+                <span class="text-white font-medium">
+                  Computer Science
+                </span>
+
+              </div>
+
+              <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+
+                <span class="text-slate-500">
+                  Semester
+                </span>
+
+                <span class="text-white font-medium">
+                  3rd Semester
+                </span>
+
+              </div>
+
+              <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+
+                <span class="text-slate-500">
+                  File Size
+                </span>
+
+                <span class="text-white font-medium">
+                  12 MB
+                </span>
+
+              </div>
+
+              <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+
+                <span class="text-slate-500">
+                  Uploaded
+                </span>
+
+                <span class="text-white font-medium">
+                  2 Days Ago
+                </span>
+
+              </div>
+
+              <div class="flex items-center justify-between">
+
+                <span class="text-slate-500">
+                  Downloads
+                </span>
+
+                <span class="text-cyan-400 font-bold">
+                  1.2k+
+                </span>
+
+              </div>
+
+            </div>
+
+            <!-- Buttons -->
+            <div class="space-y-4 mb-8">
+
+              <!-- Download -->
+              <!-- DOWNLOAD SECTION -->
+              <div class="space-y-4 mb-8">
+
+                <!-- Download Button -->
+                <a href="assets/pdfs/dbms.pdf.pdf" download
+                  class="block w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 py-4 rounded-2xl font-semibold text-center transition-all duration-300 hover:scale-[1.02]">
+
+                  Download Notes
+
+                </a>
+
+                <!-- Save Resource -->
+                <button
+                  class="w-full border border-slate-700 hover:border-cyan-400 py-4 rounded-2xl font-semibold text-slate-300 hover:text-white transition-all duration-300">
+
+                  Save Resource
+
+                </button>
+
+                <!-- File Info -->
+                <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5">
+
+                  <div class="flex items-center justify-between mb-4">
+
+                    <p class="text-slate-400 text-sm">
+                      File Format
+                    </p>
+
+                    <p class="text-white font-medium">
+                      PDF
+                    </p>
+
+                  </div>
+
+                  <div class="flex items-center justify-between mb-4">
+
+                    <p class="text-slate-400 text-sm">
+                      File Size
+                    </p>
+
+                    <p class="text-white font-medium">
+                      12 MB
+                    </p>
+
+                  </div>
+
+                  <div class="flex items-center justify-between">
+
+                    <p class="text-slate-400 text-sm">
+                      Total Downloads
+                    </p>
+
+                    <p class="text-cyan-400 font-bold">
+                      1.2k+
+                    </p>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <!-- Save -->
+              <button
+                class="w-full border border-slate-700 hover:border-cyan-400 py-4 rounded-2xl font-semibold text-slate-300 hover:text-white transition-all duration-300">
+
+                Save Resource
+
+              </button>
+
+            </div>
+
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-3">
+
+              <span class="bg-slate-950 border border-slate-800 px-4 py-2 rounded-full text-xs text-slate-300">
+
+                SQL
+
+              </span>
+
+              <span class="bg-slate-950 border border-slate-800 px-4 py-2 rounded-full text-xs text-slate-300">
+
+                ER Diagram
+
+              </span>
+
+              <span class="bg-slate-950 border border-slate-800 px-4 py-2 rounded-full text-xs text-slate-300">
+
+                Transactions
+
+              </span>
+
+              <span class="bg-slate-950 border border-slate-800 px-4 py-2 rounded-full text-xs text-slate-300">
+
+                DBMS
+
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- RELATED NOTES -->
+  <section class="px-4 sm:px-6 lg:px-8 pb-20">
+
+    <div class="max-w-7xl mx-auto">
+
+      <!-- Heading -->
+      <div class="mb-12">
+
+        <p class="text-cyan-400 text-sm font-semibold mb-3">
+          MORE RESOURCES
+        </p>
+
+        <h2 class="text-4xl font-bold text-white">
+          Related Notes
+        </h2>
+
+      </div>
+
+      <!-- Grid -->
+      <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+        <!-- Card 1 -->
+        <div
+          class="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 hover:border-cyan-500/40 transition-all duration-300 hover:-translate-y-2">
+
+          <div class="w-16 h-16 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-3xl mb-6">
+
+            📘
+
+          </div>
+
+          <h3 class="text-2xl font-bold text-white mb-3">
+            SQL Notes
+          </h3>
+
+          <p class="text-slate-400 text-sm leading-relaxed mb-6">
+
+            Important SQL queries and relational algebra notes.
+
+          </p>
+
+          <button class="text-cyan-400 hover:text-cyan-300 font-medium transition">
+
+            View Resource →
+
+          </button>
+
+        </div>
+
+        <!-- Card 2 -->
+        <div
+          class="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 hover:border-cyan-500/40 transition-all duration-300 hover:-translate-y-2">
+
+          <div class="w-16 h-16 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-3xl mb-6">
+
+            📗
+
+          </div>
+
+          <h3 class="text-2xl font-bold text-white mb-3">
+            Normalization Notes
+          </h3>
+
+          <p class="text-slate-400 text-sm leading-relaxed mb-6">
+
+            1NF, 2NF, 3NF and BCNF explained with examples.
+
+          </p>
+
+          <button class="text-cyan-400 hover:text-cyan-300 font-medium transition">
+
+            View Resource →
+
+          </button>
+
+        </div>
+
+        <!-- Card 3 -->
+        <div
+          class="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 hover:border-cyan-500/40 transition-all duration-300 hover:-translate-y-2">
+
+          <div class="w-16 h-16 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-3xl mb-6">
+
+            📙
+
+          </div>
+
+          <h3 class="text-2xl font-bold text-white mb-3">
+            DBMS Important Questions
+          </h3>
+
+          <p class="text-slate-400 text-sm leading-relaxed mb-6">
+
+            Most repeated viva and examination questions.
+
+          </p>
+
+          <button class="text-cyan-400 hover:text-cyan-300 font-medium transition">
+
+            View Resource →
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-900 px-4 sm:px-6 lg:px-8 py-10">
+
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-5">
+
+      <p class="text-slate-500 text-sm">
+        © 2026 EduShare. All rights reserved.
+      </p>
+
+      <div class="flex items-center gap-6 text-sm text-slate-500">
+
+        <a href="#" class="hover:text-cyan-400 transition">
+
+          Privacy Policy
+
+        </a>
+
+        <a href="#" class="hover:text-cyan-400 transition">
+
+          Terms
+
+        </a>
+
+        <a href="#" class="hover:text-cyan-400 transition">
+
+          Contact
+
+        </a>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduShare – Browse Notes</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: #0f0c29;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        /* ── NAVBAR ── */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(15, 12, 41, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #261a5e;
+        }
+        .nav-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+        .nav-logo { display: flex; align-items: center; gap: 12px; }
+        .nav-icon {
+            width: 42px; height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #6C63FF, #3B82F6);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; flex-shrink: 0;
+        }
+        .nav-name { font-size: 16px; font-weight: 800; color: #fff; }
+        .nav-sub  { font-size: 11px; color: #6366f1; }
+
+        nav ul { display: flex; align-items: center; gap: 32px; list-style: none; }
+        nav a  { font-size: 14px; font-weight: 500; color: #818cf8; text-decoration: none; transition: color 0.2s; }
+        nav a:hover       { color: #c7d2fe; }
+        nav a.active      { color: #FDE68A; border-bottom: 2px solid #FDE68A; padding-bottom: 2px; }
+        nav a.active-pyq  { color: #a78bfa; }
+        nav a.active-ai   { color: #67e8f9; }
+
+        .upload-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #6C63FF, #3B82F6);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: opacity 0.2s;
+            text-decoration: none;
+        }
+        .upload-btn:hover { opacity: 0.88; }
+
+        .hamburger {
+            display: none;
+            width: 40px; height: 40px;
+            background: #261a5e;
+            border: 1px solid #4338ca;
+            border-radius: 10px;
+            align-items: center; justify-content: center;
+            font-size: 20px; color: #a5b4fc;
+            cursor: pointer;
+        }
+
+        /* mobile menu */
+        #mobile-menu {
+            display: none;
+            position: absolute;
+            top: 100%; left: 12px; right: 12px;
+            background: #1a1040;
+            border: 1px solid #4338ca;
+            border-radius: 20px;
+            padding: 16px;
+            box-shadow: 0 20px 60px rgba(99,102,241,0.25);
+        }
+        #mobile-menu a {
+            display: flex; align-items: center; gap: 10px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px; font-weight: 500;
+            color: #a5b4fc;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        #mobile-menu a:hover  { background: #261a5e; }
+        #mobile-menu a.active { background: #261a5e; color: #FDE68A; }
+
+        /* ── HERO ── */
+        .hero {
+            background: linear-gradient(135deg, #6C63FF 0%, #3B82F6 50%, #06B6D4 100%);
+            padding: 72px 24px 56px;
+        }
+        .hero-inner { max-width: 1280px; margin: 0 auto; }
+
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(255,255,255,0.18);
+            border: 1px solid rgba(255,255,255,0.35);
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 12px; font-weight: 700;
+            letter-spacing: 0.03em;
+            margin-bottom: 20px;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+        @media (min-width: 900px) {
+            .hero-content { flex-direction: row; align-items: flex-end; justify-content: space-between; }
+        }
+
+        .hero h1 { font-size: 56px; font-weight: 900; color: #fff; line-height: 1.1; margin-bottom: 12px; }
+        .hero h1 span { color: #FDE68A; }
+        .hero p  { font-size: 16px; color: rgba(255,255,255,0.8); line-height: 1.7; max-width: 480px; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; min-width: 300px; }
+        .stat-card {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 18px;
+            padding: 16px 12px;
+            text-align: center;
+            backdrop-filter: blur(8px);
+        }
+        .stat-num   { font-size: 28px; font-weight: 900; color: #fff; }
+        .stat-num.y { color: #FDE68A; }
+        .stat-label { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 4px; }
+
+        /* ── SEARCH ── */
+        .search-section { background: #150e3a; padding: 24px; }
+        .search-section-inner { max-width: 1280px; margin: 0 auto; }
+        .search-box {
+            background: #1e1456;
+            border: 1px solid #4338ca;
+            border-radius: 20px;
+            padding: 18px 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 12px;
+        }
+        @media (max-width: 800px) { .search-box { grid-template-columns: 1fr; } }
+
+        .search-box input,
+        .search-box select {
+            background: #0f0c29;
+            border: 1px solid #4338ca;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: #e2e8f0;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .search-box input::placeholder { color: #6366f1; }
+        .search-box input:focus,
+        .search-box select:focus {
+            outline: none;
+            border-color: #818cf8;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+        }
+        .search-input-wrap { position: relative; }
+        .search-icon {
+            position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+            font-size: 16px; pointer-events: none;
+        }
+        .search-input-wrap input { padding-left: 42px; width: 100%; }
+
+        /* ── NOTES SECTION ── */
+        .notes-section { background: #0f0c29; padding: 32px 24px 80px; }
+        .notes-inner { max-width: 1280px; margin: 0 auto; }
+
+        .results-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+        }
+        .results-title { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+        .results-sub   { font-size: 13px; color: #6366f1; }
+        .filter-chip {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: #1e1456;
+            border: 1px solid #4338ca;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 13px;
+            color: #a5b4fc;
+            white-space: nowrap;
+        }
+        .filter-chip b { color: #FDE68A; font-weight: 700; }
+
+        /* ── CARDS ── */
+        #notes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .note-card {
+            border-radius: 22px;
+            padding: 22px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .note-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.4); }
+
+        /* rotating card colours */
+        .note-card:nth-child(4n+1) { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
+        .note-card:nth-child(4n+2) { background: linear-gradient(135deg, #0284c7, #2563eb); }
+        .note-card:nth-child(4n+3) { background: linear-gradient(135deg, #db2777, #9333ea); }
+        .note-card:nth-child(4n+4) { background: linear-gradient(135deg, #0f766e, #0891b2); }
+
+        .card-circle {
+            position: absolute;
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.07);
+            top: -28px; right: -28px;
+            pointer-events: none;
+        }
+        .card-circle2 {
+            position: absolute;
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            bottom: 20px; left: -18px;
+            pointer-events: none;
+        }
+
+        .card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+        .card-tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.22);
+            color: #fff;
+            font-size: 10px; font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 999px;
+            letter-spacing: 0.08em;
+        }
+        .card-sem {
+            font-size: 11px;
+            color: rgba(255,255,255,0.65);
+            background: rgba(0,0,0,0.2);
+            padding: 3px 10px;
+            border-radius: 999px;
+        }
+
+        .card-title { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 10px; line-height: 1.25; }
+
+        .card-meta { font-size: 12px; color: rgba(255,255,255,0.65); margin-bottom: 3px; display: flex; align-items: center; gap: 5px; }
+        .card-meta span { color: rgba(255,255,255,0.4); }
+
+        .card-desc {
+            font-size: 13px; color: rgba(255,255,255,0.6);
+            line-height: 1.55; margin: 12px 0 16px;
+            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+        }
+
+        .card-divider { border: none; border-top: 1px solid rgba(255,255,255,0.12); margin-bottom: 16px; }
+
+        .card-btns { display: flex; gap: 10px; }
+        .btn-preview {
+            flex: 1;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 12px;
+            padding: 10px;
+            font-size: 13px; font-weight: 700;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-decoration: none;
+            text-align: center;
+        }
+        .btn-preview:hover { background: rgba(255,255,255,0.25); }
+        .btn-download {
+            flex: 1;
+            background: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 10px;
+            font-size: 13px; font-weight: 800;
+            color: #4f46e5;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn-download:hover { opacity: 0.88; }
+
+        /* ── EMPTY STATE ── */
+        .empty-state {
+            grid-column: 1 / -1;
+            background: #1e1456;
+            border: 1px solid #4338ca;
+            border-radius: 22px;
+            padding: 60px 24px;
+            text-align: center;
+        }
+        .empty-state h3 { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+        .empty-state p  { font-size: 14px; color: #6366f1; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 36px; }
+            .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+            .stat-num { font-size: 20px; }
+            nav ul, .upload-btn { display: none; }
+            .hamburger { display: flex; }
+        }
+        @media (min-width: 641px) {
+            .hamburger { display: none; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── HEADER ── -->
+    <header>
+        <div class="nav-inner">
+
+            <div class="nav-logo">
+                <div class="nav-icon">📚</div>
+                <div>
+                    <div class="nav-name">EduShare</div>
+                    <div class="nav-sub">AI Academic Resource Ecosystem</div>
+                </div>
+            </div>
+
+            <nav class="hidden md:block">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="browse.html" class="active">Notes</a></li>
+                    <li><a href="browse-pyqs.html" class="active-pyq">PYQs</a></li>
+                    <li><a href="#" class="active-ai">AI Tools</a></li>
+                </ul>
+            </nav>
+
+            <div style="display:flex;align-items:center;gap:10px;">
+                <a href="upload.html" class="upload-btn">+ Upload Resource</a>
+                <button id="menu-btn" class="hamburger">☰</button>
+            </div>
+
+        </div>
+
+        <div id="mobile-menu">
+            <a href="index.html">🏠 Home</a>
+            <a href="browse.html" class="active">📚 Notes</a>
+            <a href="browse-pyqs.html">📄 PYQs</a>
+            <a href="#">🤖 AI Tools</a>
+        </div>
+    </header>
+
+    <!-- ── HERO ── -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-badge">📚 Academic Resource Library</div>
+            <div class="hero-content">
+                <div>
+                    <h1>Browse <span>Notes</span></h1>
+                    <p>Discover handwritten notes, toppers resources, study materials and important academic content from different subjects and semesters.</p>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div id="notes-count" class="stat-num">0</div>
+                        <div class="stat-label">Total Notes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div id="subjects-count" class="stat-num y">0</div>
+                        <div class="stat-label">Subjects</div>
+                    </div>
+                    <div class="stat-card">
+                        <div id="downloads-count" class="stat-num">0</div>
+                        <div class="stat-label">Downloads</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── SEARCH ── -->
+    <section class="search-section">
+        <div class="search-section-inner">
+            <div class="search-box">
+                <div class="search-input-wrap">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="search-input" placeholder="Search notes, subjects, topics...">
+                </div>
+                <input type="text" id="filter-college" placeholder="🏫 College name">
+                <input type="text" id="filter-branch" placeholder="🔬 Branch">
+                <select id="filter-semester">
+                    <option value="">📅 Semester</option>
+                    <option value="1">1st Semester</option>
+                    <option value="2">2nd Semester</option>
+                    <option value="3">3rd Semester</option>
+                    <option value="4">4th Semester</option>
+                    <option value="5">5th Semester</option>
+                    <option value="6">6th Semester</option>
+                    <option value="7">7th Semester</option>
+                    <option value="8">8th Semester</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── NOTES GRID ── -->
+    <section class="notes-section">
+        <div class="notes-inner">
+            <div class="results-header">
+                <div>
+                    <div class="results-title">Available Notes</div>
+                    <div class="results-sub">Explore approved academic resources</div>
+                </div>
+                <div class="filter-chip">📚 Filter: <b>All Notes</b></div>
+            </div>
+            <div id="notes-container"></div>
+        </div>
+    </section>
+
+    <!-- ── SCRIPTS ── -->
+    <script>
+        const menuBtn    = document.getElementById("menu-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
+        menuBtn.addEventListener("click", () => {
+            mobileMenu.style.display = mobileMenu.style.display === "block" ? "none" : "block";
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const supabaseUrl  = "https://acdjioftdlsugfycsbvj.supabase.co";
+        const supabaseKey  = "sb_publishable_DtfvA3EJm991gqezfeYNng_jlSS0I9h";
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+        const notesContainer = document.getElementById("notes-container");
+        const filterCollege  = document.getElementById("filter-college");
+        const filterBranch   = document.getElementById("filter-branch");
+        const filterSemester = document.getElementById("filter-semester");
+        const searchInput    = document.getElementById("search-input");
+
+        async function loadStats() {
+            const { count: notesCount } = await supabaseClient
+                .from("resources")
+                .select("*", { count: "exact", head: true })
+                .eq("status", "approved").eq("type", "notes");
+
+            const { data: subjectsData } = await supabaseClient
+                .from("resources").select("subject")
+                .eq("status", "approved").eq("type", "notes");
+
+            const uniqueSubjects = [...new Set(subjectsData.map(i => i.subject))];
+
+            const { data: downloadData } = await supabaseClient
+                .from("resources").select("downloads")
+                .eq("status", "approved").eq("type", "notes");
+
+            let total = 0;
+            downloadData.forEach(i => { total += i.downloads || 0; });
+
+            document.getElementById("notes-count").innerText     = notesCount || 0;
+            document.getElementById("subjects-count").innerText  = uniqueSubjects.length;
+            document.getElementById("downloads-count").innerText = total >= 1000 ? (total/1000).toFixed(1) + "K" : total;
+        }
+
+        async function fetchNotes() {
+            notesContainer.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:#6366f1;font-size:15px;">Loading notes...</div>`;
+
+            let query = supabaseClient
+                .from("resources").select("*")
+                .eq("status", "approved").eq("type", "notes");
+
+            if (filterCollege.value.trim())  query = query.ilike("college", `%${filterCollege.value.trim()}%`);
+            if (filterBranch.value.trim())   query = query.ilike("branch",  `%${filterBranch.value.trim()}%`);
+            if (searchInput.value.trim())    query = query.ilike("subject", `%${searchInput.value.trim()}%`);
+            if (filterSemester.value)        query = query.eq("semester", filterSemester.value);
+
+            const { data, error } = await query.order("created_at", { ascending: false });
+
+            if (error) { console.error(error); return; }
+
+            if (!data.length) {
+                notesContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size:48px;margin-bottom:16px;">📭</div>
+                        <h3>No Notes Found</h3>
+                        <p>Try adjusting your filters or search query.</p>
+                    </div>`;
+                return;
+            }
+
+            notesContainer.innerHTML = "";
+            data.forEach(r => {
+                notesContainer.innerHTML += `
+                <div class="note-card">
+                    <div class="card-circle"></div>
+                    <div class="card-circle2"></div>
+
+                    <div class="card-top">
+                        <span class="card-tag">NOTES</span>
+                        <span class="card-sem">Sem ${r.semester}</span>
+                    </div>
+
+                    <div class="card-title">${r.subject}</div>
+
+                    <div class="card-meta">🏫 <span>College:</span> ${r.college}</div>
+                    <div class="card-meta">🔬 <span>Branch:</span> ${r.branch}</div>
+
+                    <p class="card-desc">${r.description}</p>
+
+                    <hr class="card-divider">
+
+                    <div class="card-btns">
+                        <a href="${r.pdf_url}" target="_blank" class="btn-preview">👁 Preview</a>
+                        <button onclick="downloadResource(${r.id}, '${r.pdf_url}')" class="btn-download">⬇ Download</button>
+                    </div>
+                </div>`;
+            });
+        }
+
+        async function downloadResource(id, pdfUrl) {
+            const { data, error } = await supabaseClient
+                .from("resources").select("downloads").eq("id", id).single();
+            if (error) { window.open(pdfUrl, "_blank"); return; }
+            await supabaseClient.from("resources")
+                .update({ downloads: (data.downloads || 0) + 1 }).eq("id", id);
+            window.open(pdfUrl, "_blank");
+        }
+
+        loadStats();
+        fetchNotes();
+
+        let searchTimeout;
+        function triggerSearch() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(fetchNotes, 300);
+        }
+
+        searchInput.addEventListener("input", triggerSearch);
+        filterCollege.addEventListener("input", triggerSearch);
+        filterBranch.addEventListener("input", triggerSearch);
+        filterSemester.addEventListener("change", fetchNotes);
+    </script>
+
+</body>
+</html>

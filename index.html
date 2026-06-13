@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>EduShare – AI Powered Academic Resource Ecosystem</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        /* ── CUSTOM SCROLLBAR ── */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0d0b14;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #3b2d6b;
+            border-radius: 3px;
+        }
+
+        /* ── NAVBAR LOGO HEIGHT FIX ── */
+        .nav-logo-img {
+            height: 44px;
+            /* matches py-4 navbar inner height */
+            width: auto;
+            object-fit: contain;
+        }
+
+        /* ── GRADIENT HERO TEXT ── */
+        .hero-gradient {
+            background: linear-gradient(135deg, #a78bfa 0%, #e879f9 60%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ── CARD HOVER GLOW ── */
+        .card-glow:hover {
+            box-shadow: 0 0 0 1px rgba(167, 139, 250, 0.3), 0 20px 60px rgba(139, 92, 246, 0.15);
+        }
+
+        /* ── PAPER CARD THUMBNAIL ── */
+        .paper-thumb {
+            aspect-ratio: 3/4;
+            background: linear-gradient(145deg, #1e1535, #2a1d4a);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ── ANIMATED GRADIENT BG ── */
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .animated-bg {
+            background: linear-gradient(-45deg, #0d0b14, #150d2e, #1a0e38, #0d1520);
+            background-size: 400% 400%;
+            animation: gradientShift 12s ease infinite;
+        }
+
+        /* ── TAG PILL ── */
+        .tag-pill {
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            color: #a78bfa;
+            background: rgba(139, 92, 246, 0.1);
+            white-space: nowrap;
+        }
+
+        .tag-pill-pink {
+            border-color: rgba(232, 121, 249, 0.3);
+            color: #e879f9;
+            background: rgba(232, 121, 249, 0.08);
+        }
+
+        /* ── FILTER SELECT CUSTOM ── */
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            padding-right: 36px !important;
+        }
+    </style>
+</head>
+
+<body class="animated-bg text-white min-h-screen overflow-x-hidden relative">
+
+    <!-- ═══════════════════════════════════════════ GLOBAL BG GLOWS ══ -->
+    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div class="absolute top-[-200px] left-[-200px] w-[600px] h-[600px] bg-purple-700/10 blur-[140px] rounded-full">
+        </div>
+        <div class="absolute top-[30%] right-[-150px] w-[500px] h-[500px] bg-fuchsia-700/8 blur-[120px] rounded-full">
+        </div>
+        <div class="absolute bottom-[10%] left-[20%] w-[400px] h-[400px] bg-violet-800/6 blur-[100px] rounded-full">
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════ NAVBAR ══ -->
+    <header class="sticky top-0 z-50 border-b border-purple-900/30"
+        style="background: rgba(13,11,20,0.85); backdrop-filter: blur(20px);">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
+
+            <!-- LOGO -->
+            <!-- 
+                ── HOW TO USE YOUR OWN LOGO IMAGE ──
+                Replace the div below with:
+                <img src="assets/logo.png" alt="EduShare" class="nav-logo-img" />
+                The .nav-logo-img class keeps it exactly the navbar height.
+            -->
+            <div class="flex items-center gap-3 group cursor-pointer flex-shrink-0">
+                <img src="assets/logo.png" alt="EduShare" class="h-12 w-auto rounded-xl object-contain" />
+                <div>
+                    <h1 class="text-lg font-black tracking-tight text-white leading-none">EduShare</h1>
+                    <p class="text-[10px] text-purple-400/70 font-medium hidden sm:block tracking-wide uppercase">
+                        Academic Resource Ecosystem</p>
+                </div>
+            </div>
+
+            <!-- NAV LINKS -->
+            <nav class="hidden md:block">
+                <ul class="flex items-center gap-8 text-sm text-slate-400 font-medium">
+                    <li><a href="#" class="hover:text-purple-300 transition-colors">Home</a></li>
+                    <li><a href="browse.html" class="hover:text-purple-300 transition-colors">Notes</a></li>
+                    <li><a href="browse-pyqs.html" class="hover:text-fuchsia-300 transition-colors">PYQs</a></li>
+                    <li>
+                        <a href="#" class="hover:text-purple-300 transition-colors flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-fuchsia-400 animate-pulse"></span>
+                            AI Tools
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- RIGHT SIDE -->
+            <div class="flex items-center gap-3">
+                <a href="upload.html"
+                    class="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-lg shadow-purple-500/20 hover:-translate-y-0.5 active:translate-y-0">
+                    Upload Resources
+                </a>
+                <button id="menu-btn" aria-label="Toggle Menu"
+                    class="md:hidden w-10 h-10 rounded-xl border border-purple-900/50 flex items-center justify-center text-slate-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- MOBILE MENU -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-purple-900/30 px-4 py-4">
+            <div class="flex flex-col gap-2">
+                <a href="index.html"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-900/20 text-slate-300 hover:text-purple-300 transition-all">🏠
+                    Home</a>
+                <a href="browse.html"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-900/20 text-slate-300 hover:text-purple-300 transition-all">📘
+                    Notes</a>
+                <a href="browse-pyqs.html"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-900/20 text-slate-300 hover:text-fuchsia-300 transition-all">📄
+                    PYQs</a>
+                <a href="#"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-900/20 text-slate-300 transition-all">🤖
+                    AI Tools</a>
+                <div class="border-t border-purple-900/30 my-2"></div>
+                <a href="upload.html"
+                    class="bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white py-3 rounded-xl text-center font-semibold">⬆
+                    Upload Resources</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ════════════════════════════════════════════════ HERO ══ -->
+        <!--
+            CHANGE FROM IMAGE 1:
+            - Was: 12-col grid, text left (7 cols) + finder right (5 cols) — HORIZONTAL
+            - Now: full-width centered hero text → then vertical filter bar below → then latest papers
+            This matches the layout in Image 2.
+        -->
+        <section class="relative px-4 sm:px-6 lg:px-8 pt-14 pb-8 overflow-hidden">
+
+            <!-- BG GLOW -->
+            <div
+                class="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-purple-700/8 blur-[120px] rounded-full pointer-events-none">
+            </div>
+
+            <!-- CENTERED HERO TEXT -->
+            <div class="max-w-4xl mx-auto text-center relative z-10 space-y-5">
+
+                <!-- BADGE -->
+                <div
+                    class="inline-flex items-center gap-2 border border-purple-700/40 bg-purple-900/20 px-4 py-1.5 rounded-full text-xs font-semibold text-purple-300 backdrop-blur">
+                    <span class="flex h-2 w-2 relative">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-fuchsia-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-fuchsia-500"></span>
+                    </span>
+                    Your College Companion for Smarter Exam Preparation
+                </div>
+
+                <!-- HEADING -->
+                <h2 class="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white leading-[1.05]">
+                    <span class="hero-gradient">EduShare</span>
+                </h2>
+                <p class="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+                    Search, preview and download high-quality academic notes, previous year exam questions and study
+                    resources shared by students — filtered to your college, branch and semester.
+                </p>
+
+                <!-- CTA BUTTONS -->
+                <div class="flex flex-wrap justify-center gap-3 pt-1">
+                    <a href="browse.html"
+                        class="border border-purple-500/60 text-purple-300 hover:bg-purple-500/20 px-7 py-3 rounded-xl font-semibold transition-all duration-300 hover:-translate-y-0.5 text-sm">
+                        Browse Notes
+                    </a>
+                    <a href="browse-pyqs.html"
+                        class="border border-fuchsia-500/60 text-fuchsia-300 hover:bg-fuchsia-500/20 px-7 py-3 rounded-xl font-semibold transition-all duration-300 hover:-translate-y-0.5 text-sm">
+                        Browse PYQs
+                    </a>
+                    <a href="upload.html"
+                        class="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white px-7 py-3 rounded-xl font-semibold text-sm transition-all shadow-lg shadow-purple-500/20">
+                        Share Resources
+                    </a>
+                </div>
+
+
+            </div>
+        </section>
+
+        <!-- ════════════════════════════════ FILTER BAR (was Quick Finder) ══ -->
+        <!--
+            CHANGE FROM IMAGE 1:
+            - Was: a tall card on the RIGHT side of the hero, taking up 5 of 12 columns
+            - Now: a FULL-WIDTH horizontal filter bar below the hero (like Image 2)
+            All filters in one row on desktop, stacked on mobile.
+        -->
+        <section class="px-4 sm:px-6 lg:px-8 py-6">
+            <div class="max-w-7xl mx-auto">
+                <div class="border border-purple-900/40 rounded-2xl p-4 sm:p-5"
+                    style="background: rgba(25,15,50,0.6); backdrop-filter: blur(12px);">
+                    <p class="text-xs font-semibold text-purple-400 uppercase tracking-widest mb-4">Filter Resources</p>
+
+                    <!-- FILTERS ROW — college & branch are text inputs; all filters trigger live search on input -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+
+                        <!-- COLLEGE (text input) -->
+                        <input id="college" type="text" placeholder="College name"
+                            class="bg-[#0d0b14] border border-purple-900/50 rounded-xl px-4 py-2.5 text-sm text-slate-300 placeholder-slate-600 focus:outline-none focus:border-purple-500 transition-colors hover:border-purple-700">
+
+                        <!-- BRANCH (text input) -->
+                        <input id="branch" type="text" placeholder="Branch (CSE, IT…)"
+                            class="bg-[#0d0b14] border border-purple-900/50 rounded-xl px-4 py-2.5 text-sm text-slate-300 placeholder-slate-600 focus:outline-none focus:border-purple-500 transition-colors hover:border-purple-700">
+
+                        <!-- SEMESTER -->
+                        <select id="semester"
+                            class="bg-[#0d0b14] border border-purple-900/50 rounded-xl px-4 py-2.5 text-sm text-slate-300 focus:outline-none focus:border-purple-500 transition-colors hover:border-purple-700">
+                            <option value="">Semester</option>
+                            <option value="1">Sem 1</option>
+                            <option value="2">Sem 2</option>
+                            <option value="3">Sem 3</option>
+                            <option value="4">Sem 4</option>
+                            <option value="5">Sem 5</option>
+                            <option value="6">Sem 6</option>
+                            <option value="7">Sem 7</option>
+                            <option value="8">Sem 8</option>
+                        </select>
+
+                        <!-- SUBJECT -->
+                        <input id="subject" type="text" placeholder="Subject"
+                            class="bg-[#0d0b14] border border-purple-900/50 rounded-xl px-4 py-2.5 text-sm text-slate-300 placeholder-slate-600 focus:outline-none focus:border-purple-500 transition-colors hover:border-purple-700">
+
+                        <!-- YEAR -->
+                        <select id="year"
+                            class="bg-[#0d0b14] border border-purple-900/50 rounded-xl px-4 py-2.5 text-sm text-slate-300 focus:outline-none focus:border-purple-500 transition-colors hover:border-purple-700">
+                            <option value="">Year</option>
+                            <option value="2026">2026</option>
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                        </select>
+
+                        <!-- RESOURCE TYPE -->
+                        <select id="resource-type"
+                            class="bg-[#0d0b14] border border-purple-900/50 rounded-xl px-4 py-2.5 text-sm text-slate-300 focus:outline-none focus:border-purple-500 transition-colors hover:border-purple-700">
+                            <option value="">Resource Type</option>
+                            <option value="notes">Notes</option>
+                            <option value="pyqs">PYQs</option>
+                        </select>
+
+                    </div>
+                    <!-- no search button — filters auto-trigger on every keystroke / change -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════ SEARCH RESULTS (dynamic) ══ -->
+        <section id="search-results" class="hidden px-4 sm:px-6 lg:px-8 py-8">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-8 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Search Results</h2>
+                        <p class="text-slate-400 text-sm mt-1">Matching academic resources</p>
+                    </div>
+                    <button onclick="document.getElementById('search-results').classList.add('hidden')"
+                        class="text-xs text-slate-500 hover:text-purple-400 border border-purple-900/40 px-4 py-2 rounded-xl transition-colors">
+                        Clear ✕
+                    </button>
+                </div>
+                <div id="results-container"
+                    class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5"></div>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════ LATEST PAPERS ══ -->
+        <!--
+            NEW SECTION:
+            - This is what Image 2 shows below the filter bar — actual paper cards with thumbnails
+            - Loaded from Supabase, shows latest 10 approved resources
+            - Cards show: thumbnail, subject name, tags (college, branch, semester), year
+        -->
+        <section class="px-4 sm:px-6 lg:px-8 py-10">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-white">Recent Uploads</h2>
+                    <a href="browse.html" id="view-all-btn"
+                        class="hidden text-sm text-purple-400 hover:text-purple-300 border border-purple-900/40 px-4 py-2 rounded-xl transition-colors hover:border-purple-700/50">
+                        View All →
+                    </a>
+                </div>
+
+                <!-- LOADING STATE -->
+                <div id="latest-loading" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                    <!-- Skeleton cards -->
+                    <div class="animate-pulse rounded-2xl overflow-hidden" style="background: rgba(25,15,50,0.5);">
+                        <div class="bg-purple-900/20 h-48 w-full"></div>
+                        <div class="p-3 space-y-2">
+                            <div class="h-3 bg-purple-900/30 rounded w-3/4"></div>
+                            <div class="h-2 bg-purple-900/20 rounded w-1/2"></div>
+                        </div>
+                    </div>
+                    <div class="animate-pulse rounded-2xl overflow-hidden" style="background: rgba(25,15,50,0.5);">
+                        <div class="bg-purple-900/20 h-48 w-full"></div>
+                        <div class="p-3 space-y-2">
+                            <div class="h-3 bg-purple-900/30 rounded w-3/4"></div>
+                            <div class="h-2 bg-purple-900/20 rounded w-1/2"></div>
+                        </div>
+                    </div>
+                    <div class="animate-pulse rounded-2xl overflow-hidden hidden sm:block"
+                        style="background: rgba(25,15,50,0.5);">
+                        <div class="bg-purple-900/20 h-48 w-full"></div>
+                        <div class="p-3 space-y-2">
+                            <div class="h-3 bg-purple-900/30 rounded w-3/4"></div>
+                            <div class="h-2 bg-purple-900/20 rounded w-1/2"></div>
+                        </div>
+                    </div>
+                    <div class="animate-pulse rounded-2xl overflow-hidden hidden md:block"
+                        style="background: rgba(25,15,50,0.5);">
+                        <div class="bg-purple-900/20 h-48 w-full"></div>
+                        <div class="p-3 space-y-2">
+                            <div class="h-3 bg-purple-900/30 rounded w-3/4"></div>
+                            <div class="h-2 bg-purple-900/20 rounded w-1/2"></div>
+                        </div>
+                    </div>
+                    <div class="animate-pulse rounded-2xl overflow-hidden hidden lg:block"
+                        style="background: rgba(25,15,50,0.5);">
+                        <div class="bg-purple-900/20 h-48 w-full"></div>
+                        <div class="p-3 space-y-2">
+                            <div class="h-3 bg-purple-900/30 rounded w-3/4"></div>
+                            <div class="h-2 bg-purple-900/20 rounded w-1/2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACTUAL CARDS (filled by JS) -->
+                <div id="latest-papers-grid"
+                    class="hidden grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
+
+                <!-- EMPTY STATE -->
+                <div id="latest-empty" class="hidden text-center py-16 border border-purple-900/30 rounded-2xl"
+                    style="background: rgba(25,15,50,0.3);">
+                    <p class="text-4xl mb-3">📂</p>
+                    <h3 class="text-lg font-semibold text-white mb-1">No papers uploaded yet</h3>
+                    <p class="text-slate-500 text-sm">Be the first to share your college papers!</p>
+                    <a href="upload.html"
+                        class="inline-block mt-4 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white px-6 py-2.5 rounded-xl text-sm font-semibold">Upload
+                        Paper</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ══════════════════════════════════ TRENDING NOTES SECTION ══ -->
+    <section class="px-4 sm:px-6 lg:px-8 py-16">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center justify-between mb-10">
+                <div>
+                    <p class="text-purple-400 text-xs font-semibold mb-2 uppercase tracking-widest">Most Downloaded
+                        Notes</p>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-white">Trending Notes</h2>
+                </div>
+                <a href="browse.html"
+                    class="hidden sm:block border border-purple-900/50 hover:border-purple-500/50 px-5 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white transition-all">
+                    View All
+                </a>
+            </div>
+
+            <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+                <!-- DBMS -->
+                <div class="group border border-purple-900/30 rounded-2xl overflow-hidden card-glow transition-all duration-300 hover:-translate-y-1"
+                    style="background: rgba(20,12,40,0.7);">
+                    <div class="h-44 flex items-center justify-center relative overflow-hidden"
+                        style="background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(13,11,20,0.8));">
+                        <div class="absolute w-32 h-32 bg-violet-600/20 blur-3xl rounded-full"></div>
+                        <span class="relative text-5xl">📘</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="tag-pill">DBMS</span>
+                            <span class="text-slate-500 text-xs">Semester 3</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Complete DBMS Notes</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-5">Unit-wise handwritten + typed notes with
+                            ER diagrams, normalization and SQL concepts.</p>
+                        <div class="flex items-center gap-6 mb-5 text-xs text-slate-500">
+                            <span><span class="text-white font-bold text-sm">1.2k+</span> Downloads</span>
+                            <span><span class="text-white font-bold text-sm">4.9⭐</span> Rating</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <a href="dbms-preview.html"
+                                class="flex-1 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white py-2.5 rounded-xl text-xs font-semibold text-center hover:opacity-90 transition-opacity">Preview</a>
+                            <a href="assets/pdfs/dbms.pdf.pdf" download
+                                class="flex-1 border border-purple-900/50 hover:border-purple-500/50 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition-all text-center">Download</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- JAVA -->
+                <div class="group border border-purple-900/30 rounded-2xl overflow-hidden card-glow transition-all duration-300 hover:-translate-y-1"
+                    style="background: rgba(20,12,40,0.7);">
+                    <div class="h-44 flex items-center justify-center relative overflow-hidden"
+                        style="background: linear-gradient(135deg, rgba(192,38,211,0.12), rgba(13,11,20,0.8));">
+                        <div class="absolute w-32 h-32 bg-fuchsia-600/20 blur-3xl rounded-full"></div>
+                        <span class="relative text-5xl">💻</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="tag-pill tag-pink">JAVA</span>
+                            <span class="text-slate-500 text-xs">Semester 2</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Java Programming Notes</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-5">Complete OOP concepts, syntax, important
+                            programs and interview preparation notes.</p>
+                        <div class="flex items-center gap-6 mb-5 text-xs text-slate-500">
+                            <span><span class="text-white font-bold text-sm">980+</span> Downloads</span>
+                            <span><span class="text-white font-bold text-sm">4.8⭐</span> Rating</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <a href="java-preview.html"
+                                class="flex-1 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white py-2.5 rounded-xl text-xs font-semibold text-center hover:opacity-90 transition-opacity">Preview</a>
+                            <a href="assets/pdfs/java.pdf.pdf" download
+                                class="flex-1 border border-purple-900/50 hover:border-purple-500/50 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition-all text-center">Download</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DSA -->
+                <div class="group border border-purple-900/30 rounded-2xl overflow-hidden card-glow transition-all duration-300 hover:-translate-y-1"
+                    style="background: rgba(20,12,40,0.7);">
+                    <div class="h-44 flex items-center justify-center relative overflow-hidden"
+                        style="background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(13,11,20,0.8));">
+                        <div class="absolute w-32 h-32 bg-indigo-600/20 blur-3xl rounded-full"></div>
+                        <span class="relative text-5xl">⚡</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="tag-pill">DSA</span>
+                            <span class="text-slate-500 text-xs">Semester 4</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">DSA Quick Revision Notes</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-5">Important algorithms, data structures and
+                            coding patterns explained in a simplified way.</p>
+                        <div class="flex items-center gap-6 mb-5 text-xs text-slate-500">
+                            <span><span class="text-white font-bold text-sm">2k+</span> Downloads</span>
+                            <span><span class="text-white font-bold text-sm">5.0⭐</span> Rating</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <a href="dsa-preview.html"
+                                class="flex-1 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white py-2.5 rounded-xl text-xs font-semibold text-center hover:opacity-90 transition-opacity">Preview</a>
+                            <a href="assets/pdfs/dsa.pdf.pdf" download
+                                class="flex-1 border border-purple-900/50 hover:border-purple-500/50 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition-all text-center">Download</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════ POPULAR PYQs ══ -->
+    <section class="px-4 sm:px-6 lg:px-8 py-16">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center justify-between mb-10">
+                <div>
+                    <p class="text-fuchsia-400 text-xs font-semibold mb-2 uppercase tracking-widest">Most Important Exam
+                        Resources</p>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-white">Popular PYQs</h2>
+                </div>
+                <a href="browse-pyqs.html"
+                    class="hidden sm:block border border-purple-900/50 hover:border-fuchsia-500/50 px-5 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white transition-all">
+                    View All
+                </a>
+            </div>
+
+            <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+                <!-- DBMS PYQ -->
+                <div class="group border border-purple-900/30 rounded-2xl overflow-hidden card-glow transition-all duration-300 hover:-translate-y-1"
+                    style="background: rgba(20,12,40,0.7);">
+                    <div class="h-44 flex items-center justify-center relative overflow-hidden"
+                        style="background: linear-gradient(135deg, rgba(167,139,250,0.12), rgba(13,11,20,0.8));">
+                        <div class="absolute w-32 h-32 bg-purple-500/20 blur-3xl rounded-full"></div>
+                        <span class="relative text-5xl">📄</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="tag-pill tag-pink">DBMS PYQ</span>
+                            <span class="text-slate-500 text-xs">2024</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">DBMS Previous Year Papers</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-5">Mid sem + end sem PYQs with repeated SQL,
+                            normalization and transaction questions.</p>
+                        <div class="flex items-center gap-6 mb-5 text-xs text-slate-500">
+                            <span><span class="text-white font-bold text-sm">1.5k+</span> Downloads</span>
+                            <span><span class="text-white font-bold text-sm">4.9⭐</span> Rating</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <a href="dbms-pyq-preview.html"
+                                class="flex-1 bg-gradient-to-r from-fuchsia-600 to-pink-600 text-white py-2.5 rounded-xl text-xs font-semibold text-center hover:opacity-90 transition-opacity">Preview</a>
+                            <a href="assets/pdfs/dbms-pyq.pdf.pdf" download
+                                class="flex-1 border border-purple-900/50 hover:border-fuchsia-500/50 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition-all text-center">Download</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- JAVA PYQ -->
+                <div class="group border border-purple-900/30 rounded-2xl overflow-hidden card-glow transition-all duration-300 hover:-translate-y-1"
+                    style="background: rgba(20,12,40,0.7);">
+                    <div class="h-44 flex items-center justify-center relative overflow-hidden"
+                        style="background: linear-gradient(135deg, rgba(232,121,249,0.1), rgba(13,11,20,0.8));">
+                        <div class="absolute w-32 h-32 bg-fuchsia-500/20 blur-3xl rounded-full"></div>
+                        <span class="relative text-5xl">🧾</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="tag-pill tag-pink">JAVA PYQ</span>
+                            <span class="text-slate-500 text-xs">2023</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Java Exam Question Papers</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-5">Frequently asked OOPs, exception handling
+                            and Java programming exam questions.</p>
+                        <div class="flex items-center gap-6 mb-5 text-xs text-slate-500">
+                            <span><span class="text-white font-bold text-sm">1k+</span> Downloads</span>
+                            <span><span class="text-white font-bold text-sm">4.8⭐</span> Rating</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <a href="java-pyq-preview.html"
+                                class="flex-1 bg-gradient-to-r from-fuchsia-600 to-pink-600 text-white py-2.5 rounded-xl text-xs font-semibold text-center hover:opacity-90 transition-opacity">Preview</a>
+                            <a href="assets/pdfs/java-pyq.pdf.pdf" download
+                                class="flex-1 border border-purple-900/50 hover:border-fuchsia-500/50 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition-all text-center">Download</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DSA PYQ -->
+                <div class="group border border-purple-900/30 rounded-2xl overflow-hidden card-glow transition-all duration-300 hover:-translate-y-1"
+                    style="background: rgba(20,12,40,0.7);">
+                    <div class="h-44 flex items-center justify-center relative overflow-hidden"
+                        style="background: linear-gradient(135deg, rgba(139,92,246,0.1), rgba(13,11,20,0.8));">
+                        <div class="absolute w-32 h-32 bg-violet-500/20 blur-3xl rounded-full"></div>
+                        <span class="relative text-5xl">📝</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="tag-pill">DSA PYQ</span>
+                            <span class="text-slate-500 text-xs">2024</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">DSA Important PYQs</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-5">Important coding questions, algorithms
+                            and data structure problems from previous exams.</p>
+                        <div class="flex items-center gap-6 mb-5 text-xs text-slate-500">
+                            <span><span class="text-white font-bold text-sm">2k+</span> Downloads</span>
+                            <span><span class="text-white font-bold text-sm">5.0⭐</span> Rating</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <a href="dsa-pyq-preview.html"
+                                class="flex-1 bg-gradient-to-r from-fuchsia-600 to-pink-600 text-white py-2.5 rounded-xl text-xs font-semibold text-center hover:opacity-90 transition-opacity">Preview</a>
+                            <a href="assets/pdfs/dsa-pyq.pdf.pdf" download
+                                class="flex-1 border border-purple-900/50 hover:border-fuchsia-500/50 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition-all text-center">Download</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════ AI TOOLS ══ -->
+    <section class="px-4 sm:px-6 lg:px-8 py-16">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center justify-between mb-10">
+                <div>
+                    <p class="text-emerald-400 text-xs font-semibold mb-2 uppercase tracking-widest">AI Powered Learning
+                        Tools</p>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-white">Smart AI Tools</h2>
+                </div>
+                <button
+                    class="hidden sm:block border border-purple-900/50 hover:border-emerald-500/50 px-5 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white transition-all">
+                    Explore AI
+                </button>
+            </div>
+
+            <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+                <div class="border border-purple-900/30 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-emerald-800/40"
+                    style="background: rgba(20,12,40,0.7);">
+                    <div class="h-44 flex items-center justify-center relative overflow-hidden"
+                        style="background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(13,11,20,0.8));">
+                        <div class="absolute w-32 h-32 bg-emerald-500/15 blur-3xl rounded-full"></div>
+                        <span class="relative text-5xl">🤖</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <span
+                                class="text-[10px] px-3 py-1 rounded-full border border-emerald-700/40 bg-emerald-900/20 text-emerald-400 font-semibold uppercase tracking-wide">AI
+                                Summary</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">AI Notes Summary Generator</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-4">Upload notes and instantly generate short
+                            summaries, key concepts and important exam topics.</p>
+                        <div class="space-y-1.5 mb-5">
+                            <p class="text-xs text-slate-300 flex items-center gap-2"><span
+                                    class="text-emerald-400 text-xs">✔</span> Instant topic summaries</p>
+                            <p class="text-xs text-slate-300 flex items-center gap-2"><span
+                                    class="text-emerald-400 text-xs">✔</span> AI-powered insights</p>
+                            <p class="text-xs text-slate-300 flex items-center gap-2"><span
+                                    class="text-emerald-400 text-xs">✔</span> Smart learning support</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <button
+                                class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-xl text-xs font-semibold transition-colors">Try
+                                Now</button>
+                            <button
+                                class="flex-1 border border-purple-900/50 hover:border-emerald-700/50 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition-all">Learn
+                                More</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-purple-900/30 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-emerald-800/40"
+                    style="background: rgba(20,12,40,0.7);">
+                    <div class="h-44 flex items-center justify-center relative overflow-hidden"
+                        style="background: linear-gradient(135deg, rgba(52,211,153,0.1), rgba(13,11,20,0.8));">
+                        <div class="absolute w-32 h-32 bg-teal-500/15 blur-3xl rounded-full"></div>
+                        <span class="relative text-5xl">🧠</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <span
+                                class="text-[10px] px-3 py-1 rounded-full border border-emerald-700/40 bg-emerald-900/20 text-emerald-400 font-semibold uppercase tracking-wide">Quiz
+                                AI</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">AI Quiz Generator</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-4">Generate MCQs, short questions and
+                            practice quizzes automatically from uploaded notes.</p>
+                        <div class="space-y-1.5 mb-5">
+                            <p class="text-xs text-slate-300 flex items-center gap-2"><span
+                                    class="text-emerald-400 text-xs">✔</span> Auto-generated MCQs</p>
+                            <p class="text-xs text-slate-300 flex items-center gap-2"><span
+                                    class="text-emerald-400 text-xs">✔</span> Practice test generation</p>
+                            <p class="text-xs text-slate-300 flex items-center gap-2"><span
+                                    class="text-emerald-400 text-xs">✔</span> Smart revision support</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <button
+                                class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-xl text-xs font-semibold transition-colors">Generate
+                                Quiz</button>
+                            <button
+                                class="flex-1 border border-purple-900/50 hover:border-emerald-700/50 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition-all">Learn
+                                More</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-purple-900/30 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-emerald-800/40"
+                    style="background: rgba(20,12,40,0.7);">
+                    <div class="h-44 flex items-center justify-center relative overflow-hidden"
+                        style="background: linear-gradient(135deg, rgba(163,230,53,0.08), rgba(13,11,20,0.8));">
+                        <div class="absolute w-32 h-32 bg-lime-500/10 blur-3xl rounded-full"></div>
+                        <span class="relative text-5xl">💬</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <span
+                                class="text-[10px] px-3 py-1 rounded-full border border-emerald-700/40 bg-emerald-900/20 text-emerald-400 font-semibold uppercase tracking-wide">Ask
+                                AI</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Ask Questions From Notes</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-4">Ask doubts directly from uploaded notes
+                            and get instant AI-generated explanations.</p>
+                        <div class="space-y-1.5 mb-5">
+                            <p class="text-xs text-slate-300 flex items-center gap-2"><span
+                                    class="text-emerald-400 text-xs">✔</span> Instant doubt solving</p>
+                            <p class="text-xs text-slate-300 flex items-center gap-2"><span
+                                    class="text-emerald-400 text-xs">✔</span> Context-aware AI answers</p>
+                            <p class="text-xs text-slate-300 flex items-center gap-2"><span
+                                    class="text-emerald-400 text-xs">✔</span> Interactive study support</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <button
+                                class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-xl text-xs font-semibold transition-colors">Ask
+                                AI</button>
+                            <button
+                                class="flex-1 border border-purple-900/50 hover:border-emerald-700/50 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition-all">Learn
+                                More</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════ FOOTER ══ -->
+    <footer class="px-4 sm:px-6 lg:px-8 pt-16 pb-8 border-t border-purple-900/30">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-5 gap-10 pb-12">
+
+                <!-- Brand -->
+                <div class="lg:col-span-2">
+                    <div class="flex items-center gap-3 mb-5">
+                        <img src="assets/logo.png" alt="EduShare" class="h-12 w-auto rounded-xl object-contain" />
+                        <div>
+                            <h2 class="text-xl font-bold text-white">EduShare</h2>
+                            <p class="text-xs text-purple-400/60">AI Academic Resource Ecosystem</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed max-w-md mb-6">EduShare helps students access
+                        high-quality Notes, PYQs and AI-powered study tools from one centralized academic platform.</p>
+                    <div class="flex items-center gap-3">
+                        <a href="#"
+                            class="w-10 h-10 rounded-xl border border-purple-900/50 flex items-center justify-center text-slate-400 hover:text-purple-300 hover:border-purple-700/50 transition-all">🌐</a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-xl border border-purple-900/50 flex items-center justify-center text-slate-400 hover:text-purple-300 hover:border-purple-700/50 transition-all">💼</a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-xl border border-purple-900/50 flex items-center justify-center text-slate-400 hover:text-purple-300 hover:border-purple-700/50 transition-all">🐦</a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-white font-semibold mb-5">Quick Links</h3>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li><a href="#" class="hover:text-purple-300 transition-colors">Home</a></li>
+                        <li><a href="browse.html" class="hover:text-purple-300 transition-colors">Browse Notes</a></li>
+                        <li><a href="browse-pyqs.html" class="hover:text-purple-300 transition-colors">PYQs</a></li>
+                        <li><a href="#" class="hover:text-purple-300 transition-colors">AI Tools</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources -->
+                <div>
+                    <h3 class="text-white font-semibold mb-5">Resources</h3>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li><a href="#" class="hover:text-fuchsia-300 transition-colors">DBMS Notes</a></li>
+                        <li><a href="#" class="hover:text-fuchsia-300 transition-colors">Java Notes</a></li>
+                        <li><a href="#" class="hover:text-fuchsia-300 transition-colors">DSA Notes</a></li>
+                        <li><a href="#" class="hover:text-fuchsia-300 transition-colors">Exam PYQs</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h3 class="text-white font-semibold mb-5">Stay Updated</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">Get updates about latest notes, PYQs and AI
+                        features.</p>
+                    <div class="space-y-3">
+                        <input type="email" placeholder="Enter your email"
+                            class="w-full bg-[#0d0b14] border border-purple-900/50 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-purple-500 transition-colors">
+                        <button
+                            class="w-full bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:opacity-90 text-white py-2.5 rounded-xl font-semibold text-sm transition-all">
+                            Subscribe
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div
+                class="border-t border-purple-900/30 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-slate-500 text-xs">© 2026 EduShare. All rights reserved.</p>
+                <div class="flex items-center gap-5 text-xs text-slate-500">
+                    <a href="#" class="hover:text-purple-400 transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-purple-400 transition-colors">Terms & Conditions</a>
+                    <a href="#" class="hover:text-purple-400 transition-colors">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ══════════════════════════════════════════ SCRIPTS ══ -->
+    <script>
+        // MOBILE MENU
+        document.getElementById("menu-btn").addEventListener("click", () => {
+            document.getElementById("mobile-menu").classList.toggle("hidden");
+        });
+    </script>
+
+    <!-- PDF.js for rendering first page of PDF as thumbnail -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const supabaseUrl = "https://acdjioftdlsugfycsbvj.supabase.co";
+        const supabaseKey = "sb_publishable_DtfvA3EJm991gqezfeYNng_jlSS0I9h";
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // ── LATEST PAPERS ──────────────────────────────────────────────────
+        // This loads from Supabase and renders the paper thumbnail cards
+        // exactly like Image 2's "Latest Papers" grid.
+        async function loadLatestPapers() {
+            const { data, error } = await supabaseClient
+                .from("resources")
+                .select("*")
+                .eq("status", "approved")
+                .order("created_at", { ascending: false })
+                .limit(20); // fetch up to 20, show 5 initially
+
+            const loading = document.getElementById("latest-loading");
+            const grid = document.getElementById("latest-papers-grid");
+            const empty = document.getElementById("latest-empty");
+            const viewAllBtn = document.getElementById("view-all-btn");
+
+            loading.classList.add("hidden");
+
+            if (error || !data || data.length === 0) {
+                empty.classList.remove("hidden");
+                return;
+            }
+
+            grid.classList.remove("hidden");
+            grid.classList.add("grid");
+
+            const visible = data.slice(0, 5);
+            const hidden = data.slice(5);
+
+            visible.forEach(resource => renderCard(grid, resource));
+
+            // If more than 5 exist, show "View All" button that reveals the rest
+            if (hidden.length > 0) {
+                viewAllBtn.classList.remove("hidden");
+                viewAllBtn.removeAttribute("href"); // make it a button not a link
+                viewAllBtn.style.cursor = "pointer";
+                viewAllBtn.addEventListener("click", () => {
+                    hidden.forEach(resource => renderCard(grid, resource));
+                    viewAllBtn.classList.add("hidden"); // hide after expanding
+                });
+            }
+        }
+
+        function renderCard(grid, resource) {
+            const isPYQ = resource.type === "pyqs";
+            const accentColor = isPYQ ? "#e879f9" : "#a78bfa";
+            const year = resource.year || (resource.created_at ? new Date(resource.created_at).getFullYear() : '');
+
+            const card = document.createElement('a');
+            card.href = resource.pdf_url || '#';
+            card.target = '_blank';
+            card.className = 'group rounded-2xl overflow-hidden border border-purple-900/30 hover:border-purple-600/40 transition-all duration-300 hover:-translate-y-1 cursor-pointer block';
+            card.style.background = 'rgba(20,12,40,0.6)';
+            card.innerHTML = `
+                <div class="relative overflow-hidden" style="height:176px; background:#120d25;">
+                    <!-- Canvas filled by PDF.js -->
+                    <canvas class="pdf-thumb w-full h-full object-cover" style="display:none;"></canvas>
+                    <!-- Skeleton shown while loading -->
+                    <div class="pdf-skeleton absolute inset-0 flex flex-col items-center justify-center gap-2 animate-pulse">
+                        <div class="w-10 h-12 rounded bg-purple-900/40"></div>
+                        <div class="w-16 h-2 rounded bg-purple-900/30"></div>
+                    </div>
+                    <!-- Type badge -->
+                    <div class="absolute top-2 left-2 z-10">
+                        <span class="text-[9px] px-2 py-0.5 rounded-full font-bold uppercase"
+                              style="background:rgba(13,11,20,0.85); color:${accentColor}; border:1px solid ${accentColor}40;">
+                            ${isPYQ ? 'PYQ' : 'Notes'}
+                        </span>
+                    </div>
+                </div>
+                <div class="p-3 space-y-2">
+                    <h4 class="text-xs font-bold text-white leading-tight line-clamp-2">${resource.subject || 'Untitled'}</h4>
+                    <div class="flex flex-wrap gap-1">
+                        ${resource.college ? `<span class="tag-pill">${resource.college}</span>` : ''}
+                        ${resource.branch ? `<span class="tag-pill">${resource.branch}</span>` : ''}
+                        ${resource.semester ? `<span class="tag-pill">Sem ${resource.semester}</span>` : ''}
+                    </div>
+                    ${year ? `<p class="text-[10px] text-slate-500">${year}</p>` : ''}
+                </div>`;
+
+            grid.appendChild(card);
+
+            // Render first page of PDF onto the canvas using PDF.js
+            if (resource.pdf_url) {
+                const canvas = card.querySelector('canvas.pdf-thumb');
+                const skeleton = card.querySelector('.pdf-skeleton');
+
+                pdfjsLib.getDocument({ url: resource.pdf_url, cMapPacked: true }).promise
+                    .then(pdf => pdf.getPage(1))
+                    .then(page => {
+                        // Scale page to fit the card width (~220px)
+                        const viewport = page.getViewport({ scale: 1 });
+                        const scale = 220 / viewport.width;
+                        const scaled = page.getViewport({ scale });
+
+                        canvas.width = scaled.width;
+                        canvas.height = scaled.height;
+
+                        return page.render({
+                            canvasContext: canvas.getContext('2d'),
+                            viewport: scaled
+                        }).promise;
+                    })
+                    .then(() => {
+                        skeleton.style.display = 'none';
+                        canvas.style.display = 'block';
+                    })
+                    .catch(() => {
+                        // If PDF fails to load (CORS etc), show a plain fallback
+                        skeleton.classList.remove('animate-pulse');
+                        skeleton.innerHTML = `<p class="text-[10px] text-slate-500 px-3 text-center">${resource.subject || 'Preview unavailable'}</p>`;
+                    });
+            }
+        }
+
+        // ── LIVE AUTO-SEARCH (fires on every input/change, debounced 350ms) ──
+        // No button needed — results update automatically as the user types or changes a filter.
+        let searchDebounce = null;
+
+        async function runSearch() {
+            const subject = document.getElementById("subject").value.trim();
+            const type = document.getElementById("resource-type").value;
+            const college = document.getElementById("college").value.trim();
+            const branch = document.getElementById("branch").value.trim();
+            const semester = document.getElementById("semester").value;
+            const resultsSection = document.getElementById("search-results");
+            const resultsContainer = document.getElementById("results-container");
+
+            // If all filters are empty, hide results and show latest papers
+            if (!subject && !type && !college && !branch && !semester) {
+                resultsSection.classList.add("hidden");
+                return;
+            }
+
+            resultsContainer.innerHTML = `
+                <div class="col-span-full flex items-center gap-3 py-6 text-slate-400 text-sm">
+                    <svg class="animate-spin w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                    </svg>
+                    Searching…
+                </div>`;
+            resultsSection.classList.remove("hidden");
+
+            let query = supabaseClient.from("resources").select("*").eq("status", "approved");
+            if (subject !== "") query = query.ilike("subject", `%${subject}%`);
+            if (type !== "") query = query.eq("type", type);
+            if (college !== "") query = query.ilike("college", `%${college}%`);
+            if (branch !== "") query = query.ilike("branch", `%${branch}%`);
+            if (semester !== "") query = query.eq("semester", semester);
+            query = query.order("created_at", { ascending: false });
+
+            const timer = new Promise(res => setTimeout(res, 800));
+            const { data, error } = await query;
+            await timer; // wait for minimum spinner time if query was fast
+            if (error) { console.error(error); resultsContainer.innerHTML = ""; return; }
+
+            resultsContainer.innerHTML = "";
+
+            if (data.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="col-span-full rounded-2xl p-10 text-center border border-purple-900/30" style="background: rgba(20,12,40,0.5);">
+                        <p class="text-4xl mb-3">🔍</p>
+                        <h3 class="text-xl font-bold text-white mb-2">No Matching Resources</h3>
+                        <p class="text-slate-400 text-sm">Try different search filters</p>
+                    </div>`;
+                return;
+            }
+
+            data.forEach(resource => {
+                const isPYQ = resource.type === "pyqs";
+                resultsContainer.innerHTML += `
+                    <div class="rounded-2xl p-5 border border-purple-900/30 hover:border-purple-600/40 transition-all duration-300 hover:-translate-y-1"
+                         style="background: rgba(20,12,40,0.7);">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-[10px] px-3 py-1 rounded-full font-bold uppercase ${isPYQ ? 'text-fuchsia-400 border-fuchsia-700/40 bg-fuchsia-900/20' : 'text-purple-400 border-purple-700/40 bg-purple-900/20'} border">
+                                ${resource.type}
+                            </span>
+                            <span class="text-xs text-slate-500">Sem ${resource.semester}</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-2">${resource.subject}</h3>
+                        <div class="space-y-1 mb-4 text-xs text-slate-400">
+                            <p><span class="text-slate-500">College:</span> ${resource.college}</p>
+                            <p><span class="text-slate-500">Branch:</span>  ${resource.branch}</p>
+                        </div>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-4">${resource.description || ''}</p>
+                        <div class="flex gap-3">
+                            <a href="${resource.pdf_url}" target="_blank"
+                               class="flex-1 border border-purple-900/50 hover:border-purple-600/50 py-2.5 rounded-xl text-center text-xs font-semibold text-slate-300 hover:text-white transition-all">
+                                Preview
+                            </a>
+                            <a href="${resource.pdf_url}" download
+                               class="flex-1 ${isPYQ ? 'bg-gradient-to-r from-fuchsia-600 to-pink-600' : 'bg-gradient-to-r from-violet-600 to-fuchsia-600'} text-white py-2.5 rounded-xl text-center text-xs font-semibold hover:opacity-90 transition-opacity">
+                                Download
+                            </a>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function triggerSearch() {
+            clearTimeout(searchDebounce);
+            searchDebounce = setTimeout(runSearch, 350);
+        }
+
+        // Attach live listeners to all filter inputs
+        ["college", "branch", "subject"].forEach(id => {
+            document.getElementById(id).addEventListener("input", triggerSearch);
+        });
+        ["semester", "resource-type", "year"].forEach(id => {
+            document.getElementById(id).addEventListener("change", triggerSearch);
+        });
+
+        // ── INIT ───────────────────────────────────────────────────────────
+        loadLatestPapers();
+    </script>
+
+</body>
+
+</html>
