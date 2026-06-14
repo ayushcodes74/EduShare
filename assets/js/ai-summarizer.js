@@ -986,8 +986,19 @@ Return ONLY valid JSON.
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            prompt
-        })
+    contents: [
+        {
+            parts: [
+                {
+                    text: prompt
+                }
+            ]
+        }
+    ],
+    generationConfig: {
+        responseMimeType: "application/json"
+    }
+})
     });
 
     const result = await response.json();
@@ -997,7 +1008,12 @@ Return ONLY valid JSON.
     }
 
     try {
-        return JSON.parse(result.text);
+        const cleanText = result.text
+        .replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim();
+
+    return JSON.parse(cleanText);
     } catch (err) {
         console.error(result.text);
         throw new Error("AI returned invalid JSON");
