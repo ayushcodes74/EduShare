@@ -270,14 +270,18 @@
 
                 </div>
 
-                <!-- Download Button -->
-                <a href="assets/pdfs/dbms-pyq.pdf.pdf"
-                    download
-                    class="bg-purple-500 hover:bg-purple-400 text-slate-950 px-6 py-3 rounded-2xl font-semibold transition-all duration-300 hover:scale-105">
-
-                    Download PDF
-
-                </a>
+                <!-- Buttons -->
+                <div class="flex flex-wrap items-center gap-3">
+                    <button onclick="triggerAISummary()"
+                        class="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white px-6 py-3 rounded-2xl font-bold transition-all duration-300 hover:scale-105 shadow-lg shadow-purple-500/20">
+                        🤖 AI Study Assistant
+                    </button>
+                    <a href="assets/pdfs/dbms-pyq.pdf.pdf"
+                        download
+                        class="bg-purple-500 hover:bg-purple-400 text-slate-950 px-6 py-3 rounded-2xl font-semibold transition-all duration-300 hover:scale-105">
+                        Download PDF
+                    </a>
+                </div>
 
             </div>
 
@@ -338,6 +342,25 @@
 
     </footer>
 
+    <!-- Supabase + PDF.js + AI summarizer -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
+    <script src="assets/js/ai-summarizer.js"></script>
+    <script>
+        function triggerAISummary() {
+            window.initAISummarizer({
+                id: null,
+                pdf_url: "assets/pdfs/dbms-pyq.pdf.pdf",
+                subject: "DBMS",
+                college: "LNCT",
+                branch: "Computer Science",
+                semester: "3"
+            });
+        }
+    </script>
 </body>
 
 </html>

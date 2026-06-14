@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Resources | EduShare</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -25,6 +29,7 @@
             backdrop-filter: blur(12px);
             border-bottom: 1px solid #1e1b4b;
         }
+
         .nav-inner {
             max-width: 1280px;
             margin: 0 auto;
@@ -34,56 +39,117 @@
             justify-content: space-between;
             gap: 16px;
         }
-        .nav-logo { display: flex; align-items: center; gap: 12px; }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .nav-icon {
-            width: 42px; height: 42px;
+            width: 42px;
+            height: 42px;
             border-radius: 12px;
             background: linear-gradient(135deg, #f59e0b, #ef4444);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 20px; flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
         }
-        .nav-name { font-size: 16px; font-weight: 800; color: #fff; }
-        .nav-sub  { font-size: 11px; color: #f59e0b; }
 
-        nav ul { display: flex; align-items: center; gap: 32px; list-style: none; }
-        nav a  { font-size: 14px; font-weight: 500; color: #94a3b8; text-decoration: none; transition: color 0.2s; }
-        nav a:hover         { color: #cbd5e1; }
-        nav a.active        { color: #fbbf24; border-bottom: 2px solid #fbbf24; padding-bottom: 2px; }
-        nav a.notes-link:hover { color: #67e8f9; }
-        nav a.pyq-link:hover   { color: #c4b5fd; }
+        .nav-name {
+            font-size: 16px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .nav-sub {
+            font-size: 11px;
+            color: #f59e0b;
+        }
+
+        nav ul {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+
+        nav a {
+            font-size: 14px;
+            font-weight: 500;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #cbd5e1;
+        }
+
+        nav a.active {
+            color: #fbbf24;
+            border-bottom: 2px solid #fbbf24;
+            padding-bottom: 2px;
+        }
+
+        nav a.notes-link:hover {
+            color: #67e8f9;
+        }
+
+        nav a.pyq-link:hover {
+            color: #c4b5fd;
+        }
 
         .hamburger {
             display: none;
-            width: 40px; height: 40px;
+            width: 40px;
+            height: 40px;
             background: #1e1b4b;
             border: 1px solid #f59e0b;
             border-radius: 10px;
-            align-items: center; justify-content: center;
-            font-size: 20px; color: #fbbf24;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #fbbf24;
             cursor: pointer;
         }
 
         #mobile-menu {
             display: none;
             position: absolute;
-            top: 100%; left: 12px; right: 12px;
+            top: 100%;
+            left: 12px;
+            right: 12px;
             background: #0f0e2a;
             border: 1px solid #f59e0b;
             border-radius: 20px;
             padding: 16px;
-            box-shadow: 0 20px 60px rgba(245,158,11,0.15);
+            box-shadow: 0 20px 60px rgba(245, 158, 11, 0.15);
         }
+
         #mobile-menu a {
-            display: flex; align-items: center; gap: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             padding: 12px 16px;
             border-radius: 12px;
-            font-size: 14px; font-weight: 500;
+            font-size: 14px;
+            font-weight: 500;
             color: #94a3b8;
             text-decoration: none;
             transition: background 0.2s;
         }
-        #mobile-menu a:hover  { background: #1e1b4b; }
-        #mobile-menu a.active { background: #1e1b4b; color: #fbbf24; }
+
+        #mobile-menu a:hover {
+            background: #1e1b4b;
+        }
+
+        #mobile-menu a.active {
+            background: #1e1b4b;
+            color: #fbbf24;
+        }
 
         /* ── HERO ── */
         .hero {
@@ -91,34 +157,52 @@
             padding: 80px 24px 64px;
             text-align: center;
         }
-        .hero-inner { max-width: 720px; margin: 0 auto; }
+
+        .hero-inner {
+            max-width: 720px;
+            margin: 0 auto;
+        }
 
         .hero-badge {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.35);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.35);
             color: #fff;
             padding: 6px 18px;
             border-radius: 999px;
-            font-size: 12px; font-weight: 700;
+            font-size: 12px;
+            font-weight: 700;
             letter-spacing: 0.04em;
             margin-bottom: 24px;
         }
 
         .hero h1 {
-            font-size: 52px; font-weight: 900;
-            color: #fff; line-height: 1.1;
+            font-size: 52px;
+            font-weight: 900;
+            color: #fff;
+            line-height: 1.1;
             margin-bottom: 16px;
         }
-        .hero h1 span { color: #fef08a; }
+
+        .hero h1 span {
+            color: #fef08a;
+        }
+
         .hero p {
-            font-size: 16px; color: rgba(255,255,255,0.8);
-            line-height: 1.7; max-width: 520px;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.7;
+            max-width: 520px;
             margin: 0 auto;
         }
 
         /* ── FORM SECTION ── */
-        .form-section { padding: 48px 24px 80px; }
+        .form-section {
+            padding: 48px 24px 80px;
+        }
+
         .form-wrap {
             max-width: 860px;
             margin: 0 auto;
@@ -133,10 +217,22 @@
             grid-template-columns: 1fr 1fr;
             gap: 24px;
         }
-        @media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
 
-        .form-group { display: flex; flex-direction: column; gap: 10px; }
-        .form-group.full { grid-column: 1 / -1; }
+        @media (max-width: 640px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
 
         label {
             font-size: 13px;
@@ -157,17 +253,29 @@
             transition: border-color 0.2s, box-shadow 0.2s;
             width: 100%;
         }
-        input[type="text"]::placeholder { color: #475569; }
+
+        input[type="text"]::placeholder {
+            color: #475569;
+        }
+
         input[type="text"]:focus,
         select:focus {
             outline: none;
             border-color: #f59e0b;
-            box-shadow: 0 0 0 3px rgba(245,158,11,0.18);
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18);
         }
-        select option { background: #12112a; }
+
+        select option {
+            background: #12112a;
+        }
 
         /* type selector cards */
-        .type-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .type-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
         .type-card {
             background: #0a0a1a;
             border: 2px solid #2d2a5e;
@@ -178,11 +286,33 @@
             text-align: center;
             user-select: none;
         }
-        .type-card:hover { border-color: #f59e0b; background: #1a1840; }
-        .type-card.selected { border-color: #f59e0b; background: rgba(245,158,11,0.1); }
-        .type-card .icon { font-size: 28px; margin-bottom: 6px; }
-        .type-card .label { font-size: 13px; font-weight: 700; color: #cbd5e1; }
-        .type-card .sublabel { font-size: 11px; color: #64748b; margin-top: 2px; }
+
+        .type-card:hover {
+            border-color: #f59e0b;
+            background: #1a1840;
+        }
+
+        .type-card.selected {
+            border-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .type-card .icon {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .type-card .label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #cbd5e1;
+        }
+
+        .type-card .sublabel {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 2px;
+        }
 
         /* upload box */
         .upload-box {
@@ -194,12 +324,39 @@
             cursor: pointer;
             transition: border-color 0.2s, background 0.2s;
         }
-        .upload-box:hover { border-color: #f59e0b; background: #1a1840; }
-        .upload-box.has-file { border-color: #22c55e; border-style: solid; background: rgba(34,197,94,0.06); }
-        .upload-box .upload-icon { font-size: 36px; margin-bottom: 10px; }
-        .upload-box .upload-text { font-size: 14px; color: #94a3b8; }
-        .upload-box .upload-sub  { font-size: 12px; color: #475569; margin-top: 4px; }
-        .upload-box .file-name   { font-size: 14px; color: #22c55e; font-weight: 600; }
+
+        .upload-box:hover {
+            border-color: #f59e0b;
+            background: #1a1840;
+        }
+
+        .upload-box.has-file {
+            border-color: #22c55e;
+            border-style: solid;
+            background: rgba(34, 197, 94, 0.06);
+        }
+
+        .upload-box .upload-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .upload-box .upload-text {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .upload-box .upload-sub {
+            font-size: 12px;
+            color: #475569;
+            margin-top: 4px;
+        }
+
+        .upload-box .file-name {
+            font-size: 14px;
+            color: #22c55e;
+            font-weight: 600;
+        }
 
         /* description */
         textarea {
@@ -215,11 +372,15 @@
             font-family: inherit;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
-        textarea::placeholder { color: #475569; }
+
+        textarea::placeholder {
+            color: #475569;
+        }
+
         textarea:focus {
             outline: none;
             border-color: #f59e0b;
-            box-shadow: 0 0 0 3px rgba(245,158,11,0.18);
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18);
         }
 
         /* divider */
@@ -239,6 +400,7 @@
             gap: 16px;
             margin-top: 8px;
         }
+
         .submit-btn {
             padding: 14px 36px;
             background: linear-gradient(135deg, #f59e0b, #ef4444);
@@ -251,18 +413,32 @@
             transition: opacity 0.2s, transform 0.15s;
             letter-spacing: 0.02em;
         }
-        .submit-btn:hover   { opacity: 0.9; transform: translateY(-1px); }
-        .submit-btn:active  { transform: translateY(0); }
-        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .submit-note { font-size: 12px; color: #475569; }
+        .submit-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .submit-note {
+            font-size: 12px;
+            color: #475569;
+        }
 
         /* success / error */
         .success-msg {
             display: none;
             grid-column: 1 / -1;
-            background: rgba(34,197,94,0.08);
-            border: 1px solid rgba(34,197,94,0.3);
+            background: rgba(34, 197, 94, 0.08);
+            border: 1px solid rgba(34, 197, 94, 0.3);
             border-radius: 16px;
             padding: 18px 24px;
             text-align: center;
@@ -270,11 +446,12 @@
             font-weight: 700;
             color: #4ade80;
         }
+
         .error-msg {
             display: none;
             grid-column: 1 / -1;
-            background: rgba(239,68,68,0.08);
-            border: 1px solid rgba(239,68,68,0.3);
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.3);
             border-radius: 16px;
             padding: 18px 24px;
             text-align: center;
@@ -284,8 +461,23 @@
         }
 
         /* loading spinner */
-        .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.6s linear infinite; margin-right: 8px; vertical-align: middle; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
         /* ── FOOTER ── */
         footer {
@@ -293,22 +485,60 @@
             border-top: 1px solid #1e1b4b;
             padding: 28px 24px;
         }
+
         .footer-inner {
-            max-width: 1280px; margin: 0 auto;
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: space-between; gap: 12px;
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
         }
-        @media (min-width: 640px) { .footer-inner { flex-direction: row; } }
-        .footer-copy { font-size: 13px; color: #475569; }
-        .footer-links { display: flex; gap: 24px; }
-        .footer-links a { font-size: 13px; color: #475569; text-decoration: none; transition: color 0.2s; }
-        .footer-links a:hover { color: #fbbf24; }
+
+        @media (min-width: 640px) {
+            .footer-inner {
+                flex-direction: row;
+            }
+        }
+
+        .footer-copy {
+            font-size: 13px;
+            color: #475569;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            font-size: 13px;
+            color: #475569;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #fbbf24;
+        }
 
         @media (max-width: 640px) {
-            nav ul { display: none; }
-            .hamburger { display: flex; }
-            .hero h1 { font-size: 34px; }
-            .form-wrap { padding: 24px 18px; }
+            nav ul {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 34px;
+            }
+
+            .form-wrap {
+                padding: 24px 18px;
+            }
         }
     </style>
 </head>
@@ -351,7 +581,8 @@
         <div class="hero-inner">
             <div class="hero-badge">🚀 Community Resource Sharing</div>
             <h1>Upload <span>Notes & PYQs</span></h1>
-            <p>Help thousands of students by sharing quality academic resources. Every upload goes through a quick review before it goes live.</p>
+            <p>Help thousands of students by sharing quality academic resources. Every upload goes through a quick
+                review before it goes live.</p>
         </div>
     </section>
 
@@ -417,8 +648,10 @@
 
                     <!-- Description -->
                     <div class="form-group full">
-                        <label>Description <span style="color:#475569;font-weight:400;text-transform:none;">(optional)</span></label>
-                        <textarea id="description" placeholder="Brief description of the content, topics covered, etc."></textarea>
+                        <label>Description <span
+                                style="color:#475569;font-weight:400;text-transform:none;">(optional)</span></label>
+                        <textarea id="description"
+                            placeholder="Brief description of the content, topics covered, etc."></textarea>
                     </div>
 
                     <!-- File Upload -->
@@ -435,8 +668,9 @@
                     <hr class="form-divider">
 
                     <!-- Messages -->
-                    <div id="success-message" class="success-msg">✅ Resource uploaded successfully! It will be reviewed and published shortly.</div>
-                    <div id="error-message"   class="error-msg"></div>
+                    <div id="success-message" class="success-msg">✅ Resource uploaded successfully! It will be reviewed
+                        and published shortly.</div>
+                    <div id="error-message" class="error-msg"></div>
 
                     <!-- Submit -->
                     <div class="submit-row">
@@ -465,8 +699,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        const supabaseUrl    = "https://acdjioftdlsugfycsbvj.supabase.co";
-        const supabaseKey    = "sb_publishable_DtfvA3EJm991gqezfeYNng_jlSS0I9h";
+        const supabaseUrl = "https://acdjioftdlsugfycsbvj.supabase.co";
+        const supabaseKey = "sb_publishable_DtfvA3EJm991gqezfeYNng_jlSS0I9h";
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
         // mobile menu
@@ -483,7 +717,7 @@
         }
 
         // file picker preview
-        const pdfFile   = document.getElementById("pdf-file");
+        const pdfFile = document.getElementById("pdf-file");
         const uploadBox = document.getElementById("upload-box");
 
         pdfFile.addEventListener("change", () => {
@@ -501,40 +735,65 @@
             e.preventDefault();
 
             const resourceType = document.getElementById("resource-type").value;
-            const subject      = document.getElementById("subject").value.trim();
-            const college      = document.getElementById("college").value.trim();
-            const branch       = document.getElementById("branch").value.trim();
-            const semester     = document.getElementById("semester").value;
-            const description  = document.getElementById("description").value.trim();
-            const file         = pdfFile.files[0];
+            const subject = document.getElementById("subject").value.trim();
+            const college = document.getElementById("college").value.trim();
+            const branch = document.getElementById("branch").value.trim();
+            const semester = document.getElementById("semester").value;
+            const description = document.getElementById("description").value.trim();
+            const file = pdfFile.files[0];
 
             const successMsg = document.getElementById("success-message");
-            const errorMsg   = document.getElementById("error-message");
-            const submitBtn  = document.getElementById("submit-btn");
+            const errorMsg = document.getElementById("error-message");
+            const submitBtn = document.getElementById("submit-btn");
 
             successMsg.style.display = "none";
-            errorMsg.style.display   = "none";
+            errorMsg.style.display = "none";
 
             if (!resourceType || !subject || !college || !branch || !semester || !file) {
-                errorMsg.textContent     = "⚠️ Please fill all required fields and choose a file.";
-                errorMsg.style.display   = "block";
+                errorMsg.textContent = "⚠️ Please fill all required fields and choose a file.";
+                errorMsg.style.display = "block";
                 return;
             }
 
             const allowedTypes = ["application/pdf", "image/png", "image/jpeg"];
             if (!allowedTypes.includes(file.type)) {
-                errorMsg.textContent   = "⚠️ Only PDF, PNG, and JPG files are allowed.";
+                errorMsg.textContent = "⚠️ Only PDF, PNG, and JPG files are allowed.";
                 errorMsg.style.display = "block";
                 return;
             }
             if (file.size > 10 * 1024 * 1024) {
-                errorMsg.textContent   = "⚠️ File size must be less than 10 MB.";
+                errorMsg.textContent = "⚠️ File size must be less than 10 MB.";
                 errorMsg.style.display = "block";
                 return;
             }
 
-            submitBtn.disabled   = true;
-            submitBtn.innerHTML  = `<span class="spinner"></span> Uploading...`;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<span class="spinner"></span> Uploading...`;
+
+            let aiScore = 0;
+
+            // File Uploaded
+            if (file) aiScore += 20;
+
+            // Valid PDF
+            if (file.type === "application/pdf") aiScore += 20;
+
+            // Required Fields
+            if (subject) aiScore += 15;
+            if (college) aiScore += 15;
+            if (branch) aiScore += 10;
+            if (semester) aiScore += 10;
+
+            // Description Quality
+            if (description.length > 20) aiScore += 10;
+
+            // File Size Check
+            if (file.size > 50000) aiScore += 10;
+
+            // AI Decision
+            const aiStatus = aiScore >= 80
+                ? "approved"
+                : "pending";
 
             const fileNameUnique = Date.now() + "-" + file.name;
 
@@ -543,10 +802,10 @@
 
             if (uploadError) {
                 console.error(uploadError);
-                errorMsg.textContent   = "❌ File upload failed. Please try again.";
+                errorMsg.textContent = "❌ File upload failed. Please try again.";
                 errorMsg.style.display = "block";
-                submitBtn.disabled     = false;
-                submitBtn.innerHTML    = "🚀 Upload Resource";
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = "🚀 Upload Resource";
                 return;
             }
 
@@ -554,28 +813,33 @@
                 .from("pdfs").getPublicUrl(fileNameUnique);
 
             const { error: dbError } = await supabaseClient.from("resources").insert([{
-                title:       subject + " " + resourceType.toUpperCase(),
-                type:        resourceType,
-                subject:     subject,
-                college:     college,
-                branch:      branch,
-                semester:    semester,
+                title: subject + " " + resourceType.toUpperCase(),
+                type: resourceType,
+                subject: subject,
+                college: college,
+                branch: branch,
+                semester: semester,
                 description: description,
-                pdf_url:     publicUrlData.publicUrl
+                pdf_url: publicUrlData.publicUrl,
+
+                ai_score: aiScore,
+                ai_status: aiStatus,
+
+                status: aiStatus
             }]);
 
             if (dbError) {
                 console.error(dbError);
-                errorMsg.textContent   = "❌ Database error. Please try again.";
+                errorMsg.textContent = "❌ Database error. Please try again.";
                 errorMsg.style.display = "block";
-                submitBtn.disabled     = false;
-                submitBtn.innerHTML    = "🚀 Upload Resource";
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = "🚀 Upload Resource";
                 return;
             }
 
             successMsg.style.display = "block";
-            submitBtn.disabled       = false;
-            submitBtn.innerHTML      = "🚀 Upload Resource";
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = "🚀 Upload Resource";
 
             document.getElementById("upload-form").reset();
             uploadBox.classList.remove("has-file");
@@ -593,4 +857,5 @@
     </script>
 
 </body>
+
 </html>

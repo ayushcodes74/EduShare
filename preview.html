@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Preview | EduShare</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .glow-purple {
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.25);
+        }
+        .glow-fuchsia {
+            box-shadow: 0 0 25px rgba(236, 72, 153, 0.3);
+        }
+        .card-glow:hover {
+            border-color: rgba(168, 85, 247, 0.4);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.15);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body class="bg-slate-950 text-white min-h-screen flex flex-col font-sans">
+
+    <!-- NAVBAR -->
+    <nav class="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-lg border-b border-slate-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-violet-500/20">
+                    E
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-white">EduShare</h1>
+                    <p class="text-xs text-slate-400">Smart Academic Ecosystem</p>
+                </div>
+            </div>
+            
+            <ul class="hidden md:flex items-center gap-8 text-sm text-slate-300 font-medium">
+                <li><a href="index.html" class="hover:text-violet-400 transition">Home</a></li>
+                <li><a href="browse.html" class="hover:text-violet-400 transition">Notes</a></li>
+                <li><a href="browse-pyqs.html" class="hover:text-violet-400 transition">PYQs</a></li>
+                <li><a href="#" class="text-violet-400 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse"></span>AI Tools</a></li>
+            </ul>
+
+            <a href="browse.html" class="border border-violet-500/50 hover:border-violet-500 text-violet-400 hover:text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300">
+                Back to Library
+            </a>
+        </div>
+    </nav>
+
+    <!-- LOADING STATE -->
+    <div id="loading-state" class="flex-1 flex flex-col items-center justify-center py-20">
+        <div class="w-12 h-12 border-4 border-violet-900/30 border-t-violet-500 rounded-full animate-spin mb-4"></div>
+        <p class="text-slate-400 text-sm font-medium">Fetching resource metadata...</p>
+    </div>
+
+    <!-- ERROR STATE -->
+    <div id="error-state" class="hidden flex-1 flex flex-col items-center justify-center py-20 px-4 text-center">
+        <div class="text-5xl mb-4">🔍</div>
+        <h2 class="text-2xl font-bold mb-2">Resource Not Found</h2>
+        <p class="text-slate-400 text-sm max-w-sm mb-6">We couldn't locate this study resource in the database. It might have been removed or moderated.</p>
+        <a href="browse.html" class="bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white px-6 py-3 rounded-xl font-semibold text-sm transition hover:opacity-90">Browse Notes</a>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <main id="main-content" class="hidden flex-1 px-4 sm:px-6 lg:px-8 py-10">
+        <div class="max-w-7xl mx-auto">
+            <!-- Breadcrumb -->
+            <div class="flex items-center gap-3 text-xs text-slate-500 mb-6">
+                <a href="browse.html" class="hover:text-violet-400 transition">Library</a>
+                <span>/</span>
+                <span id="breadcrumb-type" class="uppercase">Notes</span>
+                <span>/</span>
+                <span id="breadcrumb-title" class="text-violet-400 font-semibold truncate max-w-xs">Subject Name</span>
+            </div>
+
+            <!-- Page Grid -->
+            <div class="grid lg:grid-cols-3 gap-10">
+                <!-- Left: PDF Viewer -->
+                <div class="lg:col-span-2">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <p id="resource-subject" class="text-violet-400 text-xs font-bold uppercase tracking-wide mb-1">Subject</p>
+                            <h2 id="resource-title" class="text-2xl sm:text-3xl font-extrabold text-white">Resource Title</h2>
+                        </div>
+                        <span id="resource-badge" class="bg-violet-900/20 border border-violet-500/20 text-violet-400 px-4 py-1.5 rounded-full text-xs font-semibold">
+                            Notes
+                        </span>
+                    </div>
+
+                    <!-- PDF Viewer Container -->
+                    <div class="bg-slate-900/40 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl">
+                        <div class="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/80">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+                                <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+                                <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
+                            </div>
+                            <span id="pdf-filename" class="text-xs text-slate-400 font-mono">document.pdf</span>
+                        </div>
+                        <div class="h-[750px] bg-slate-950">
+                            <iframe id="pdf-iframe" src="" class="w-full h-full border-0"></iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Actions Panel -->
+                <div class="space-y-6">
+                    <div class="bg-slate-900/40 border border-slate-800 rounded-3xl p-6 sm:p-8 backdrop-blur-lg relative overflow-hidden">
+                        <!-- BG Glow -->
+                        <div class="absolute -top-12 -right-12 w-36 h-36 bg-violet-600/10 blur-3xl rounded-full"></div>
+                        <div class="absolute -bottom-12 -left-12 w-36 h-36 bg-fuchsia-600/10 blur-3xl rounded-full"></div>
+
+                        <span class="inline-block bg-violet-500/10 border border-violet-500/20 text-violet-400 text-xs font-bold px-3 py-1.5 rounded-full mb-5 uppercase tracking-wide">
+                            Academic Resource
+                        </span>
+
+                        <h3 id="panel-title" class="text-xl font-bold leading-snug mb-3 text-white">Complete Notes</h3>
+                        <p id="panel-desc" class="text-slate-400 text-sm leading-relaxed mb-6">Brief resource description details.</p>
+
+                        <!-- Details Grid -->
+                        <div class="space-y-4 border-t border-b border-slate-800/60 py-5 mb-6 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-slate-500">College</span>
+                                <span id="meta-college" class="text-slate-200 font-medium">LNCT</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-500">Branch</span>
+                                <span id="meta-branch" class="text-slate-200 font-medium">CSE</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-500">Semester</span>
+                                <span id="meta-semester" class="text-slate-200 font-medium">Sem 3</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-500">Downloads</span>
+                                <span id="meta-downloads" class="text-violet-400 font-bold">120+</span>
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="space-y-3">
+                            <!-- AI Summary trigger -->
+                            <button id="ai-summary-btn" class="w-full bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white py-4 rounded-2xl font-bold text-sm transition-all duration-300 hover:scale-[1.01] glow-fuchsia flex items-center justify-center gap-2">
+                                🤖 AI Study Assistant
+                            </button>
+
+                            <!-- Direct Download -->
+                            <a id="download-btn" href="#" download class="block w-full bg-slate-800 hover:bg-slate-700 text-slate-100 py-4 rounded-2xl font-semibold text-center text-sm border border-slate-700/50 transition">
+                                Download PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Resources Grid -->
+            <section class="mt-16">
+                <div class="mb-8">
+                    <p class="text-violet-400 text-xs font-bold uppercase tracking-wider mb-2">More Content</p>
+                    <h3 class="text-2xl font-extrabold text-white">Recommended Resources</h3>
+                </div>
+                <div id="related-grid" class="grid md:grid-cols-3 gap-6">
+                    <!-- Cards will be populated dynamically -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="mt-auto border-t border-slate-900 bg-slate-950 py-8 px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p>© 2026 EduShare. All rights reserved.</p>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-violet-400">Privacy Policy</a>
+                <a href="#" class="hover:text-violet-400">Terms</a>
+                <a href="#" class="hover:text-violet-400">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Supabase + PDF.js + AI Module scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
+    <script src="assets/js/ai-summarizer.js"></script>
+
+    <script>
+        const supabaseUrl = "https://acdjioftdlsugfycsbvj.supabase.co";
+        const supabaseKey = "sb_publishable_DtfvA3EJm991gqezfeYNng_jlSS0I9h";
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        
+        let loadedResource = null;
+
+        async function initPage() {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get("id");
+
+            if (!id) {
+                showState("error");
+                return;
+            }
+
+            try {
+                // Fetch resource metadata from Supabase
+                const { data, error } = await supabaseClient
+                    .from("resources")
+                    .select("*")
+                    .eq("id", id)
+                    .single();
+
+                if (error || !data) {
+                    showState("error");
+                    return;
+                }
+
+                loadedResource = data;
+                renderResource(data);
+                showState("main");
+
+                // Load recommended papers
+                loadRecommendations(data);
+
+            } catch (err) {
+                console.error(err);
+                showState("error");
+            }
+        }
+
+        function showState(state) {
+            document.getElementById("loading-state").classList.add("hidden");
+            document.getElementById("error-state").classList.add("hidden");
+            document.getElementById("main-content").classList.add("hidden");
+
+            if (state === "loading") {
+                document.getElementById("loading-state").classList.remove("hidden");
+            } else if (state === "error") {
+                document.getElementById("error-state").classList.remove("hidden");
+            } else {
+                document.getElementById("main-content").classList.remove("hidden");
+            }
+        }
+
+        function renderResource(res) {
+            const isNotes = res.type === "notes";
+            
+            // Breadcrumbs
+            document.getElementById("breadcrumb-type").innerText = res.type;
+            document.getElementById("breadcrumb-title").innerText = res.subject;
+
+            // Details
+            document.getElementById("resource-badge").innerText = res.type.toUpperCase();
+            document.getElementById("resource-subject").innerText = res.subject;
+            document.getElementById("resource-title").innerText = res.title || `${res.subject} ${res.type.toUpperCase()}`;
+            
+            document.getElementById("pdf-filename").innerText = extractFilename(res.pdf_url);
+            document.getElementById("pdf-iframe").src = res.pdf_url;
+
+            // Panel
+            document.getElementById("panel-title").innerText = res.title || `${res.subject} ${res.type.toUpperCase()}`;
+            document.getElementById("panel-desc").innerText = res.description || "No description provided for this academic resource.";
+            document.getElementById("meta-college").innerText = res.college || "N/A";
+            document.getElementById("meta-branch").innerText = res.branch || "N/A";
+            document.getElementById("meta-semester").innerText = `Semester ${res.semester}`;
+            document.getElementById("meta-downloads").innerText = res.downloads || 0;
+
+            // Download Link
+            const dlBtn = document.getElementById("download-btn");
+            dlBtn.href = res.pdf_url;
+            dlBtn.addEventListener("click", async () => {
+                // Increment download count
+                await supabaseClient.from("resources")
+                    .update({ downloads: (res.downloads || 0) + 1 })
+                    .eq("id", res.id);
+            });
+
+            // AI Summary button trigger
+            const aiBtn = document.getElementById("ai-summary-btn");
+            aiBtn.addEventListener("click", () => {
+                if (window.initAISummarizer) {
+                    window.initAISummarizer(res);
+                } else {
+                    alert("AI engine is currently loading. Please wait.");
+                }
+            });
+        }
+
+        function extractFilename(url) {
+            if (!url) return "document.pdf";
+            const parts = url.split("/");
+            const rawFilename = parts[parts.length - 1];
+            // Remove prepended timestamp if uploaded via upload page
+            return rawFilename.replace(/^\d+-/, "");
+        }
+
+        async function loadRecommendations(current) {
+            const grid = document.getElementById("related-grid");
+            grid.innerHTML = `<div class="col-span-full text-center text-slate-500 text-xs py-4">Loading suggestions...</div>`;
+
+            const { data, error } = await supabaseClient
+                .from("resources")
+                .select("*")
+                .eq("status", "approved")
+                .neq("id", current.id)
+                .limit(3);
+
+            if (error || !data || data.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center text-slate-500 text-xs py-4">No related resources available.</div>`;
+                return;
+            }
+
+            grid.innerHTML = "";
+            data.forEach(r => {
+                const card = document.createElement("a");
+                card.href = `preview.html?id=${r.id}`;
+                card.className = "group bg-slate-900/40 border border-slate-800 rounded-2xl p-5 hover:border-violet-600/40 transition duration-300 card-glow flex flex-col justify-between";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-[9px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wide border border-violet-500/20 bg-violet-900/20 text-violet-400">
+                                ${r.type}
+                            </span>
+                            <span class="text-xs text-slate-500">Sem ${r.semester}</span>
+                        </div>
+                        <h4 class="text-sm font-extrabold text-white mb-2 leading-snug group-hover:text-violet-400 transition-colors">${r.subject}</h4>
+                        <p class="text-slate-400 text-xs line-clamp-2 leading-relaxed mb-4">${r.description || 'No description available.'}</p>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px] text-slate-500 border-t border-slate-800/50 pt-3">
+                        <span>🏫 ${r.college}</span>
+                        <span>⬇ ${r.downloads || 0}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        initPage();
+    </script>
+</body>
+
+</html>

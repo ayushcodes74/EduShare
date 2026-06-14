@@ -294,75 +294,22 @@
             <!-- Buttons -->
             <div class="space-y-4 mb-8">
 
-              <!-- Download -->
-              <!-- DOWNLOAD SECTION -->
-              <div class="space-y-4 mb-8">
+              <!-- AI Study Assistant -->
+              <button onclick="triggerAISummary()"
+                class="block w-full bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white py-4 rounded-2xl font-bold text-center transition-all duration-300 hover:scale-[1.02] shadow-lg shadow-purple-500/20">
+                🤖 AI Study Assistant
+              </button>
 
-                <!-- Download Button -->
-                <a href="assets/pdfs/dbms.pdf.pdf" download
-                  class="block w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 py-4 rounded-2xl font-semibold text-center transition-all duration-300 hover:scale-[1.02]">
+              <!-- Download Button -->
+              <a href="assets/pdfs/dbms.pdf.pdf" download
+                class="block w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 py-4 rounded-2xl font-semibold text-center transition-all duration-300 hover:scale-[1.02]">
+                Download Notes
+              </a>
 
-                  Download Notes
-
-                </a>
-
-                <!-- Save Resource -->
-                <button
-                  class="w-full border border-slate-700 hover:border-cyan-400 py-4 rounded-2xl font-semibold text-slate-300 hover:text-white transition-all duration-300">
-
-                  Save Resource
-
-                </button>
-
-                <!-- File Info -->
-                <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5">
-
-                  <div class="flex items-center justify-between mb-4">
-
-                    <p class="text-slate-400 text-sm">
-                      File Format
-                    </p>
-
-                    <p class="text-white font-medium">
-                      PDF
-                    </p>
-
-                  </div>
-
-                  <div class="flex items-center justify-between mb-4">
-
-                    <p class="text-slate-400 text-sm">
-                      File Size
-                    </p>
-
-                    <p class="text-white font-medium">
-                      12 MB
-                    </p>
-
-                  </div>
-
-                  <div class="flex items-center justify-between">
-
-                    <p class="text-slate-400 text-sm">
-                      Total Downloads
-                    </p>
-
-                    <p class="text-cyan-400 font-bold">
-                      1.2k+
-                    </p>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-              <!-- Save -->
+              <!-- Save Resource -->
               <button
                 class="w-full border border-slate-700 hover:border-cyan-400 py-4 rounded-2xl font-semibold text-slate-300 hover:text-white transition-all duration-300">
-
                 Save Resource
-
               </button>
 
             </div>
@@ -556,6 +503,25 @@
 
   </footer>
 
+  <!-- Supabase + PDF.js + AI summarizer -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  </script>
+  <script src="assets/js/ai-summarizer.js"></script>
+  <script>
+      function triggerAISummary() {
+          window.initAISummarizer({
+              id: null,
+              pdf_url: "assets/pdfs/dbms.pdf.pdf",
+              subject: "DBMS",
+              college: "LNCT",
+              branch: "Computer Science",
+              semester: "3"
+          });
+      }
+  </script>
 </body>
 
 </html>

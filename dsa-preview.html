@@ -258,18 +258,20 @@
                         <!-- Buttons -->
                         <div class="space-y-4 mb-8">
 
+                            <!-- AI Study Assistant -->
+                            <button onclick="triggerAISummary()"
+                                class="block w-full bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white py-4 rounded-2xl font-bold text-center transition-all duration-300 hover:scale-[1.02] shadow-lg shadow-purple-500/20">
+                                🤖 AI Study Assistant
+                            </button>
+
                             <a href="assets/pdfs/dsa.pdf.pdf" download
                                 class="block w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 py-4 rounded-2xl font-semibold text-center transition-all duration-300 hover:scale-[1.02]">
-
                                 Download Notes
-
                             </a>
 
                             <button
                                 class="w-full border border-slate-700 hover:border-cyan-400 py-4 rounded-2xl font-semibold text-slate-300 hover:text-white transition">
-
                                 Save Resource
-
                             </button>
 
                         </div>
@@ -307,6 +309,25 @@
 
     </section>
 
+    <!-- Supabase + PDF.js + AI summarizer -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
+    <script src="assets/js/ai-summarizer.js"></script>
+    <script>
+        function triggerAISummary() {
+            window.initAISummarizer({
+                id: null,
+                pdf_url: "assets/pdfs/dsa.pdf.pdf",
+                subject: "DSA",
+                college: "TIT",
+                branch: "Computer Science",
+                semester: "4"
+            });
+        }
+    </script>
 </body>
 
 </html>
