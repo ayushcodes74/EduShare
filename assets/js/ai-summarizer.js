@@ -968,7 +968,7 @@ async function generateWithGemini(tabId) {
 }`
     };
 
-    const textChunk = aiState.extractedText.slice(0, 30000);
+    const textChunk = aiState.extractedText.slice(0, 5000);
 
     const prompt = `
 ${prompts[tabId]}
@@ -990,7 +990,15 @@ Return ONLY valid JSON.
         })
     });
 
-    const result = await response.json();
+    const responseText = await response.text();
+
+console.log("Response Text:", responseText);
+
+if (!responseText || responseText.trim() === "") {
+    throw new Error("Server returned empty response");
+}
+
+const result = JSON.parse(responseText);
     console.log("Backend Response:", result);
     
 

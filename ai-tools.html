@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduShare AI Tools</title>
+
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+    body{
+        background:#050816;
+    }
+
+    .glass-card{
+        background:rgba(15,23,42,0.65);
+        backdrop-filter:blur(14px);
+        border:1px solid rgba(168,85,247,0.2);
+        transition:all .3s ease;
+    }
+
+    .glass-card:hover{
+        transform:translateY(-6px);
+        border-color:#a855f7;
+        box-shadow:0 0 30px rgba(168,85,247,.25);
+    }
+</style>
+
+
+</head>
+<body class="text-white">
+
+
+<!-- HERO -->
+<section class="relative overflow-hidden">
+
+    <div class="absolute inset-0 bg-gradient-to-r from-purple-900/30 via-fuchsia-900/20 to-cyan-900/20"></div>
+
+    <div class="max-w-7xl mx-auto px-6 py-20 relative">
+
+        <h1 class="text-5xl font-extrabold mb-5">
+            🤖 EduShare AI Tools
+        </h1>
+
+        <p class="text-slate-300 text-lg max-w-3xl">
+            Supercharge your studies with AI-powered summaries,
+            question prediction, flashcards, quizzes and revision tools.
+        </p>
+
+    </div>
+
+</section>
+
+<!-- TOOLS -->
+<section class="max-w-7xl mx-auto px-6 pb-20">
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+        <!-- Summary -->
+        <div class="glass-card rounded-3xl p-6">
+            <div class="text-5xl mb-4">🤖</div>
+
+            <h2 class="text-2xl font-bold mb-3">
+                Notes Summarizer
+            </h2>
+
+            <p class="text-slate-400 mb-6">
+                Generate short and easy-to-understand summaries from notes.
+            </p>
+
+            <button
+                onclick="openTool('summary')"
+                class="w-full bg-purple-600 hover:bg-purple-500 py-3 rounded-xl font-semibold">
+                Open Tool
+            </button>
+        </div>
+
+        <!-- Topics -->
+        <div class="glass-card rounded-3xl p-6">
+            <div class="text-5xl mb-4">📌</div>
+
+            <h2 class="text-2xl font-bold mb-3">
+                Important Topics
+            </h2>
+
+            <p class="text-slate-400 mb-6">
+                Extract the most important concepts and topics instantly.
+            </p>
+
+            <button
+                onclick="openTool('topics')"
+                class="w-full bg-fuchsia-600 hover:bg-fuchsia-500 py-3 rounded-xl font-semibold">
+                Open Tool
+            </button>
+        </div>
+
+       
+
+        <!-- Quiz -->
+        <div class="glass-card rounded-3xl p-6">
+            <div class="text-5xl mb-4">🧠</div>
+
+            <h2 class="text-2xl font-bold mb-3">
+                MCQ Quiz Generator
+            </h2>
+
+            <p class="text-slate-400 mb-6">
+                Generate practice MCQs directly from notes.
+            </p>
+
+            <button
+                onclick="openTool('quiz')"
+                class="w-full bg-green-600 hover:bg-green-500 py-3 rounded-xl font-semibold">
+                Open Tool
+            </button>
+        </div>
+
+    </div>
+
+</section>
+
+
+<script>
+
+function openTool(tool){
+
+    localStorage.setItem("selected_ai_tool", tool);
+
+    window.location.href = "browse.html";
+}
+
+</script>
+
+</body>
+</html>

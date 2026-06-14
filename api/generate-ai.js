@@ -26,7 +26,7 @@ export default async function handler(req, res) {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    model: "llama-3.3-70b-versatile",
+                    model: "llama-3.1-8b-instant",
                     messages: [
                         {
                             role: "user",
@@ -42,10 +42,13 @@ export default async function handler(req, res) {
 
         console.log("Groq Response:", JSON.stringify(data, null, 2));
 
-        if (!data.choices) {
+        if (!data.choices || !data.choices[0]?.message?.content) {
+
+            console.error("Groq Error:", data);
+
             return res.status(500).json({
                 success: false,
-                error: JSON.stringify(data)
+                error: data.error?.message || "No AI response generated"
             });
         }
 
