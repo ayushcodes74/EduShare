@@ -10,43 +10,46 @@ export default async function handler(req, res) {
 
         const { prompt } = req.body;
 
-        console.log("Prompt received:", prompt);
+        if (!prompt) {
+            return res.status(400).json({
+                success: false,
+                error: "Prompt is required"
+            });
+        }
 
         const response = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+            "https://api.groq.com/openai/v1/chat/completions",
             {
                 method: "POST",
                 headers: {
+                    "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    contents: [
+                    model: "llama-3.3-70b-versatile",
+                    messages: [
                         {
-                            parts: [
-                                {
-                                    text: prompt
-                                }
-                            ]
+                            role: "user",
+                            content: prompt
                         }
-                    ]
+                    ],
+                    temperature: 0.3
                 })
             }
         );
 
         const data = await response.json();
 
-        console.log("Gemini Response:", JSON.stringify(data, null, 2));
+        console.log("Groq Response:", JSON.stringify(data, null, 2));
 
-        if (!data.candidates) {
+        if (!data.choices) {
             return res.status(500).json({
                 success: false,
                 error: JSON.stringify(data)
             });
         }
 
-        let text =
-            data.candidates?.[0]?.content?.parts?.[0]?.text ||
-            "No response generated";
+        let text = data.choices[0].message.content;
 
         text = text
             .replace(/```json/g, "")
