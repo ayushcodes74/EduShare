@@ -992,7 +992,7 @@ Return ONLY valid JSON.
 
     const result = await response.json();
     console.log("Backend Response:", result);
-    alert(JSON.stringify(result).substring(0, 500));
+    
 
     if (!result.success) {
         throw new Error(result.error || "AI generation failed");
