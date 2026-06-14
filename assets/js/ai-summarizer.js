@@ -626,7 +626,7 @@ function injectDOM() {
 
     // Events
     document.getElementById("ai-sidebar-close").addEventListener("click", closeSidebar);
-    
+
     document.getElementById("ai-modal-cancel").addEventListener("click", closeKeyModal);
     document.getElementById("ai-modal-save").addEventListener("click", saveApiKey);
 
@@ -837,7 +837,7 @@ async function handleTabClick(tabId) {
         }
 
         // Cache not available, need to generate!
-       
+
 
         // Extract PDF text if not extracted yet
         if (!aiState.extractedText) {
@@ -985,14 +985,14 @@ Return ONLY valid JSON.
         headers: {
             "Content-Type": "application/json"
         },
-       body: JSON.stringify({
-    prompt: prompt
-})
+        body: JSON.stringify({
+            prompt
+        })
     });
 
     const result = await response.json();
     console.log("Backend Response:", result);
-alert(JSON.stringify(result).substring(0, 500));
+    alert(JSON.stringify(result).substring(0, 500));
 
     if (!result.success) {
         throw new Error(result.error || "AI generation failed");
@@ -1000,11 +1000,11 @@ alert(JSON.stringify(result).substring(0, 500));
 
     try {
         const cleanText = result.text
-        .replace(/```json/g, "")
-        .replace(/```/g, "")
-        .trim();
+            .replace(/```json/g, "")
+            .replace(/```/g, "")
+            .trim();
 
-    return JSON.parse(cleanText);
+        return JSON.parse(cleanText);
     } catch (err) {
         console.error(result.text);
         throw new Error("AI returned invalid JSON");
