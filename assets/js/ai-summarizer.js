@@ -598,9 +598,9 @@ function injectDOM() {
             <div class="ai-tab-content" id="tab-flashcards"></div>
             <div class="ai-tab-content" id="tab-revision"></div>
         </div>
-        <div class="ai-sidebar-footer">
-            <button id="ai-settings-btn" class="ai-settings-btn">⚙️ Configure Gemini API Key</button>
-        </div>
+        <div style="font-size:12px;color:#c084fc;">
+🤖 Powered by EduShare AI
+</div>
     `;
     document.body.appendChild(sidebar);
 
@@ -626,7 +626,7 @@ function injectDOM() {
 
     // Events
     document.getElementById("ai-sidebar-close").addEventListener("click", closeSidebar);
-    document.getElementById("ai-settings-btn").addEventListener("click", openKeyModal);
+    
     document.getElementById("ai-modal-cancel").addEventListener("click", closeKeyModal);
     document.getElementById("ai-modal-save").addEventListener("click", saveApiKey);
 
@@ -829,7 +829,7 @@ async function handleTabClick(tabId) {
         };
 
         const cacheCol = dbColumnMap[tabId];
-        
+
         if (aiState.resourceData && aiState.resourceData[cacheCol]) {
             // Render cached data!
             renderTabContent(tabId, JSON.parse(aiState.resourceData[cacheCol]));
@@ -837,12 +837,7 @@ async function handleTabClick(tabId) {
         }
 
         // Cache not available, need to generate!
-        const apiKey = getApiKey();
-        if (!apiKey) {
-            tabContainer.innerHTML = renderErrorCard("Gemini API Key Required", "An API Key is needed to trigger AI generation. Please click configure below.", true);
-            openKeyModal();
-            return;
-        }
+       
 
         // Extract PDF text if not extracted yet
         if (!aiState.extractedText) {
@@ -884,11 +879,11 @@ async function extractPdfText() {
     }
 
     try {
-        const pdf = await pdfjsLib.getDocument({ 
-            url: aiState.pdfUrl, 
-            cMapPacked: true 
+        const pdf = await pdfjsLib.getDocument({
+            url: aiState.pdfUrl,
+            cMapPacked: true
         }).promise;
-        
+
         let fullText = "";
         const maxPages = Math.min(pdf.numPages, 15); // Process up to 15 pages to stay within limits and ensure speed
 
@@ -908,114 +903,107 @@ async function extractPdfText() {
 
 // Gemini API Connection
 async function generateWithGemini(tabId) {
-    const apiKey = getApiKey();
-    if (!apiKey) throw new Error("API Key missing");
 
     const prompts = {
-        summary: `Analyze the following academic notes text and generate a structured review summary. Return ONLY a valid JSON object matching this schema:
+        summary: `Generate JSON:
 {
-  "summary": "A concise paragraph summarizing the entire notes document.",
-  "key_concepts": ["Concept 1", "Concept 2", "Concept 3"],
-  "important_definitions": [
-    {"concept": "Concept Name", "definition": "Brief definition description"}
+  "summary":"...",
+  "key_concepts":["..."],
+  "important_definitions":[
+    {"concept":"...","definition":"..."}
   ],
-  "exam_revision_points": ["Point 1", "Point 2", "Point 3"]
+  "exam_revision_points":["..."]
 }`,
-        quiz: `Based on the following academic notes text, generate exactly 5 multiple choice questions to test the student's knowledge. Return ONLY a valid JSON object matching this schema:
+
+        quiz: `Generate JSON:
 {
-  "questions": [
+  "questions":[
     {
-      "question": "Question text here?",
-      "options": ["Option A", "Option B", "Option C", "Option D"],
-      "answer_index": 0,
-      "explanation": "Brief explanation of why this option is correct."
+      "question":"...",
+      "options":["A","B","C","D"],
+      "answer_index":0,
+      "explanation":"..."
     }
   ]
 }`,
-        topics: `Analyze the notes text and extract the high-priority, frequently discussed topics. Return ONLY a valid JSON object matching this schema:
+
+        topics: `Generate JSON:
 {
-  "topics": [
+  "topics":[
     {
-      "topic": "Topic Name",
-      "importance": "High",
-      "description": "Brief description of the topics covered."
+      "topic":"...",
+      "importance":"High",
+      "description":"..."
     }
   ]
 }`,
-        predictions: `Analyze the notes text and predict examination questions. Return ONLY a valid JSON object matching this schema:
+
+        predictions: `Generate JSON:
 {
-  "predictions": [
+  "predictions":[
     {
-      "question": "Predicted Exam Question?",
-      "type": "Short Answer",
-      "likelihood": "Highly Likely",
-      "hint": "Brief guidelines or tips on how to structure the answer."
+      "question":"...",
+      "type":"Long",
+      "likelihood":"Highly Likely",
+      "hint":"..."
     }
   ]
 }`,
-        flashcards: `Generate question-answer flashcards summarizing the main points of this text. Return ONLY a valid JSON object matching this schema:
+
+        flashcards: `Generate JSON:
 {
-  "flashcards": [
+  "flashcards":[
     {
-      "question": "Quick question side?",
-      "answer": "Concise answer side."
+      "question":"...",
+      "answer":"..."
     }
   ]
 }`,
-        revision: `Create a 5-minute revision sheet. Focus on key formulas, quick rules, cheat sheet highlights and mnemonics. Return ONLY a valid JSON object matching this schema:
+
+        revision: `Generate JSON:
 {
-  "quick_summary": "A 2-sentence summary of the core message.",
-  "cheat_sheet_items": ["Formula or rule 1", "Formula or rule 2"],
-  "mnemonics_or_shortcuts": ["Shortcut or mnemonic to recall values"]
+  "quick_summary":"...",
+  "cheat_sheet_items":["..."],
+  "mnemonics_or_shortcuts":["..."]
 }`
     };
 
-    // Trim text to avoid token limits (around 30,000 characters)
     const textChunk = aiState.extractedText.slice(0, 30000);
-    const systemPrompt = prompts[tabId];
-    const userPrompt = `Here is the notes text:\n\n${textChunk}\n\nRemember: Return ONLY the JSON object. No markdown wrappers.`;
 
-    const requestBody = {
-        contents: [
-            {
-                parts: [
-                    {
-                        text: systemPrompt + "\n\n" + userPrompt
-                    }
-                ]
-            }
-        ],
-        generationConfig: {
-            responseMimeType: "application/json"
-        }
-    };
+    const prompt = `
+${prompts[tabId]}
 
-    const response = await fetch(`${AI_CONFIG.geminiUrl}?key=${apiKey}`, {
+NOTES:
+
+${textChunk}
+
+Return ONLY valid JSON.
+`;
+
+    const response = await fetch("/api/generate-ai", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(requestBody)
+        body: JSON.stringify({
+            prompt
+        })
     });
 
-    if (!response.ok) {
-        const errJson = await response.json().catch(() => ({}));
-        throw new Error(errJson.error?.message || `API error: ${response.statusText}`);
-    }
+    const result = await response.json();
 
-    const resJson = await response.json();
-    const resultText = resJson.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!resultText) {
-        throw new Error("Empty response from AI engine.");
+    if (!result.success) {
+        throw new Error(result.error || "AI generation failed");
     }
 
     try {
-        return JSON.parse(resultText);
-    } catch (parseErr) {
-        console.error("JSON parsing error on response: ", resultText);
-        throw new Error("Failed to parse AI response into JSON format. Retrying may fix this.");
+        return JSON.parse(result.text);
+    } catch (err) {
+        console.error(result.text);
+        throw new Error("AI returned invalid JSON");
     }
 }
+
 
 // Update Supabase Database Caching Row
 async function saveCachedData(column, data) {
@@ -1184,13 +1172,13 @@ function renderQuizQuestion() {
             
             <div class="quiz-options">
                 ${q.options.map((opt, i) => {
-                    let classes = "quiz-option";
-                    if (prevAnswer !== null) {
-                        if (i === q.answer_index) classes += " correct";
-                        else if (prevAnswer === i) classes += " incorrect";
-                    }
-                    return `<button onclick="submitQuizAnswer(${i})" class="${classes}" ${prevAnswer !== null ? "disabled" : ""}>${opt}</button>`;
-                }).join("")}
+        let classes = "quiz-option";
+        if (prevAnswer !== null) {
+            if (i === q.answer_index) classes += " correct";
+            else if (prevAnswer === i) classes += " incorrect";
+        }
+        return `<button onclick="submitQuizAnswer(${i})" class="${classes}" ${prevAnswer !== null ? "disabled" : ""}>${opt}</button>`;
+    }).join("")}
             </div>
 
             ${prevAnswer !== null ? `
@@ -1205,23 +1193,23 @@ function renderQuizQuestion() {
     `;
 }
 
-window.submitQuizAnswer = function(optIndex) {
+window.submitQuizAnswer = function (optIndex) {
     const qIndex = aiState.currentQuizQuestion;
     const q = aiState.quizQuestions[qIndex];
     aiState.selectedAnswers[qIndex] = optIndex;
-    
+
     if (optIndex === q.answer_index) {
         aiState.quizScore++;
     }
     renderQuizQuestion();
 };
 
-window.nextQuizQuestion = function() {
+window.nextQuizQuestion = function () {
     aiState.currentQuizQuestion++;
     renderQuizQuestion();
 };
 
-window.restartQuiz = function() {
+window.restartQuiz = function () {
     aiState.currentQuizQuestion = 0;
     aiState.quizScore = 0;
     aiState.selectedAnswers = new Array(aiState.quizQuestions.length).fill(null);
@@ -1269,14 +1257,14 @@ function renderFlashcard() {
     `;
 }
 
-window.prevFlashcard = function() {
+window.prevFlashcard = function () {
     if (aiState.currentFlashcard > 0) {
         aiState.currentFlashcard--;
         renderFlashcard();
     }
 };
 
-window.nextFlashcard = function() {
+window.nextFlashcard = function () {
     if (aiState.currentFlashcard + 1 < aiState.flashcardDeck.length) {
         aiState.currentFlashcard++;
         renderFlashcard();
@@ -1300,10 +1288,10 @@ function renderErrorCard(title, message, isApiKeyMissing = false) {
             <div class="ai-error-icon">⚠️</div>
             <div class="ai-loading-title" style="color: #fca5a5;">${title}</div>
             <p class="ai-error-msg">${message}</p>
-            ${isApiKeyMissing 
-                ? `<button onclick="openKeyModal()" class="ai-retry-btn">🔑 Configure Key</button>` 
-                : `<button onclick="handleTabClick(document.querySelector('.ai-tab-btn.active').getAttribute('data-tab'))" class="ai-retry-btn">🔄 Retry Process</button>`
-            }
+            ${isApiKeyMissing
+            ? `<button onclick="openKeyModal()" class="ai-retry-btn">🔑 Configure Key</button>`
+            : `<button onclick="handleTabClick(document.querySelector('.ai-tab-btn.active').getAttribute('data-tab'))" class="ai-retry-btn">🔄 Retry Process</button>`
+        }
         </div>
     `;
 }
