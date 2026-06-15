@@ -897,45 +897,53 @@ Rules:
     // ─────────────────────────────────────────────────────────────────────────
     // 5.  FILTER APPLIER
     // ─────────────────────────────────────────────────────────────────────────
+    function getFilterElement(...ids) {
+        for (const id of ids) {
+            const el = document.getElementById(id);
+            if (el) return el;
+        }
+        return null;
+    }
+
     const FilterApplier = {
         apply(filters) {
             // Subject
-            const subjectEl = document.getElementById("subject");
+            const subjectEl = getFilterElement("subject", "search-input");
             if (subjectEl && filters.subject) {
                 subjectEl.value = filters.subject;
                 subjectEl.dispatchEvent(new Event("input", { bubbles: true }));
             }
 
             // Branch
-            const branchEl = document.getElementById("branch");
+            const branchEl = getFilterElement("branch", "filter-branch");
             if (branchEl && filters.branch) {
                 branchEl.value = filters.branch;
                 branchEl.dispatchEvent(new Event("input", { bubbles: true }));
             }
 
             // Semester
-            const semEl = document.getElementById("semester");
+            const semEl = getFilterElement("semester", "filter-semester");
             if (semEl && filters.semester) {
                 semEl.value = filters.semester;
                 semEl.dispatchEvent(new Event("change", { bubbles: true }));
             }
 
             // College
-            const collegeEl = document.getElementById("college");
+            const collegeEl = getFilterElement("college", "filter-college");
             if (collegeEl && filters.college) {
                 collegeEl.value = filters.college;
                 collegeEl.dispatchEvent(new Event("input", { bubbles: true }));
             }
 
             // Type (resource-type)
-            const typeEl = document.getElementById("resource-type");
+            const typeEl = getFilterElement("resource-type", "filter-resource-type");
             if (typeEl && filters.type) {
                 typeEl.value = filters.type;
                 typeEl.dispatchEvent(new Event("change", { bubbles: true }));
             }
 
-            // Sort — only if the page exposes a sort element
-            const sortEl = document.getElementById("sort") || document.getElementById("sort-by");
+            // Sort � only if the page exposes a sort element
+            const sortEl = getFilterElement("sort", "sort-by");
             if (sortEl && filters.sort) {
                 sortEl.value = filters.sort;
                 sortEl.dispatchEvent(new Event("change", { bubbles: true }));
@@ -943,17 +951,19 @@ Rules:
         },
 
         triggerSearch() {
-            // Try the function exposed by the main page first
+            // Try the functions exposed by pages first
             if (typeof global.fetchResources === "function") {
                 global.fetchResources();
+                return;
+            }
+            if (typeof global.fetchNotes === "function") {
+                global.fetchNotes();
                 return;
             }
             // Fallback: dispatch a custom event the page can listen to
             document.dispatchEvent(new CustomEvent("vs:search"));
         },
     };
-
-    // ─────────────────────────────────────────────────────────────────────────
     // 6.  ORCHESTRATOR
     // ─────────────────────────────────────────────────────────────────────────
     const SUGGESTIONS = [
