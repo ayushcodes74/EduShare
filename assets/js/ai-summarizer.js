@@ -843,6 +843,59 @@ async function handleTabClick(tabId) {
         if (!aiState.extractedText) {
             tabContainer.innerHTML = renderSkeleton("Extracting note text...", "Loading pages with PDF.js");
             await extractPdfText();
+
+if (
+    !aiState.extractedText ||
+    aiState.extractedText.length < 200
+) {
+
+    console.log("Scanned PDF detected");
+
+    aiState.extractedText =
+        await runOCR(
+            aiState.pdfUrl
+        );
+
+    // SAVE OCR RESULT
+    await aiState.supabaseClient
+        .from("resources")
+        .update({
+            extracted_text:
+                aiState.extractedText,
+
+            extraction_method:
+                "ocr",
+
+            extracted_at:
+                new Date().toISOString()
+        })
+        .eq(
+            "id",
+            aiState.resourceId
+        );
+
+} else {
+
+    // SAVE NORMAL PDF TEXT
+    await aiState.supabaseClient
+        .from("resources")
+        .update({
+            extracted_text:
+                aiState.extractedText,
+
+            extraction_method:
+                "pdfjs",
+
+            extracted_at:
+                new Date().toISOString()
+        })
+        .eq(
+            "id",
+            aiState.resourceId
+        );
+}
+
+           
         }
 
         if (!aiState.extractedText || aiState.extractedText.length < 20) {
@@ -992,15 +1045,15 @@ Return ONLY valid JSON.
 
     const responseText = await response.text();
 
-console.log("Response Text:", responseText);
+    console.log("Response Text:", responseText);
 
-if (!responseText || responseText.trim() === "") {
-    throw new Error("Server returned empty response");
-}
+    if (!responseText || responseText.trim() === "") {
+        throw new Error("Server returned empty response");
+    }
 
-const result = JSON.parse(responseText);
+    const result = JSON.parse(responseText);
     console.log("Backend Response:", result);
-    
+
 
     if (!result.success) {
         throw new Error(result.error || "AI generation failed");
