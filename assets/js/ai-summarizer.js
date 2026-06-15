@@ -562,9 +562,12 @@ function closeKeyModal() {
 // ─────────────────────────────────────────────────────────────────────────────
 // Public entry point
 // ─────────────────────────────────────────────────────────────────────────────
-async function initializeAISummarizer(resource) {
+async function initializeAISummarizer(resource, initialTab = "summary") {
     injectAIStyles();
     openSidebar();
+
+    const validTabs = ["summary", "quiz", "topics", "predictions", "flashcards", "revision"];
+    const activeTab = validTabs.includes(initialTab) ? initialTab : "summary";
 
     aiState.resourceId   = resource.id;
     aiState.pdfUrl       = resource.pdf_url;
@@ -579,13 +582,12 @@ async function initializeAISummarizer(resource) {
     aiState.metadataLoaded   = false;
     aiState.resourceData     = null;
 
-    // Highlight summary tab
     document.querySelectorAll(".ai-tab-btn").forEach(b => b.classList.remove("active"));
     document.querySelectorAll(".ai-tab-content").forEach(c => c.classList.remove("active"));
-    document.querySelector('.ai-tab-btn[data-tab="summary"]')?.classList.add("active");
-    document.getElementById("tab-summary")?.classList.add("active");
+    document.querySelector(`.ai-tab-btn[data-tab="${activeTab}"]`)?.classList.add("active");
+    document.getElementById(`tab-${activeTab}`)?.classList.add("active");
 
-    await handleTabClick("summary");
+    await handleTabClick(activeTab);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

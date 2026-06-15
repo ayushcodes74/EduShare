@@ -830,6 +830,157 @@
         const supabaseUrl = "https://acdjioftdlsugfycsbvj.supabase.co";
         const supabaseKey = "sb_publishable_DtfvA3EJm991gqezfeYNng_jlSS0I9h";
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        const AI_TOOL_STORAGE_KEY = "selected_ai_tool";
+        const AI_TOOL_LABELS = {
+            summary: "AI Summary",
+            quiz: "Quiz Generator",
+            topics: "Important Topics",
+            predictions: "Predicted Questions",
+            flashcards: "Flashcards",
+            revision: "5-Minute Revision"
+        };
+        let activeAiTool = "summary";
+        let lastAiToolTrigger = null;
+
+        function setupSmartAiTools() {
+            const toolsSection = document.getElementById("smart-ai-tools") || [...document.querySelectorAll("section")].find(section => section.textContent.includes("Smart AI Tools"));
+            if (!toolsSection) return;
+            toolsSection.id = "smart-ai-tools";
+            const grid = toolsSection.querySelector(".grid");
+            const existingCards = [...grid.children];
+            const configs = [
+                { tool: "summary", title: "AI Summary", cardTitle: "AI Notes Summary Generator", desc: "Generate short summaries, key concepts and important exam topics.", tag: "AI Summary" },
+                { tool: "quiz", title: "Quiz Generator", cardTitle: "AI Quiz Generator", desc: "Generate MCQs and practice quizzes automatically from notes.", tag: "Quiz AI" },
+                { tool: "topics", title: "Important Topics", cardTitle: "Important Topics", desc: "Find high-priority topics and explanations for exam preparation.", tag: "Topics" },
+                { tool: "predictions", title: "Predicted Questions", cardTitle: "Predicted Questions", desc: "Generate likely exam questions with hints based on the notes.", tag: "Predictions" },
+                { tool: "flashcards", title: "Flashcards", cardTitle: "Flashcards", desc: "Turn concepts and definitions into a quick flip-card revision deck.", tag: "Flashcards" },
+                { tool: "revision", title: "5-Minute Revision", cardTitle: "5-Minute Revision", desc: "Create cheat-sheet notes, shortcuts and a fast exam recap.", tag: "Revision" }
+            ];
+
+            configs.forEach((config, index) => {
+                const card = existingCards[index] || existingCards[0].cloneNode(true);
+                if (!existingCards[index]) grid.appendChild(card);
+                card.querySelector("span[class*='uppercase']").textContent = config.tag;
+                card.querySelector("h3").textContent = config.cardTitle;
+                card.querySelector("p.text-slate-400").textContent = config.desc;
+                const buttons = card.querySelectorAll("button, a");
+                const tryButton = buttons[0];
+                const learnButton = buttons[1];
+                tryButton.textContent = "Try Now";
+                tryButton.type = "button";
+                tryButton.classList.add("ai-tool-try");
+                tryButton.dataset.tool = config.tool;
+                tryButton.dataset.title = config.title;
+                tryButton.addEventListener("click", () => openAiToolModal(config.tool, tryButton));
+                if (learnButton) {
+                    learnButton.textContent = "Learn More";
+                    if (learnButton.tagName === "A") learnButton.href = `ai-tools.html#${config.tool}`;
+                    learnButton.addEventListener("click", () => { window.location.href = `ai-tools.html#${config.tool}`; });
+                }
+            });
+        }
+
+        function buildAiToolModal() {
+            if (document.getElementById("ai-tool-modal")) return;
+            document.body.insertAdjacentHTML("beforeend", `
+                <div id="ai-tool-modal" class="fixed inset-0 z-[100] hidden items-center justify-center px-4 py-6" role="dialog" aria-modal="true" aria-labelledby="ai-tool-modal-title">
+                    <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm" data-ai-modal-close></div>
+                    <div class="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border border-emerald-500/20 bg-[#100b22] p-5 sm:p-6 shadow-2xl shadow-emerald-950/40" tabindex="-1">
+                        <div class="flex items-start justify-between gap-4 mb-5">
+                            <div><p class="text-emerald-400 text-xs font-semibold uppercase tracking-widest mb-2">Smart AI Tools</p><h3 id="ai-tool-modal-title" class="text-2xl font-bold text-white">Use AI Summary</h3></div>
+                            <button type="button" id="ai-tool-modal-close" class="rounded-xl border border-purple-900/50 px-3 py-2 text-slate-300 hover:text-white hover:border-emerald-500/50" aria-label="Close AI tool modal">X</button>
+                        </div>
+                        <div id="ai-tool-choice-view" class="grid sm:grid-cols-2 gap-4">
+                            <button type="button" id="use-existing-notes" class="rounded-2xl border border-emerald-500/25 bg-emerald-500/10 p-5 text-left hover:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"><span class="block text-sm font-bold text-white mb-2">Use Existing EduShare Notes</span><span class="block text-xs leading-relaxed text-slate-400">Browse approved notes, open any preview, and launch this AI tool automatically.</span></button>
+                            <button type="button" id="upload-own-notes" class="rounded-2xl border border-purple-500/25 bg-purple-500/10 p-5 text-left hover:border-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-400"><span class="block text-sm font-bold text-white mb-2">Upload My Own Notes</span><span class="block text-xs leading-relaxed text-slate-400">Upload a PDF now and go straight to the AI-powered preview.</span></button>
+                        </div>
+                        <form id="ai-tool-upload-form" class="hidden space-y-4" novalidate>
+                            <div class="grid sm:grid-cols-2 gap-3">
+                                <label class="block text-xs font-semibold text-slate-300">Subject<input id="ai-upload-subject" type="text" class="mt-2 w-full rounded-xl border border-purple-900/50 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-600 focus:border-emerald-500 focus:outline-none" placeholder="DBMS, Java, DSA" required></label>
+                                <label class="block text-xs font-semibold text-slate-300">College<input id="ai-upload-college" type="text" class="mt-2 w-full rounded-xl border border-purple-900/50 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-600 focus:border-emerald-500 focus:outline-none" placeholder="College name" required></label>
+                                <label class="block text-xs font-semibold text-slate-300">Branch<input id="ai-upload-branch" type="text" class="mt-2 w-full rounded-xl border border-purple-900/50 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-600 focus:border-emerald-500 focus:outline-none" placeholder="CSE, IT" required></label>
+                                <label class="block text-xs font-semibold text-slate-300">Semester<select id="ai-upload-semester" class="mt-2 w-full rounded-xl border border-purple-900/50 bg-slate-950 px-4 py-3 text-sm text-white focus:border-emerald-500 focus:outline-none" required><option value="">Select semester</option><option value="1">Semester 1</option><option value="2">Semester 2</option><option value="3">Semester 3</option><option value="4">Semester 4</option><option value="5">Semester 5</option><option value="6">Semester 6</option><option value="7">Semester 7</option><option value="8">Semester 8</option></select></label>
+                            </div>
+                            <label class="block text-xs font-semibold text-slate-300">Description<textarea id="ai-upload-description" class="mt-2 w-full rounded-xl border border-purple-900/50 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-600 focus:border-emerald-500 focus:outline-none" rows="3" placeholder="Optional topics covered"></textarea></label>
+                            <label for="ai-upload-file" class="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-emerald-500/30 bg-emerald-500/5 px-4 py-8 text-center hover:border-emerald-400"><span id="ai-upload-file-label" class="text-sm font-bold text-white">Choose a PDF file</span><span class="mt-2 text-xs text-slate-400">PDF only, max 10 MB</span><input id="ai-upload-file" type="file" accept="application/pdf,.pdf" class="sr-only" required></label>
+                            <div id="ai-upload-error" class="hidden rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200" role="alert"></div>
+                            <div id="ai-upload-status" class="hidden rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200" role="status"></div>
+                            <div class="flex flex-col-reverse sm:flex-row sm:justify-between gap-3 pt-2"><button type="button" id="ai-upload-back" class="rounded-xl border border-purple-900/50 px-5 py-3 text-sm font-semibold text-slate-300 hover:text-white">Back</button><button type="submit" id="ai-upload-submit" class="rounded-xl bg-emerald-600 px-5 py-3 text-sm font-bold text-white hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-60">Upload and Open Tool</button></div>
+                        </form>
+                    </div>
+                </div>`);
+
+            document.getElementById("use-existing-notes").addEventListener("click", () => { localStorage.setItem(AI_TOOL_STORAGE_KEY, activeAiTool); window.location.href = "browse-notes.html"; });
+            document.getElementById("upload-own-notes").addEventListener("click", showAiToolUploadView);
+            document.getElementById("ai-upload-back").addEventListener("click", showAiToolChoiceView);
+            document.getElementById("ai-tool-modal-close").addEventListener("click", closeAiToolModal);
+            document.querySelectorAll("[data-ai-modal-close]").forEach(el => el.addEventListener("click", closeAiToolModal));
+            document.getElementById("ai-upload-file").addEventListener("change", e => { document.getElementById("ai-upload-file-label").textContent = e.target.files[0]?.name || "Choose a PDF file"; });
+            document.getElementById("ai-tool-upload-form").addEventListener("submit", uploadAiToolNotes);
+            document.getElementById("ai-tool-modal").addEventListener("keydown", trapAiToolModalKeyboard);
+        }
+
+        function openAiToolModal(tool, trigger) {
+            buildAiToolModal();
+            activeAiTool = AI_TOOL_LABELS[tool] ? tool : "summary";
+            lastAiToolTrigger = trigger || document.activeElement;
+            document.getElementById("ai-tool-modal-title").textContent = `Use ${AI_TOOL_LABELS[activeAiTool]}`;
+            showAiToolChoiceView();
+            document.getElementById("ai-tool-modal").classList.remove("hidden");
+            document.getElementById("ai-tool-modal").classList.add("flex");
+            document.body.classList.add("overflow-hidden");
+            setTimeout(() => document.querySelector("#ai-tool-modal [tabindex='-1']")?.focus(), 0);
+        }
+        function closeAiToolModal() { document.getElementById("ai-tool-modal")?.classList.add("hidden"); document.getElementById("ai-tool-modal")?.classList.remove("flex"); document.body.classList.remove("overflow-hidden"); lastAiToolTrigger?.focus?.(); }
+        function clearAiToolMessages() { ["ai-upload-error", "ai-upload-status"].forEach(id => { const el = document.getElementById(id); if (el) { el.classList.add("hidden"); el.textContent = ""; } }); }
+        function showAiToolChoiceView() { clearAiToolMessages(); document.getElementById("ai-tool-upload-form")?.classList.add("hidden"); const choice = document.getElementById("ai-tool-choice-view"); choice?.classList.remove("hidden"); choice?.classList.add("grid"); }
+        function showAiToolUploadView() { clearAiToolMessages(); const choice = document.getElementById("ai-tool-choice-view"); choice?.classList.add("hidden"); choice?.classList.remove("grid"); document.getElementById("ai-tool-upload-form")?.classList.remove("hidden"); document.getElementById("ai-upload-subject")?.focus(); }
+        function showAiToolMessage(id, message) { clearAiToolMessages(); const el = document.getElementById(id); el.textContent = message; el.classList.remove("hidden"); }
+        function setAiToolUploading(isUploading) { const btn = document.getElementById("ai-upload-submit"); btn.disabled = isUploading; btn.textContent = isUploading ? "Uploading..." : "Upload and Open Tool"; }
+
+        function trapAiToolModalKeyboard(event) {
+            if (event.key === "Escape") return closeAiToolModal();
+            if (event.key !== "Tab") return;
+            const focusable = [...document.getElementById("ai-tool-modal").querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')].filter(el => el.offsetParent !== null);
+            if (!focusable.length) return;
+            const first = focusable[0], last = focusable[focusable.length - 1];
+            if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+            if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+        }
+
+        async function uploadAiToolNotes(event) {
+            event.preventDefault();
+            const subject = document.getElementById("ai-upload-subject").value.trim();
+            const college = document.getElementById("ai-upload-college").value.trim();
+            const branch = document.getElementById("ai-upload-branch").value.trim();
+            const semester = document.getElementById("ai-upload-semester").value;
+            const description = document.getElementById("ai-upload-description").value.trim();
+            const file = document.getElementById("ai-upload-file").files[0];
+            if (!subject || !college || !branch || !semester || !file) return showAiToolMessage("ai-upload-error", "Please fill all required fields and choose a PDF file.");
+            if (file.type !== "application/pdf") return showAiToolMessage("ai-upload-error", "Only PDF files are supported for AI note uploads.");
+            if (file.size > 10 * 1024 * 1024) return showAiToolMessage("ai-upload-error", "PDF size must be less than 10 MB.");
+            try {
+                setAiToolUploading(true);
+                showAiToolMessage("ai-upload-status", "Uploading PDF to EduShare...");
+                const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-");
+                const fileNameUnique = `ai-tools/${Date.now()}-${safeName}`;
+                const { error: uploadError } = await supabaseClient.storage.from("pdfs").upload(fileNameUnique, file, { contentType: "application/pdf", upsert: false });
+                if (uploadError) throw uploadError;
+                const { data: publicUrlData } = supabaseClient.storage.from("pdfs").getPublicUrl(fileNameUnique);
+                showAiToolMessage("ai-upload-status", "Creating preview resource...");
+                const { data: inserted, error: dbError } = await supabaseClient.from("resources").insert([{ title: `${subject} NOTES`, type: "notes", subject, college, branch, semester, description, pdf_url: publicUrlData.publicUrl, ai_score: 100, ai_status: "approved", status: "approved" }]).select("id").single();
+                if (dbError) throw dbError;
+                if (!inserted?.id) throw new Error("Resource was created, but no id was returned.");
+                localStorage.setItem(AI_TOOL_STORAGE_KEY, activeAiTool);
+                window.location.href = `preview.html?id=${inserted.id}`;
+            } catch (error) {
+                console.error(error);
+                showAiToolMessage("ai-upload-error", error.message || "Upload failed. Please try again.");
+                setAiToolUploading(false);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", setupSmartAiTools);
 
         // ── LATEST PAPERS ──────────────────────────────────────────────────
         // This loads from Supabase and renders the paper thumbnail cards

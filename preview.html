@@ -243,30 +243,17 @@
                 renderResource(data);
                 showState("main");
 
-                const selectedTool =
-                    localStorage.getItem("selected_ai_tool");
+                const selectedTool = localStorage.getItem("selected_ai_tool");
+                const validAiTools = ["summary", "quiz", "topics", "predictions", "flashcards", "revision"];
 
-                if (selectedTool) {
+                if (selectedTool && validAiTools.includes(selectedTool)) {
+                    localStorage.removeItem("selected_ai_tool");
 
-                    setTimeout(() => {
-
+                    setTimeout(async () => {
                         if (window.initAISummarizer) {
-
-                            window.initAISummarizer(data);
-
-                            setTimeout(() => {
-
-                                document
-                                    .querySelector(`[data-tab="${selectedTool}"]`)
-                                    ?.click();
-
-                            }, 1500);
-
+                            await window.initAISummarizer(data, selectedTool);
                         }
-
-                        localStorage.removeItem("selected_ai_tool");
-
-                    }, 1000);
+                    }, 350);
                 }
 
                 // Load recommended papers
