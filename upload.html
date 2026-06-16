@@ -791,10 +791,7 @@
             if (file.size > 50000) aiScore += 10;
 
             // AI Decision
-            const aiStatus = aiScore >= 80
-                ? "approved"
-                : "pending";
-
+            const aiStatus = "pending";
             const fileNameUnique = Date.now() + "-" + file.name;
 
             const { error: uploadError } = await supabaseClient.storage
@@ -825,7 +822,7 @@
                 ai_score: aiScore,
                 ai_status: aiStatus,
 
-                status: aiStatus
+                status: "pending"
             }]);
 
             if (dbError) {
