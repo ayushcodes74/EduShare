@@ -545,7 +545,6 @@
 
 <body>
 
-    <!-- ── HEADER ── -->
     <header>
         <div class="nav-inner">
             <div class="nav-logo">
@@ -576,7 +575,6 @@
         </div>
     </header>
 
-    <!-- ── HERO ── -->
     <section class="hero">
         <div class="hero-inner">
             <div class="hero-badge">🚀 Community Resource Sharing</div>
@@ -586,13 +584,11 @@
         </div>
     </section>
 
-    <!-- ── FORM ── -->
     <section class="form-section">
         <div class="form-wrap">
             <form id="upload-form">
                 <div class="form-grid">
 
-                    <!-- Resource Type -->
                     <div class="form-group full">
                         <label>Resource Type</label>
                         <div class="type-cards">
@@ -612,25 +608,21 @@
 
                     <hr class="form-divider">
 
-                    <!-- Subject -->
                     <div class="form-group">
                         <label>Subject Name</label>
                         <input type="text" id="subject" placeholder="e.g. DBMS, Java, DSA">
                     </div>
 
-                    <!-- College -->
                     <div class="form-group">
                         <label>College</label>
                         <input type="text" id="college" placeholder="Enter your college name">
                     </div>
 
-                    <!-- Branch -->
                     <div class="form-group">
                         <label>Branch</label>
                         <input type="text" id="branch" placeholder="e.g. Computer Science, Mechanical">
                     </div>
 
-                    <!-- Semester -->
                     <div class="form-group">
                         <label>Semester</label>
                         <select id="semester">
@@ -645,8 +637,16 @@
                             <option value="8">Semester 8</option>
                         </select>
                     </div>
+                    
+                    <div class="form-group" id="exam-type-wrapper" style="display: none;">
+                        <label>📝 Exam Type</label>
+                        <select id="exam-type">
+                            <option value="">Select Exam Type</option>
+                            <option value="midsem">Mid Semester</option>
+                            <option value="endsem">End Semester</option>
+                        </select>
+                    </div>
 
-                    <!-- Description -->
                     <div class="form-group full">
                         <label>Description <span
                                 style="color:#475569;font-weight:400;text-transform:none;">(optional)</span></label>
@@ -654,7 +654,6 @@
                             placeholder="Brief description of the content, topics covered, etc."></textarea>
                     </div>
 
-                    <!-- File Upload -->
                     <div class="form-group full">
                         <label>Upload PDF</label>
                         <input type="file" id="pdf-file" accept=".pdf,.png,.jpg,.jpeg" style="display:none;">
@@ -667,12 +666,10 @@
 
                     <hr class="form-divider">
 
-                    <!-- Messages -->
                     <div id="success-message" class="success-msg">✅ Resource uploaded successfully! It will be reviewed
                         and published shortly.</div>
                     <div id="error-message" class="error-msg"></div>
 
-                    <!-- Submit -->
                     <div class="submit-row">
                         <span class="submit-note">Uploads are reviewed before going live</span>
                         <button type="submit" class="submit-btn" id="submit-btn">
@@ -685,7 +682,6 @@
         </div>
     </section>
 
-    <!-- ── FOOTER ── -->
     <footer>
         <div class="footer-inner">
             <p class="footer-copy">© 2026 EduShare. All rights reserved.</p>
@@ -709,11 +705,20 @@
             m.style.display = m.style.display === "block" ? "none" : "block";
         });
 
-        // type card selector
+        // type card selector with Dynamic dropdown toggling built in
         function selectType(value, el) {
             document.querySelectorAll(".type-card").forEach(c => c.classList.remove("selected"));
             el.classList.add("selected");
             document.getElementById("resource-type").value = value;
+
+            // Toggle conditional dropdown visibility
+            const examTypeWrapper = document.getElementById("exam-type-wrapper");
+            if (value === "pyqs") {
+                examTypeWrapper.style.display = "block";
+            } else {
+                examTypeWrapper.style.display = "none";
+                document.getElementById("exam-type").value = "";
+            }
         }
 
         // file picker preview
@@ -739,6 +744,7 @@
             const college = document.getElementById("college").value.trim();
             const branch = document.getElementById("branch").value.trim();
             const semester = document.getElementById("semester").value;
+            const examType = document.getElementById("exam-type").value;
             const description = document.getElementById("description").value.trim();
             const file = pdfFile.files[0];
 
@@ -816,6 +822,7 @@
                 college: college,
                 branch: branch,
                 semester: semester,
+                exam_type: examType,
                 description: description,
                 pdf_url: publicUrlData.publicUrl,
 
@@ -848,6 +855,10 @@
             document.querySelectorAll(".type-card").forEach(c => c.classList.remove("selected"));
             document.querySelector('[data-value="notes"]').classList.add("selected");
             document.getElementById("resource-type").value = "notes";
+            
+            // Explicitly hide the exam wrapper drop-down back on reset
+            document.getElementById("exam-type-wrapper").style.display = "none";
+            document.getElementById("exam-type").value = "";
 
             setTimeout(() => { successMsg.style.display = "none"; }, 5000);
         });
