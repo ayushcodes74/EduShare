@@ -4,9 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduShare – Browse PYQs</title>
+    <title>EduShare – PYQ Exam Hub</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -24,6 +28,7 @@
             backdrop-filter: blur(12px);
             border-bottom: 1px solid #2d1f5e;
         }
+
         .nav-inner {
             max-width: 1280px;
             margin: 0 auto;
@@ -33,27 +38,64 @@
             justify-content: space-between;
             gap: 16px;
         }
-        .nav-logo { display: flex; align-items: center; gap: 12px; }
-        .nav-icon {
-            width: 42px; height: 42px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #a855f7, #ec4899);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 20px; flex-shrink: 0;
-        }
-        .nav-name { font-size: 16px; font-weight: 800; color: #fff; }
-        .nav-sub  { font-size: 11px; color: #a855f7; }
 
-        nav ul { display: flex; align-items: center; gap: 32px; list-style: none; }
-        nav a  { font-size: 14px; font-weight: 500; color: #a78bfa; text-decoration: none; transition: color 0.2s; }
-        nav a:hover        { color: #ddd6fe; }
-        nav a.active       { color: #f9a8d4; border-bottom: 2px solid #f9a8d4; padding-bottom: 2px; }
-        nav a.active-notes { color: #67e8f9; }
-        nav a.active-ai    { color: #86efac; }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #a78bfa, #6366f1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .nav-name {
+            font-size: 16px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .nav-sub {
+            font-size: 11px;
+            color: #a78bfa;
+        }
+
+        nav ul {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+
+        nav a {
+            font-size: 14px;
+            font-weight: 500;
+            color: #818cf8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #c7d2fe;
+        }
+
+        nav a.active-pyq {
+            color: #a78bfa;
+            border-bottom: 2px solid #a78bfa;
+            padding-bottom: 2px;
+        }
 
         .upload-btn {
             padding: 10px 20px;
-            background: linear-gradient(135deg, #a855f7, #ec4899);
+            background: linear-gradient(135deg, #a78bfa, #6366f1);
             color: #fff;
             border: none;
             border-radius: 12px;
@@ -64,57 +106,79 @@
             transition: opacity 0.2s;
             text-decoration: none;
         }
-        .upload-btn:hover { opacity: 0.88; }
+
+        .upload-btn:hover {
+            opacity: 0.88;
+        }
 
         .hamburger {
             display: none;
-            width: 40px; height: 40px;
-            background: #1e1040;
-            border: 1px solid #7c3aed;
+            width: 40px;
+            height: 40px;
+            background: #201647;
+            border: 1px solid #5b21b6;
             border-radius: 10px;
-            align-items: center; justify-content: center;
-            font-size: 20px; color: #c4b5fd;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #ddd6fe;
             cursor: pointer;
         }
 
         #mobile-menu {
             display: none;
             position: absolute;
-            top: 100%; left: 12px; right: 12px;
-            background: #130d2e;
-            border: 1px solid #7c3aed;
+            top: 100%;
+            left: 12px;
+            right: 12px;
+            background: #160e33;
+            border: 1px solid #5b21b6;
             border-radius: 20px;
             padding: 16px;
-            box-shadow: 0 20px 60px rgba(168,85,247,0.25);
+            box-shadow: 0 20px 60px rgba(167, 139, 250, 0.2);
+            z-index: 100;
         }
+
         #mobile-menu a {
-            display: flex; align-items: center; gap: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             padding: 12px 16px;
             border-radius: 12px;
-            font-size: 14px; font-weight: 500;
-            color: #c4b5fd;
+            font-size: 14px;
+            font-weight: 500;
+            color: #ddd6fe;
             text-decoration: none;
-            transition: background 0.2s;
         }
-        #mobile-menu a:hover  { background: #1e1040; }
-        #mobile-menu a.active { background: #1e1040; color: #f9a8d4; }
+
+        #mobile-menu a.active-pyq {
+            background: #201647;
+            color: #a78bfa;
+        }
 
         /* ── HERO ── */
         .hero {
-            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 40%, #ec4899 100%);
-            padding: 72px 24px 56px;
+            background: linear-gradient(135deg, #1e1145 0%, #0d0d1a 100%);
+            border-bottom: 1px solid rgba(167, 139, 250, 0.15);
+            padding: 48px 20px;
         }
-        .hero-inner { max-width: 1280px; margin: 0 auto; }
+
+        .hero-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
 
         .hero-badge {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: rgba(255,255,255,0.18);
-            border: 1px solid rgba(255,255,255,0.35);
-            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(167, 139, 250, 0.15);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            color: #ddd6fe;
             padding: 6px 16px;
             border-radius: 999px;
-            font-size: 12px; font-weight: 700;
-            letter-spacing: 0.03em;
+            font-size: 12px;
+            font-weight: 700;
             margin-bottom: 20px;
         }
 
@@ -123,285 +187,297 @@
             flex-direction: column;
             gap: 32px;
         }
+
         @media (min-width: 900px) {
-            .hero-content { flex-direction: row; align-items: flex-end; justify-content: space-between; }
+            .hero-content {
+                flex-direction: row;
+                align-items: flex-end;
+                justify-content: space-between;
+            }
         }
 
-        .hero h1 { font-size: 56px; font-weight: 900; color: #fff; line-height: 1.1; margin-bottom: 12px; }
-        .hero h1 span { color: #fde68a; }
-        .hero p  { font-size: 16px; color: rgba(255,255,255,0.8); line-height: 1.7; max-width: 480px; }
-
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; min-width: 300px; }
-        .stat-card {
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.25);
-            border-radius: 18px;
-            padding: 16px 12px;
-            text-align: center;
-            backdrop-filter: blur(8px);
+        .hero h1 {
+            font-size: 36px;
+            font-weight: 900;
+            color: #fff;
+            line-height: 1.1;
+            margin-bottom: 12px;
         }
-        .stat-num   { font-size: 28px; font-weight: 900; color: #fff; }
-        .stat-num.y { color: #fde68a; }
-        .stat-label { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 4px; }
 
-        /* ── SEARCH ── */
-        .search-section { background: #100b28; padding: 24px; }
-        .search-section-inner { max-width: 1280px; margin: 0 auto; }
-        .search-box {
-            background: #1a1040;
-            border: 1px solid #7c3aed;
-            border-radius: 20px;
-            padding: 18px 20px;
+        @media (min-width: 768px) {
+            .hero h1 { font-size: 48px; }
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+            max-width: 520px;
+        }
+
+        .stats-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            width: 100%;
+        }
+
+        @media (min-width: 900px) {
+            .stats-grid { width: 400px; }
+        }
+
+        .stat-card {
+            background: rgba(28, 18, 69, 0.4);
+            border: 1px solid rgba(167, 139, 250, 0.2);
+            border-radius: 14px;
+            padding: 12px 8px;
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 20px;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .stat-num.y { color: #f472b6; }
+
+        .stat-label {
+            font-size: 10px;
+            color: #64748b;
+            margin-top: 4px;
+            text-transform: uppercase;
+        }
+
+        /* ── SEARCH DASHBOARD ROW ── */
+        .search-section {
+            background: #090914;
+            padding: 20px 16px;
+            border-bottom: 1px solid rgba(167, 139, 250, 0.15);
+        }
+
+        .search-box {
+            max-width: 1280px;
+            margin: 0 auto;
+            background: #14102b;
+            border: 1px solid #362963;
+            border-radius: 20px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
             gap: 12px;
         }
-        @media (max-width: 800px) { .search-box { grid-template-columns: 1fr; } }
+
+        @media (min-width: 960px) {
+            .search-box {
+                display: grid;
+                grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
+                padding: 16px;
+                border-radius: 24px;
+            }
+        }
 
         .search-box input,
-        .search-box select {
+        .search-box select,
+        .search-box button {
             background: #0d0d1a;
-            border: 1px solid #7c3aed;
+            border: 1px solid #32255e;
             border-radius: 12px;
-            padding: 12px 16px;
+            padding: 12px;
             font-size: 14px;
             color: #e2e8f0;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-        .search-box input::placeholder { color: #a855f7; }
-        .search-box input:focus,
-        .search-box select:focus {
-            outline: none;
-            border-color: #c084fc;
-            box-shadow: 0 0 0 3px rgba(168,85,247,0.2);
-        }
-        .search-input-wrap { position: relative; }
-        .search-icon {
-            position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-            font-size: 16px; pointer-events: none;
-        }
-        .search-input-wrap input { padding-left: 42px; width: 100%; }
-
-        /* ── NOTES SECTION ── */
-        .notes-section { background: #0d0d1a; padding: 32px 24px 80px; }
-        .notes-inner { max-width: 1280px; margin: 0 auto; }
-
-        .results-header {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 16px;
-            flex-wrap: wrap;
-            margin-bottom: 28px;
-        }
-        .results-title { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 4px; }
-        .results-sub   { font-size: 13px; color: #a855f7; }
-        .filter-chip {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: #1a1040;
-            border: 1px solid #7c3aed;
-            padding: 8px 16px;
-            border-radius: 999px;
-            font-size: 13px;
-            color: #c4b5fd;
-            white-space: nowrap;
-        }
-        .filter-chip b { color: #fde68a; font-weight: 700; }
-
-        /* ── CARDS ── */
-        #pyq-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            width: 100%;
+            height: 46px;
+            transition: all 0.2s;
+            -webkit-appearance: none;
         }
 
-        .pyq-card {
-            border-radius: 22px;
-            padding: 22px;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.25s, box-shadow 0.25s;
-        }
-        .pyq-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.4); }
-
-        .pyq-card:nth-child(4n+1) { background: linear-gradient(135deg, #7c3aed, #a855f7); }
-        .pyq-card:nth-child(4n+2) { background: linear-gradient(135deg, #be185d, #ec4899); }
-        .pyq-card:nth-child(4n+3) { background: linear-gradient(135deg, #9333ea, #6366f1); }
-        .pyq-card:nth-child(4n+4) { background: linear-gradient(135deg, #c026d3, #a855f7); }
-
-        .card-circle {
-            position: absolute;
-            width: 100px; height: 100px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.07);
-            top: -28px; right: -28px;
-            pointer-events: none;
-        }
-        .card-circle2 {
-            position: absolute;
-            width: 60px; height: 60px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.05);
-            bottom: 20px; left: -18px;
-            pointer-events: none;
+        .search-box select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23a78bfa'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            padding-right: 36px;
         }
 
-        .card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-        .card-tag {
-            display: inline-block;
-            background: rgba(255,255,255,0.22);
-            color: #fff;
-            font-size: 10px; font-weight: 800;
-            padding: 4px 12px;
-            border-radius: 999px;
-            letter-spacing: 0.08em;
-        }
-        .card-sem {
-            font-size: 11px;
-            color: rgba(255,255,255,0.65);
-            background: rgba(0,0,0,0.2);
-            padding: 3px 10px;
-            border-radius: 999px;
-        }
+        .search-input-wrap { position: relative; width: 100%; }
+        .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+        .search-input-wrap input { padding-left: 42px; }
 
-        .card-title { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 10px; line-height: 1.25; }
-        .card-meta  { font-size: 12px; color: rgba(255,255,255,0.65); margin-bottom: 3px; display: flex; align-items: center; gap: 5px; }
-        .card-meta span { color: rgba(255,255,255,0.4); }
-
-        .card-desc {
-            font-size: 13px;
-            color: rgba(255,255,255,0.6);
-            line-height: 1.55;
-            margin: 12px 0 16px;
-            overflow: hidden;
-            max-height: 4.65em;
-        }
-
-        .card-divider { border: none; border-top: 1px solid rgba(255,255,255,0.12); margin-bottom: 16px; }
-
-        .card-btns { display: flex; gap: 10px; }
-        .btn-preview {
-            flex: 1;
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 12px;
-            padding: 10px;
-            font-size: 13px; font-weight: 700;
-            color: #fff;
+        #voice-search-btn {
+            background: linear-gradient(135deg, #a78bfa, #6366f1);
+            font-weight: 700;
             cursor: pointer;
-            transition: background 0.2s;
-            text-decoration: none;
-            text-align: center;
-        }
-        .btn-preview:hover { background: rgba(255,255,255,0.25); }
-        .btn-download {
-            flex: 1;
-            background: #fff;
             border: none;
-            border-radius: 12px;
-            padding: 10px;
-            font-size: 13px; font-weight: 800;
-            color: #7c3aed;
-            cursor: pointer;
-            transition: opacity 0.2s;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
-        .btn-download:hover { opacity: 0.88; }
 
-        /* ── EMPTY STATE ── */
-        .empty-state {
-            grid-column: 1 / -1;
-            background: #1a1040;
-            border: 1px solid #7c3aed;
-            border-radius: 22px;
-            padding: 60px 24px;
+        /* ── DASHBOARD LAYOUT BLOCKS ── */
+        .hub-section { padding: 32px 16px 80px; }
+        .hub-inner { max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+        .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+        .section-title { font-size: 20px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px; }
+
+        /* ── EXAM TYPE DUAL ROW GRID ── */
+        .exam-type-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        .exam-type-card {
+            background: linear-gradient(145deg, #1d1242, #110a2b);
+            border: 1px solid rgba(167, 139, 250, 0.2);
+            border-radius: 20px;
+            padding: 24px;
             text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
         }
-        .empty-state h3 { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 8px; }
-        .empty-state p  { font-size: 14px; color: #a855f7; }
+        .exam-type-card:hover { transform: translateY(-3px); border-color: #a78bfa; }
+        .exam-type-card.active-filter { border-color: #f472b6; box-shadow: 0 0 15px rgba(244, 114, 182, 0.2); }
+        .exam-type-card h3 { font-size: 18px; color: #fff; margin: 8px 0 4px; }
+        .exam-type-card p { font-size: 12px; color: #94a3b8; }
 
-        /* ── FOOTER ── */
-        footer {
-            background: #0d0d1a;
-            border-top: 1px solid #2d1f5e;
-            padding: 32px 24px;
+        /* ── HORIZONTAL YEARS TRAILING LINE ── */
+        .year-wrap { overflow-x: auto; scrollbar-width: none; display: flex; gap: 12px; padding-bottom: 8px; }
+        .year-wrap::-webkit-scrollbar { display: none; }
+        .year-card {
+            background: #171138;
+            border: 1px solid #312363;
+            border-radius: 14px;
+            padding: 14px 28px;
+            color: #cbd5e1;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
         }
-        .footer-inner {
-            max-width: 1280px; margin: 0 auto;
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: space-between;
-            gap: 16px;
-        }
-        @media (min-width: 640px) { .footer-inner { flex-direction: row; } }
-        .footer-copy { font-size: 13px; color: #6366f1; }
-        .footer-links { display: flex; gap: 24px; }
-        .footer-links a { font-size: 13px; color: #6366f1; text-decoration: none; transition: color 0.2s; }
-        .footer-links a:hover { color: #c4b5fd; }
+        .year-card:hover { background: #221852; color: #fff; }
+        .year-card.active-filter { background: #a78bfa; color: #110a2b; border-color: #ddd6fe; }
 
-        /* ── RESPONSIVE ── */
-        @media (max-width: 640px) {
-            .hero h1 { font-size: 36px; }
-            .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-            .stat-num { font-size: 20px; }
-            nav ul, .upload-btn { display: none; }
-            .hamburger { display: flex; }
+        /* ── SEMESTERS MATRIX ── */
+        .semester-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        @media(min-width: 480px) { .semester-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media(min-width: 1024px) { .semester-grid { grid-template-columns: repeat(8, 1fr); } }
+        .sem-card {
+            background: rgba(28, 18, 69, 0.4);
+            border: 1px solid rgba(167, 139, 250, 0.15);
+            border-radius: 16px;
+            padding: 16px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
         }
-        @media (min-width: 641px) {
-            .hamburger { display: none; }
+        .sem-card:hover { background: #1e1347; border-color: #a78bfa; }
+        .sem-card.active-filter { background: linear-gradient(135deg, #4c1d95, #6d28d9); border-color: #f472b6; }
+
+        /* ── SUBJECT CHIPS HORIZONTAL OVERFLOW ── */
+        .subject-carousel { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
+        .subject-carousel::-webkit-scrollbar { display: none; }
+        .sub-chip {
+            background: #150f30; border: 1px solid #2e1f5e; color: #94a3b8;
+            padding: 10px 18px; border-radius: 999px; cursor: pointer; white-space: nowrap;
+            font-size: 13px; font-weight: 600; flex-shrink: 0; transition: all 0.2s;
         }
+        .sub-chip:hover { background: #20154c; color: #fff; }
+        .sub-chip.active-filter { background: #a78bfa; color: #0d0d1a; border-color: #fff; }
+
+        /* ── RESULTS DISPLAY VIEW ── */
+        .search-context-block { background: rgba(26, 17, 61, 0.2); border: 1px dashed rgba(167, 139, 250, 0.4); border-radius: 24px; padding: 16px; }
+        .filter-status-bar { display: flex; justify-content: space-between; align-items: center; background: #0c0821; padding: 12px 16px; border-radius: 12px; margin-bottom: 20px; }
+        .chips-track { display: flex; gap: 8px; flex-wrap: wrap; }
+        .status-chip { background: #23164d; border: 1px solid #5b21b6; padding: 4px 12px; border-radius: 999px; font-size: 11px; color: #ddd6fe; }
+        .status-chip b { color: #f472b6; }
+        .clear-filter-txt { background: transparent; border: none; color: #ef4444; font-size: 13px; font-weight: 600; cursor: pointer; }
+
+        /* ── COMMON PAPERS CARDS GRID ── */
+        .papers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        @media(min-width: 768px) { .papers-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; } }
+
+        /* ── RESOURCE CARDS ── */
+        .pyq-card {
+            border-radius: 20px; padding: 20px; position: relative; overflow: hidden; display: flex; flex-direction: column;
+            background: linear-gradient(145deg, #18103c, #0e0924); border: 1px solid rgba(167, 139, 250, 0.15);
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s;
+        }
+        .pyq-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(167,139,250,0.15); border-color: #a78bfa; }
+        .card-glow { position: absolute; width: 100px; height: 100px; border-radius: 50%; background: rgba(167,139,250,0.03); top: -30px; right: -30px; pointer-events: none; }
+        .card-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+        .badge-type { background: rgba(167,139,250,0.2); color: #ddd6fe; font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 999px; letter-spacing: 0.05em; }
+        .badge-sem { font-size: 11px; color: #c084fc; background: rgba(0,0,0,0.3); padding: 4px 10px; border-radius: 8px; font-weight: 600; }
+        .card-title-lbl { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+        .card-meta-line { font-size: 12px; color: #94a3b8; margin-bottom: 6px; display: flex; align-items: center; gap: 4px; }
+        .card-meta-line span { color: #5b21b6; font-weight: 600; }
+        .card-actions-row { display: flex; gap: 12px; margin-top: auto; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.05); }
+        .btn-prev { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 11px; font-size: 13px; font-weight: 700; color: #fff; text-decoration: none; text-align: center; }
+        .btn-prev:hover { background: rgba(255,255,255,0.12); }
+        .btn-dl { flex: 1; background: linear-gradient(135deg, #a78bfa, #6366f1); border: none; border-radius: 12px; padding: 11px; font-size: 13px; font-weight: 800; color: #fff; cursor: pointer; }
+
+        /* ── TOP PREMIUM BADGES ── */
+        .premium-orange { border: 1px solid rgba(249,115,22,0.3) !important; }
+        .badge-orange { background: linear-gradient(135deg, #ea580c, #f97316); color: white; padding: 4px 10px; border-radius: 999px; font-size: 10px; font-weight: 800; }
+        .metric-orange { color: #f97316 !important; font-weight: bold; }
+        
+        .premium-pink { border: 1px solid rgba(244,114,182,0.3) !important; }
+        .badge-pink { background: linear-gradient(135deg, #db2777, #f472b6); color: white; padding: 4px 10px; border-radius: 999px; font-size: 10px; font-weight: 800; }
+
+        .empty-view { grid-column: 1/-1; background: #130f2b; border: 1px dashed #3a2a78; border-radius: 20px; padding: 40px; text-align: center; }
+
+        @media(max-width: 640px) { nav ul, .upload-btn { display: none; } .hamburger { display: flex; } }
     </style>
 </head>
 
 <body>
 
-    <!-- ── HEADER ── -->
     <header>
         <div class="nav-inner">
-
             <div class="nav-logo">
                 <div class="nav-icon">📄</div>
                 <div>
                     <div class="nav-name">EduShare</div>
-                    <div class="nav-sub">AI Academic Resource Ecosystem</div>
+                    <div class="nav-sub">PYQ Exam Hub</div>
                 </div>
             </div>
-
             <nav>
                 <ul>
                     <li><a href="index.html">Home</a></li>
-                    <li><a href="browse.html" class="active-notes">Notes</a></li>
-                    <li><a href="browse-pyqs.html" class="active">PYQs</a></li>
-                    <li><a href="#" class="active-ai">AI Tools</a></li>
+                    <li><a href="browse.html">Notes</a></li>
+                    <li><a href="browse-pyqs.html" class="active-pyq">PYQs</a></li>
+                    <li><a href="ai-tools.html">AI Tools</a></li>
                 </ul>
             </nav>
-
             <div style="display:flex;align-items:center;gap:10px;">
-                <a href="upload.html" class="upload-btn">+ Upload Resource</a>
-                <button id="menu-btn" class="hamburger">☰</button>
+                <a href="upload.html" class="upload-btn">+ Upload PYQ</a>
+                <button id="menu-btn" class="hamburger" aria-label="Toggle Menu">☰</button>
             </div>
-
         </div>
-
         <div id="mobile-menu">
             <a href="index.html">🏠 Home</a>
             <a href="browse.html">📚 Notes</a>
-            <a href="browse-pyqs.html" class="active">📄 PYQs</a>
-            <a href="#">🤖 AI Tools</a>
+            <a href="browse-pyqs.html" class="active-pyq">📄 PYQs</a>
+            <a href="ai-tools.html">🤖 AI Tools</a>
         </div>
     </header>
 
-    <!-- ── HERO ── -->
     <section class="hero">
         <div class="hero-inner">
-            <div class="hero-badge">📄 Previous Year Question Papers</div>
+            <div class="hero-badge">🎓 Past Examination Question Repository</div>
             <div class="hero-content">
                 <div>
                     <h1>Browse <span>PYQs</span></h1>
-                    <p>Access previous year papers, important exam questions and repeated university papers from different colleges and semesters.</p>
+                    <p>Access structured previous years question papers, sorted systematically by exam types, years, semesters, and subjects to accelerate revision cycles.</p>
                 </div>
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div id="pyq-count" class="stat-num">0</div>
-                        <div class="stat-label">Total PYQs</div>
+                        <div class="stat-label">Total Papers</div>
                     </div>
                     <div class="stat-card">
                         <div id="subjects-count" class="stat-num y">0</div>
@@ -416,167 +492,368 @@
         </div>
     </section>
 
-    <!-- ── SEARCH ── -->
     <section class="search-section">
-        <div class="search-section-inner">
-            <div class="search-box">
-                <div class="search-input-wrap">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" id="search-input" placeholder="Search PYQs, subjects, topics...">
-                </div>
-                <input type="text" id="filter-college" placeholder="🏫 College name">
-                <input type="text" id="filter-branch"  placeholder="🔬 Branch">
-                <select id="filter-semester">
-                    <option value="">📅 Semester</option>
-                    <option value="1">1st Semester</option>
-                    <option value="2">2nd Semester</option>
-                    <option value="3">3rd Semester</option>
-                    <option value="4">4th Semester</option>
-                    <option value="5">5th Semester</option>
-                    <option value="6">6th Semester</option>
-                    <option value="7">7th Semester</option>
-                    <option value="8">8th Semester</option>
-                </select>
+        <div class="search-box">
+            <div class="search-input-wrap">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="search-input" placeholder="Search subject code, name...">
             </div>
+            <input type="text" id="filter-college" placeholder="🏫 College name">
+            <input type="text" id="filter-branch" placeholder="🔬 Branch">
+            <select id="filter-semester" aria-label="Semester Filter">
+                <option value="">📅 Semester</option>
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3">Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+                <option value="7">Semester 7</option>
+                <option value="8">Semester 8</option>
+            </select>
+            <select id="filter-exam-type" aria-label="Exam Type Filter">
+                <option value="">📝 Exam Type</option>
+                <option value="midsem">Mid Semester</option>
+                <option value="endsem">End Semester</option>
+            </select>
+            <button id="voice-search-btn" type="button">🎤 Voice Search</button>
         </div>
     </section>
 
-    <!-- ── PYQ GRID ── -->
-    <section class="notes-section">
-        <div class="notes-inner">
-            <div class="results-header">
-                <div>
-                    <div class="results-title">Available PYQs</div>
-                    <div class="results-sub">Explore approved question papers</div>
+    <section class="hub-section">
+        <div class="hub-inner">
+
+            <section>
+                <div class="section-header"><h2 class="section-title">📝 Browse by Exam Type</h2></div>
+                <div class="exam-type-grid">
+                    <div class="exam-type-card" id="exam-card-midsem" onclick="selectExamType('midsem')">
+                        <div style="font-size:28px;">⏳</div>
+                        <h3>Mid Semester</h3>
+                        <p>Sessional & internal evaluation tests</p>
+                    </div>
+                    <div class="exam-type-card" id="exam-card-endsem" onclick="selectExamType('endsem')">
+                        <div style="font-size:28px;">🏆</div>
+                        <h3>End Semester</h3>
+                        <p>Final definitive university papers</p>
+                    </div>
                 </div>
-                <div class="filter-chip">📄 Filter: <b>All PYQs</b></div>
-            </div>
-            <div id="pyq-container"></div>
+            </section>
+
+            <section>
+                <div class="section-header"><h2 class="section-title">📅 Browse by Year</h2></div>
+                <div class="year-wrap" id="years-track-container">
+                    </div>
+            </section>
+
+            <section>
+                <div class="section-header"><h2 class="section-title">🗂️ Browse by Semester</h2></div>
+                <div class="semester-grid" id="semesters-container">
+                    </div>
+            </section>
+
+            <section>
+                <div class="section-header"><h2 class="section-title">🏷️ Browse by Subject</h2></div>
+                <div class="subject-carousel" id="subjects-container">
+                    </div>
+            </section>
+
+            <section id="results-wrapper-section" class="search-context-block" style="display:none;">
+                <div class="filter-status-bar">
+                    <div class="chips-track" id="active-chips-box"></div>
+                    <button class="clear-filter-txt" onclick="resetAllHubFilters()">Clear Filters ×</button>
+                </div>
+                <div class="papers-grid" id="pyqs-container"></div>
+            </section>
+
+            <section>
+                <div class="section-header"><h2 class="section-title">🔥 Most Downloaded Papers</h2></div>
+                <div class="papers-grid" id="trending-pyqs-container"></div>
+            </section>
+
+            <section>
+                <div class="section-header"><h2 class="section-title">⚡ Recently Added Papers</h2></div>
+                <div class="papers-grid" id="recent-pyqs-container"></div>
+            </section>
+
         </div>
     </section>
 
-    <!-- ── FOOTER ── -->
-    <footer>
-        <div class="footer-inner">
-            <p class="footer-copy">© 2026 EduShare. All rights reserved.</p>
-            <div class="footer-links">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms</a>
-                <a href="#">Contact</a>
-            </div>
-        </div>
+    <footer style="padding: 40px 16px 24px; border-top: 1px solid rgba(167,139,250,0.1); max-width:1280px; margin:0 auto; text-align:center; color:#475569; font-size:12px;">
+        <p>© 2026 EduShare. All rights reserved.</p>
     </footer>
 
-    <!-- ── SCRIPTS ── -->
     <script>
-        const menuBtn    = document.getElementById("menu-btn");
+        const menuBtn = document.getElementById("menu-btn");
         const mobileMenu = document.getElementById("mobile-menu");
-        menuBtn.addEventListener("click", () => {
+        menuBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
             mobileMenu.style.display = mobileMenu.style.display === "block" ? "none" : "block";
         });
+        document.addEventListener("click", () => { mobileMenu.style.display = "none"; });
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        const supabaseUrl    = "https://acdjioftdlsugfycsbvj.supabase.co";
-        const supabaseKey    = "sb_publishable_DtfvA3EJm991gqezfeYNng_jlSS0I9h";
+        const supabaseUrl = "https://acdjioftdlsugfycsbvj.supabase.co";
+        const supabaseKey = "sb_publishable_DtfvA3EJm991gqezfeYNng_jlSS0I9h";
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-        const pyqContainer   = document.getElementById("pyq-container");
-        const filterCollege  = document.getElementById("filter-college");
-        const filterBranch   = document.getElementById("filter-branch");
+        // State filter configurations variables
+        let chosenYear = "";
+        const availableYears = ["2025", "2024", "2023", "2022", "2021"];
+
+        const searchInput = document.getElementById("search-input");
+        const filterCollege = document.getElementById("filter-college");
+        const filterBranch = document.getElementById("filter-branch");
         const filterSemester = document.getElementById("filter-semester");
-        const searchInput    = document.getElementById("search-input");
+        const filterExamType = document.getElementById("filter-exam-type");
+        const resultsWrapperSection = document.getElementById("results-wrapper-section");
+        const pyqsContainer = document.getElementById("pyqs-container");
+        const activeChipsBox = document.getElementById("active-chips-box");
 
         async function loadStats() {
-            const { count: pyqCount } = await supabaseClient
-                .from("resources")
-                .select("*", { count: "exact", head: true })
+            const { count: totalCount } = await supabaseClient
+                .from("resources").select("*", { count: "exact", head: true })
                 .eq("status", "approved").eq("type", "pyqs");
 
-            const { data: subjectsData } = await supabaseClient
-                .from("resources").select("subject")
-                .eq("status", "approved").eq("type", "pyqs");
-
-            const uniqueSubjects = [...new Set(subjectsData.map(i => i.subject))];
+            const { data: subjectData } = await supabaseClient
+                .from("resources").select("subject").eq("status", "approved").eq("type", "pyqs");
+            const uniqueSubs = [...new Set(subjectData.map(s => s.subject).filter(Boolean))];
 
             const { data: downloadData } = await supabaseClient
-                .from("resources").select("downloads")
-                .eq("status", "approved").eq("type", "pyqs");
+                .from("resources").select("downloads").eq("status", "approved").eq("type", "pyqs");
+            let cumulativeDl = 0;
+            if(downloadData) downloadData.forEach(d => cumulativeDl += (d.downloads || 0));
 
-            let total = 0;
-            downloadData.forEach(i => { total += i.downloads || 0; });
-
-            document.getElementById("pyq-count").innerText      = pyqCount || 0;
-            document.getElementById("subjects-count").innerText = uniqueSubjects.length;
-            document.getElementById("downloads-count").innerText = total >= 1000 ? (total / 1000).toFixed(1) + "K" : total;
+            document.getElementById("pyq-count").innerText = totalCount || 0;
+            document.getElementById("subjects-count").innerText = uniqueSubs.length;
+            document.getElementById("downloads-count").innerText = cumulativeDl;
         }
 
         async function fetchPYQs() {
-            pyqContainer.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:#a855f7;font-size:15px;">Loading PYQs...</div>`;
+            const hasQuery = searchInput.value.trim() || filterCollege.value.trim() || 
+                             filterBranch.value.trim() || filterSemester.value || 
+                             filterExamType.value || chosenYear;
 
-            let query = supabaseClient
-                .from("resources").select("*")
-                .eq("status", "approved").eq("type", "pyqs");
+            if (hasQuery) {
+                resultsWrapperSection.style.display = "block";
+                renderActiveChips();
+            } else {
+                resultsWrapperSection.style.display = "none";
+            }
 
-            if (filterCollege.value.trim())  query = query.ilike("college", `%${filterCollege.value.trim()}%`);
-            if (filterBranch.value.trim())   query = query.ilike("branch",  `%${filterBranch.value.trim()}%`);
-            if (searchInput.value.trim())    query = query.ilike("subject", `%${searchInput.value.trim()}%`);
-            if (filterSemester.value)        query = query.eq("semester", filterSemester.value);
+            pyqsContainer.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:#a78bfa; padding:20px;">Fetching aligned materials...</div>`;
+
+            let query = supabaseClient.from("resources").select("*").eq("status", "approved").eq("type", "pyqs");
+
+            if (searchInput.value.trim()) query = query.ilike("subject", `%${searchInput.value.trim()}%`);
+            if (filterCollege.value.trim()) query = query.ilike("college", `%${filterCollege.value.trim()}%`);
+            if (filterBranch.value.trim()) query = query.ilike("branch", `%${filterBranch.value.trim()}%`);
+            if (filterSemester.value) query = query.eq("semester", filterSemester.value);
+            if (filterExamType.value) query = query.eq("exam_type", filterExamType.value);
+            if (chosenYear) query = query.ilike("description", `%${chosenYear}%`); // Description context match fallback parsing
 
             const { data, error } = await query.order("created_at", { ascending: false });
 
-            if (error) { console.error(error); return; }
-
-            if (!data.length) {
-                pyqContainer.innerHTML = `
-                    <div class="empty-state">
-                        <div style="font-size:48px;margin-bottom:16px;">📭</div>
-                        <h3>No PYQs Found</h3>
-                        <p>Try adjusting your filters or search query.</p>
-                    </div>`;
+            if (error || !data.length) {
+                pyqsContainer.innerHTML = `<div class="empty-view"><h3>No Question Papers Found</h3><p>Try resetting structural criteria hooks.</p></div>`;
+                syncHubStateVisuals();
                 return;
             }
 
-            pyqContainer.innerHTML = "";
+            pyqsContainer.innerHTML = "";
             data.forEach(r => {
-                pyqContainer.innerHTML += `
+                const labelExam = r.exam_type ? (r.exam_type === 'midsem' ? 'Mid Sem' : 'End Sem') : 'PYQ';
+                pyqsContainer.innerHTML += `
                 <div class="pyq-card">
-                    <div class="card-circle"></div>
-                    <div class="card-circle2"></div>
-
-                    <div class="card-top">
-                        <span class="card-tag">PYQ</span>
-                        <span class="card-sem">Sem ${r.semester}</span>
+                    <div class="card-glow"></div>
+                    <div class="card-header-row">
+                        <span class="badge-type">${labelExam.toUpperCase()}</span>
+                        <span class="badge-sem">Sem ${r.semester}</span>
                     </div>
+                    <div class="card-title-lbl">${r.subject}</div>
+                    <div class="card-meta-line">🏫 <span>College:</span> ${r.college}</div>
+                    <div class="card-meta-line">🔬 <span>Branch:</span> ${r.branch}</div>
+                    <hr class="card-divider" style="border:none; border-top:1px solid rgba(255,255,255,0.06); margin:12px 0;">
+                    <div class="card-actions-row">
+                        <a href="preview.html?id=${r.id}" class="btn-prev">👁 Preview</a>
+                        <button onclick="downloadPaper(${r.id}, '${r.pdf_url}')" class="btn-dl">⬇ Download</button>
+                    </div>
+                </div>`;
+            });
 
-                    <div class="card-title">${r.subject}</div>
+            syncHubStateVisuals();
+        }
 
-                    <div class="card-meta">🏫 <span>College:</span> ${r.college}</div>
-                    <div class="card-meta">🔬 <span>Branch:</span> ${r.branch}</div>
+        function renderActiveChips() {
+            activeChipsBox.innerHTML = "";
+            if (searchInput.value.trim()) activeChipsBox.innerHTML += `<span class="status-chip">Keyword: <b>${searchInput.value.trim()}</b></span>`;
+            if (filterCollege.value.trim()) activeChipsBox.innerHTML += `<span class="status-chip">College: <b>${filterCollege.value.trim()}</b></span>`;
+            if (filterBranch.value.trim()) activeChipsBox.innerHTML += `<span class="status-chip">Branch: <b>${filterBranch.value.trim()}</b></span>`;
+            if (filterSemester.value) activeChipsBox.innerHTML += `<span class="status-chip">Semester: <b>${filterSemester.value}</b></span>`;
+            if (filterExamType.value) activeChipsBox.innerHTML += `<span class="status-chip">Type: <b>${filterExamType.value}</b></span>`;
+            if (chosenYear) activeChipsBox.innerHTML += `<span class="status-chip">Year: <b>${chosenYear}</b></span>`;
+        }
 
-                    <p class="card-desc">${r.description}</p>
+        function syncHubStateVisuals() {
+            // 1. Sync Exam Type Card borders
+            document.getElementById("exam-card-midsem").classList.remove("active-filter");
+            document.getElementById("exam-card-endsem").classList.remove("active-filter");
+            if(filterExamType.value) {
+                const targetCard = document.getElementById(`exam-card-${filterExamType.value}`);
+                if(targetCard) targetCard.classList.add("active-filter");
+            }
 
-                    <hr class="card-divider">
+            // 2. Sync Year button elements
+            document.querySelectorAll(".year-card").forEach(c => {
+                c.classList.remove("active-filter");
+                if(c.getAttribute("data-year") === chosenYear) c.classList.add("active-filter");
+            });
 
-                    <div class="card-btns">
-                        <a href="preview.html?id=${r.id}" class="btn-preview">👁 Preview</a>
-                        <button onclick="downloadResource(${r.id}, '${r.pdf_url}')" class="btn-download">⬇ Download</button>
+            // 3. Sync Semester matrix highlights
+            document.querySelectorAll(".sem-card").forEach(c => {
+                c.classList.remove("active-filter");
+                if(c.getAttribute("data-sem") === filterSemester.value) c.classList.add("active-filter");
+            });
+
+            // 4. Sync Subject chips row
+            document.querySelectorAll(".sub-chip").forEach(c => {
+                c.classList.remove("active-filter");
+                if(c.getAttribute("data-sub") === searchInput.value) c.classList.add("active-filter");
+            });
+        }
+
+        function selectExamType(type) {
+            filterExamType.value = (filterExamType.value === type) ? "" : type;
+            fetchPYQs();
+            scrollToResultsView();
+        }
+
+        function buildYearTimeline() {
+            const container = document.getElementById("years-track-container");
+            container.innerHTML = "";
+            availableYears.forEach(yr => {
+                container.innerHTML += `<div class="year-card" data-year="${yr}" onclick="toggleYear('${yr}')">📅 Class of ${yr}</div>`;
+            });
+        }
+
+        function toggleYear(yr) {
+            chosenYear = (chosenYear === yr) ? "" : yr;
+            fetchPYQs();
+            scrollToResultsView();
+        }
+
+        function buildSemesterGrid() {
+            const container = document.getElementById("semesters-container");
+            container.innerHTML = "";
+            for(let i = 1; i <= 8; i++) {
+                container.innerHTML += `
+                <div class="sem-card" data-sem="${i}" onclick="toggleSemester(${i})">
+                    <div style="font-size:16px; margin-bottom:4px;">📁</div>
+                    <div style="color:#fff; font-weight:800; font-size:14px;">Sem ${i}</div>
+                </div>`;
+            }
+        }
+
+        function toggleSemester(sem) {
+            filterSemester.value = (filterSemester.value == sem) ? "" : sem;
+            fetchPYQs();
+            scrollToResultsView();
+        }
+
+        async function loadSubjectChips() {
+            const { data } = await supabaseClient.from("resources").select("subject").eq("status", "approved").eq("type", "pyqs");
+            if(!data) return;
+            const subs = [...new Set(data.map(i => i.subject).filter(Boolean))];
+            const container = document.getElementById("subjects-container");
+            container.innerHTML = "";
+            subs.forEach(s => {
+                const safeStr = s.replace(/'/g, "\\'");
+                container.innerHTML += `<button class="sub-chip" data-sub="${s}" onclick="toggleSubject('${safeStr}')">📚 ${s}</button>`;
+            });
+        }
+
+        function toggleSubject(sub) {
+            searchInput.value = (searchInput.value === sub) ? "" : sub;
+            fetchPYQs();
+            scrollToResultsView();
+        }
+
+        function resetAllHubFilters() {
+            searchInput.value = "";
+            filterCollege.value = "";
+            filterBranch.value = "";
+            filterSemester.value = "";
+            filterExamType.value = "";
+            chosenYear = "";
+            fetchPYQs();
+        }
+
+        function scrollToResultsView() {
+            window.scrollTo({ top: resultsWrapperSection.offsetTop - 80, behavior: "smooth" });
+        }
+
+        async function loadTrendingPYQs() {
+            const { data } = await supabaseClient.from("resources").select("*").eq("status", "approved").eq("type", "pyqs").order("downloads", { ascending: false }).limit(3);
+            const container = document.getElementById("trending-pyqs-container");
+            container.innerHTML = "";
+            if(!data || !data.length) { container.innerHTML = `<p style="color:#475569; font-size:13px;">No data recorded yet.</p>`; return; }
+            data.forEach(r => {
+                container.innerHTML += `
+                <div class="pyq-card premium-orange">
+                    <div class="card-glow"></div>
+                    <div class="card-header-row">
+                        <span class="badge-orange">🔥 PREMIUM POPULAR</span>
+                        <span class="badge-sem">Sem ${r.semester}</span>
+                    </div>
+                    <div class="card-title-lbl">${r.subject}</div>
+                    <div class="card-meta-line metric-orange">⚡ Downloads: ${r.downloads || 0}</div>
+                    <div class="card-meta-line">🏫 ${r.college}</div>
+                    <div class="card-actions-row">
+                        <a href="preview.html?id=${r.id}" class="btn-prev">👁 Preview</a>
+                        <button onclick="downloadPaper(${r.id}, '${r.pdf_url}')" class="btn-dl">⬇ Download</button>
                     </div>
                 </div>`;
             });
         }
 
-        async function downloadResource(id, pdfUrl) {
-            const { data, error } = await supabaseClient
-                .from("resources").select("downloads").eq("id", id).single();
-            if (error) { window.open(pdfUrl, "_blank"); return; }
-            await supabaseClient.from("resources")
-                .update({ downloads: (data.downloads || 0) + 1 }).eq("id", id);
+        async function loadRecentPYQs() {
+            const { data } = await supabaseClient.from("resources").select("*").eq("status", "approved").eq("type", "pyqs").order("created_at", { ascending: false }).limit(3);
+            const container = document.getElementById("recent-pyqs-container");
+            container.innerHTML = "";
+            if(!data || !data.length) { container.innerHTML = `<p style="color:#475569; font-size:13px;">No resources uploaded recently.</p>`; return; }
+            data.forEach(r => {
+                container.innerHTML += `
+                <div class="pyq-card premium-pink">
+                    <div class="card-glow"></div>
+                    <div class="card-header-row">
+                        <span class="badge-pink">⚡ NEWLY ADDED</span>
+                        <span class="badge-sem">Sem ${r.semester}</span>
+                    </div>
+                    <div class="card-title-lbl">${r.subject}</div>
+                    <div class="card-meta-line">🔬 ${r.branch}</div>
+                    <div class="card-meta-line">🏫 ${r.college}</div>
+                    <div class="card-actions-row">
+                        <a href="preview.html?id=${r.id}" class="btn-prev">👁 Preview</a>
+                        <button onclick="downloadPaper(${r.id}, '${r.pdf_url}')" class="btn-dl">⬇ Download</button>
+                    </div>
+                </div>`;
+            });
+        }
+
+        async function downloadPaper(id, pdfUrl) {
+            const { data } = await supabaseClient.from("resources").select("downloads").eq("id", id).single();
+            await supabaseClient.from("resources").update({ downloads: ((data ? data.downloads : 0) || 0) + 1 }).eq("id", id);
             window.open(pdfUrl, "_blank");
         }
 
+        // Initialize Accelerator Dashboard Engines 
         loadStats();
+        buildYearTimeline();
+        buildSemesterGrid();
+        loadSubjectChips();
+        loadTrendingPYQs();
+        loadRecentPYQs();
         fetchPYQs();
 
         let searchTimeout;
@@ -584,12 +861,13 @@
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(fetchPYQs, 300);
         }
-
         searchInput.addEventListener("input", triggerSearch);
         filterCollege.addEventListener("input", triggerSearch);
         filterBranch.addEventListener("input", triggerSearch);
         filterSemester.addEventListener("change", fetchPYQs);
+        filterExamType.addEventListener("change", fetchPYQs);
     </script>
-
+    <script src="assets/js/voice-search.js"></script>
+    <script>if(window.VoiceSearch) window.VoiceSearch.init();</script>
 </body>
 </html>
