@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduShare – Browse Notes</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -24,6 +28,7 @@
             backdrop-filter: blur(12px);
             border-bottom: 1px solid #261a5e;
         }
+
         .nav-inner {
             max-width: 1280px;
             margin: 0 auto;
@@ -33,23 +38,68 @@
             justify-content: space-between;
             gap: 16px;
         }
-        .nav-logo { display: flex; align-items: center; gap: 12px; }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .nav-icon {
-            width: 42px; height: 42px;
+            width: 42px;
+            height: 42px;
             border-radius: 12px;
             background: linear-gradient(135deg, #6C63FF, #3B82F6);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 20px; flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
         }
-        .nav-name { font-size: 16px; font-weight: 800; color: #fff; }
-        .nav-sub  { font-size: 11px; color: #6366f1; }
 
-        nav ul { display: flex; align-items: center; gap: 32px; list-style: none; }
-        nav a  { font-size: 14px; font-weight: 500; color: #818cf8; text-decoration: none; transition: color 0.2s; }
-        nav a:hover       { color: #c7d2fe; }
-        nav a.active      { color: #FDE68A; border-bottom: 2px solid #FDE68A; padding-bottom: 2px; }
-        nav a.active-pyq  { color: #a78bfa; }
-        nav a.active-ai   { color: #67e8f9; }
+        .nav-name {
+            font-size: 16px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .nav-sub {
+            font-size: 11px;
+            color: #6366f1;
+        }
+
+        nav ul {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+
+        nav a {
+            font-size: 14px;
+            font-weight: 500;
+            color: #818cf8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #c7d2fe;
+        }
+
+        nav a.active {
+            color: #FDE68A;
+            border-bottom: 2px solid #FDE68A;
+            padding-bottom: 2px;
+        }
+
+        nav a.active-pyq {
+            color: #a78bfa;
+        }
+
+        nav a.active-ai {
+            color: #67e8f9;
+        }
 
         .upload-btn {
             padding: 10px 20px;
@@ -64,57 +114,83 @@
             transition: opacity 0.2s;
             text-decoration: none;
         }
-        .upload-btn:hover { opacity: 0.88; }
+
+        .upload-btn:hover {
+            opacity: 0.88;
+        }
 
         .hamburger {
             display: none;
-            width: 40px; height: 40px;
+            width: 40px;
+            height: 40px;
             background: #261a5e;
             border: 1px solid #4338ca;
             border-radius: 10px;
-            align-items: center; justify-content: center;
-            font-size: 20px; color: #a5b4fc;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #a5b4fc;
             cursor: pointer;
         }
 
-        /* mobile menu */
         #mobile-menu {
             display: none;
             position: absolute;
-            top: 100%; left: 12px; right: 12px;
+            top: 100%;
+            left: 12px;
+            right: 12px;
             background: #1a1040;
             border: 1px solid #4338ca;
             border-radius: 20px;
             padding: 16px;
-            box-shadow: 0 20px 60px rgba(99,102,241,0.25);
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.25);
         }
+
         #mobile-menu a {
-            display: flex; align-items: center; gap: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             padding: 12px 16px;
             border-radius: 12px;
-            font-size: 14px; font-weight: 500;
+            font-size: 14px;
+            font-weight: 500;
             color: #a5b4fc;
             text-decoration: none;
             transition: background 0.2s;
         }
-        #mobile-menu a:hover  { background: #261a5e; }
-        #mobile-menu a.active { background: #261a5e; color: #FDE68A; }
+
+        #mobile-menu a:hover {
+            background: #261a5e;
+        }
+
+        #mobile-menu a.active {
+            background: #261a5e;
+            color: #FDE68A;
+        }
 
         /* ── HERO ── */
         .hero {
-            background: linear-gradient(135deg, #6C63FF 0%, #3B82F6 50%, #06B6D4 100%);
-            padding: 72px 24px 56px;
+            background: linear-gradient(135deg, #1e1b4b 0%, #0f0c29 100%);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.15);
+            padding: 64px 24px;
         }
-        .hero-inner { max-width: 1280px; margin: 0 auto; }
+
+        .hero-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
 
         .hero-badge {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: rgba(255,255,255,0.18);
-            border: 1px solid rgba(255,255,255,0.35);
-            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            color: #a5b4fc;
             padding: 6px 16px;
             border-radius: 999px;
-            font-size: 12px; font-weight: 700;
+            font-size: 12px;
+            font-weight: 700;
             letter-spacing: 0.03em;
             margin-bottom: 20px;
         }
@@ -124,219 +200,624 @@
             flex-direction: column;
             gap: 32px;
         }
+
         @media (min-width: 900px) {
-            .hero-content { flex-direction: row; align-items: flex-end; justify-content: space-between; }
+            .hero-content {
+                flex-direction: row;
+                align-items: flex-end;
+                justify-content: space-between;
+            }
         }
 
-        .hero h1 { font-size: 56px; font-weight: 900; color: #fff; line-height: 1.1; margin-bottom: 12px; }
-        .hero h1 span { color: #FDE68A; }
-        .hero p  { font-size: 16px; color: rgba(255,255,255,0.8); line-height: 1.7; max-width: 480px; }
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 900;
+            color: #fff;
+            line-height: 1.1;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; min-width: 300px; }
+        .hero h1 span {
+            background: linear-gradient(135deg, #6C63FF, #67e8f9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 15px;
+            color: #94a3b8;
+            line-height: 1.6;
+            max-width: 520px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            min-width: 340px;
+        }
+
         .stat-card {
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.25);
+            background: rgba(30, 20, 86, 0.4);
+            border: 1px solid rgba(67, 56, 202, 0.3);
             border-radius: 18px;
             padding: 16px 12px;
             text-align: center;
             backdrop-filter: blur(8px);
         }
-        .stat-num   { font-size: 28px; font-weight: 900; color: #fff; }
-        .stat-num.y { color: #FDE68A; }
-        .stat-label { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 4px; }
+
+        .stat-num {
+            font-size: 26px;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .stat-num.y {
+            color: #67e8f9;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
 
         /* ── SEARCH ── */
-        .search-section { background: #150e3a; padding: 24px; }
-        .search-section-inner { max-width: 1280px; margin: 0 auto; }
+        .search-section {
+            background: #0b0821;
+            padding: 28px 24px;
+            border-bottom: 1px solid rgba(67, 56, 202, 0.2);
+        }
+
+        .search-section-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
         .search-box {
-            background: #1e1456;
-            border: 1px solid #4338ca;
-            border-radius: 20px;
-            padding: 18px 20px;
+            background: #140e38;
+            border: 1px solid #31257c;
+            border-radius: 24px;
+            padding: 16px;
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
             gap: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
-        @media (max-width: 1000px) { .search-box { grid-template-columns: 1fr 1fr; } }
-        @media (max-width: 640px) { .search-box { grid-template-columns: 1fr; } }
+
+        @media (max-width: 1100px) {
+            .search-box {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .search-box {
+                grid-template-columns: 1fr;
+            }
+        }
 
         .search-box input,
-        .search-box select {
+        .search-box select,
+        .search-box button {
             background: #0f0c29;
-            border: 1px solid #4338ca;
-            border-radius: 12px;
+            border: 1px solid #2e2275;
+            border-radius: 14px;
             padding: 12px 16px;
             font-size: 14px;
             color: #e2e8f0;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            transition: all 0.2s;
         }
-        .search-box input::placeholder { color: #6366f1; }
+
+        .search-box input::placeholder {
+            color: #4b5563;
+        }
+
         .search-box input:focus,
         .search-box select:focus {
             outline: none;
-            border-color: #818cf8;
-            box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+            border-color: #6C63FF;
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
         }
-        .search-input-wrap { position: relative; }
+
+        .search-input-wrap {
+            position: relative;
+        }
+
         .search-icon {
-            position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-            font-size: 16px; pointer-events: none;
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            pointer-events: none;
         }
-        .search-input-wrap input { padding-left: 42px; width: 100%; }
 
-        /* ── NOTES SECTION ── */
-        .notes-section { background: #0f0c29; padding: 32px 24px 80px; }
-        .notes-inner { max-width: 1280px; margin: 0 auto; }
+        .search-input-wrap input {
+            padding-left: 42px;
+            width: 100%;
+        }
 
-        .results-header {
+        #voice-search-btn {
+            background: linear-gradient(135deg, #1e1b4b, #2e2275);
+            font-weight: 600;
+            cursor: pointer;
+            border-color: #4338ca;
+        }
+
+        #voice-search-btn:hover {
+            background: #4338ca;
+            color: #fff;
+        }
+
+        /* ── DISCOVERY FEED LAYOUT ── */
+        .notes-section {
+            background: #0f0c29;
+            padding: 48px 24px 80px;
+        }
+
+        .notes-inner {
+            max-width: 1280px;
+            margin: 0 auto;
             display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 16px;
-            flex-wrap: wrap;
-            margin-bottom: 28px;
+            flex-direction: column;
+            gap: 56px; /* Elegant spacing between sections */
         }
-        .results-title { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 4px; }
-        .results-sub   { font-size: 13px; color: #6366f1; }
+
+        .discovery-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .results-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ── DYNAMIC SEARCH RESULTS CONTEXT ── */
+        .search-results-context {
+            background: rgba(30, 20, 86, 0.3);
+            border: 1px dashed rgba(108, 99, 255, 0.4);
+            border-radius: 20px;
+            padding: 24px;
+        }
+
+        .filter-info-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            background: rgba(15, 12, 41, 0.6);
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .active-filters-list {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
         .filter-chip {
-            display: inline-flex; align-items: center; gap: 6px;
             background: #1e1456;
             border: 1px solid #4338ca;
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 999px;
-            font-size: 13px;
+            font-size: 12px;
             color: #a5b4fc;
-            white-space: nowrap;
         }
-        .filter-chip b { color: #FDE68A; font-weight: 700; }
 
-        /* ── CARDS ── */
-        #notes-container {
+        .filter-chip b {
+            color: #FDE68A;
+        }
+
+        .clear-filter-btn {
+            background: transparent;
+            border: none;
+            color: #ef4444;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .clear-filter-btn:hover {
+            text-decoration: underline;
+        }
+
+        /* ── COMMON GRID FOR DISCOVERY ── */
+        #notes-container,
+        #trending-grid,
+        #ai-ready-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            gap: 24px;
         }
 
+        /* ── PREMIUM CARDS GENERICS ── */
         .note-card {
-            border-radius: 22px;
-            padding: 22px;
+            border-radius: 20px;
+            padding: 24px;
             position: relative;
             overflow: hidden;
-            transition: transform 0.25s, box-shadow 0.25s;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(145deg, #1b154c, #120d36);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease, border-color 0.3s ease;
         }
-        .note-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.4); }
 
-        /* rotating card colours */
-        .note-card:nth-child(4n+1) { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
-        .note-card:nth-child(4n+2) { background: linear-gradient(135deg, #0284c7, #2563eb); }
-        .note-card:nth-child(4n+3) { background: linear-gradient(135deg, #db2777, #9333ea); }
-        .note-card:nth-child(4n+4) { background: linear-gradient(135deg, #0f766e, #0891b2); }
+        .note-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(99, 102, 241, 0.15);
+            border-color: rgba(108, 99, 255, 0.4);
+        }
 
         .card-circle {
             position: absolute;
-            width: 100px; height: 100px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.07);
-            top: -28px; right: -28px;
+            background: rgba(255, 255, 255, 0.03);
+            top: -40px;
+            right: -40px;
             pointer-events: none;
         }
+
         .card-circle2 {
             position: absolute;
-            width: 60px; height: 60px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.05);
-            bottom: 20px; left: -18px;
+            background: rgba(255, 255, 255, 0.02);
+            bottom: -20px;
+            left: -20px;
             pointer-events: none;
         }
 
-        .card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+        .card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
         .card-tag {
-            display: inline-block;
-            background: rgba(255,255,255,0.22);
-            color: #fff;
-            font-size: 10px; font-weight: 800;
+            background: rgba(108, 99, 255, 0.25);
+            color: #c7d2fe;
+            font-size: 10px;
+            font-weight: 800;
             padding: 4px 12px;
             border-radius: 999px;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.05em;
         }
+
         .card-sem {
             font-size: 11px;
-            color: rgba(255,255,255,0.65);
-            background: rgba(0,0,0,0.2);
-            padding: 3px 10px;
-            border-radius: 999px;
+            color: #a5b4fc;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-weight: 600;
         }
 
-        .card-title { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 10px; line-height: 1.25; }
+        .card-title {
+            font-size: 19px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
 
-        .card-meta { font-size: 12px; color: rgba(255,255,255,0.65); margin-bottom: 3px; display: flex; align-items: center; gap: 5px; }
-        .card-meta span { color: rgba(255,255,255,0.4); }
+        .card-meta {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-meta span {
+            color: #475569;
+        }
 
         .card-desc {
-            font-size: 13px; color: rgba(255,255,255,0.6);
-            line-height: 1.55; margin: 12px 0 16px;
-            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+            font-size: 13px;
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin: 12px 0 20px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex-grow: 1;
         }
 
-        .card-divider { border: none; border-top: 1px solid rgba(255,255,255,0.12); margin-bottom: 16px; }
+        .card-divider {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 18px;
+        }
 
-        .card-btns { display: flex; gap: 10px; }
+        .card-btns {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+        }
+
         .btn-preview {
             flex: 1;
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 12px;
-            padding: 10px;
-            font-size: 13px; font-weight: 700;
+            padding: 11px;
+            font-size: 13px;
+            font-weight: 700;
             color: #fff;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
             text-decoration: none;
             text-align: center;
         }
-        .btn-preview:hover { background: rgba(255,255,255,0.25); }
+
+        .btn-preview:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
         .btn-download {
             flex: 1;
-            background: #fff;
+            background: linear-gradient(135deg, #6C63FF, #3B82F6);
             border: none;
             border-radius: 12px;
-            padding: 10px;
-            font-size: 13px; font-weight: 800;
-            color: #4f46e5;
+            padding: 11px;
+            font-size: 13px;
+            font-weight: 800;
+            color: #fff;
             cursor: pointer;
-            transition: opacity 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .btn-download:hover { opacity: 0.88; }
+
+        .btn-download:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.4);
+        }
+
+        /* ── SPECIFIC PREMIUM THEMING ── */
+        /* 2. Premium Continue Studying Card Styling */
+        #continue-card {
+            max-width: 420px;
+        }
+        .continue-premium-card {
+            background: linear-gradient(145deg, #251662, #110935) !important;
+            border: 1px solid rgba(253, 230, 138, 0.2) !important;
+            box-shadow: 0 10px 30px rgba(253, 230, 138, 0.03);
+        }
+        .continue-badge {
+            background: rgba(253, 230, 138, 0.15) !important;
+            color: #FDE68A !important;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 999px;
+            letter-spacing: 0.05em;
+        }
+        .continue-cta-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 14px;
+            font-size: 12px;
+            color: #FDE68A;
+            font-weight: 700;
+        }
+        .continue-indicator {
+            font-size: 11px;
+            color: #a5b4fc;
+            background: rgba(255,255,255,0.05);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: normal;
+        }
+
+        /* 3. Modern Glassmorphism Semester Section */
+        .semester-card {
+            background: rgba(30, 20, 86, 0.4);
+            border: 1px solid rgba(67, 56, 202, 0.3);
+            border-radius: 18px;
+            padding: 20px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        .semester-card:hover {
+            transform: translateY(-6px);
+            background: rgba(38, 26, 94, 0.8);
+            border-color: #6C63FF;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4), 0 0 15px rgba(108, 99, 255, 0.2);
+        }
+        .semester-card.active-sem-filter {
+            background: linear-gradient(135deg, #2e2275, #4338ca);
+            border-color: #FDE68A;
+            box-shadow: 0 0 20px rgba(253, 230, 138, 0.2);
+        }
+        .semester-card-title {
+            color: #fff;
+            font-weight: 800;
+            font-size: 15px;
+        }
+        .semester-card-sub {
+            color: #818cf8;
+            font-size: 11px;
+        }
+
+        /* 4. Spotify-inspired Subject Chips Section */
+        .subject-carousel-wrap {
+            position: relative;
+        }
+        #subject-grid {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 4px 4px 12px 4px;
+            scrollbar-width: none; /* Hide scrollbar for Firefox */
+        }
+        #subject-grid::-webkit-scrollbar {
+            display: none; /* Hide scrollbar for Chrome/Safari */
+        }
+        .subject-chip {
+            background: #181145;
+            border: 1px solid #2d217a;
+            color: #94a3b8;
+            padding: 10px 20px;
+            border-radius: 999px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            font-size: 13px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .subject-chip:hover {
+            background: #251a68;
+            border-color: #6C63FF;
+            color: #fff;
+            transform: scale(1.03);
+        }
+        .subject-chip.active-sub-filter {
+            background: #6C63FF;
+            border-color: #818cf8;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+        }
+
+        /* 5. Premium Trending Card Styling */
+        .trending-premium-card {
+            border: 1px solid rgba(249, 115, 22, 0.25) !important;
+        }
+        .trending-premium-card:hover {
+            border-color: rgba(249, 115, 22, 0.6) !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(249, 115, 2Orange, 0.1) !important;
+        }
+        .trending-badge {
+            background: linear-gradient(135deg, #ea580c, #f97316);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+        }
+        .trending-metric {
+            font-weight: 700 !important;
+            color: #f97316 !important;
+        }
+
+        /* 6. Premium AI Ready Notes Styling */
+        .ai-premium-card {
+            border: 1px solid rgba(6, 182, 212, 0.2) !important;
+            background: linear-gradient(145deg, #0e1e38, #0b0f24) !important;
+        }
+        .ai-premium-card:hover {
+            border-color: #06B6D4 !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(6, 182, 212, 0.2) !important;
+        }
+        .ai-badge {
+            background: linear-gradient(135deg, #7c3aed, #06B6D4);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+        }
+        .ai-capability-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(6, 182, 212, 0.1);
+            color: #06B6D4;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
 
         /* ── EMPTY STATE ── */
         .empty-state {
             grid-column: 1 / -1;
-            background: #1e1456;
-            border: 1px solid #4338ca;
+            background: #140e38;
+            border: 1px dashed #31257c;
             border-radius: 22px;
-            padding: 60px 24px;
+            padding: 48px 24px;
             text-align: center;
         }
-        .empty-state h3 { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 8px; }
-        .empty-state p  { font-size: 14px; color: #6366f1; }
 
-        /* ── RESPONSIVE ── */
-        @media (max-width: 640px) {
-            .hero h1 { font-size: 36px; }
-            .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-            .stat-num { font-size: 20px; }
-            nav ul, .upload-btn { display: none; }
-            .hamburger { display: flex; }
+        .empty-state h3 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 6px;
         }
+
+        .empty-state p {
+            font-size: 14px;
+            color: #818cf8;
+        }
+
+        /* ── RESPONSIVE FIXES ── */
+        @media (max-width: 640px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+                min-width: 100%;
+            }
+
+            nav ul,
+            .upload-btn {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+            
+            .notes-section {
+                padding: 32px 16px;
+            }
+        }
+
         @media (min-width: 641px) {
-            .hamburger { display: none; }
+            .hamburger {
+                display: none;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- ── HEADER ── -->
     <header>
         <div class="nav-inner">
 
@@ -348,7 +829,7 @@
                 </div>
             </div>
 
-            <nav class="hidden md:block">
+            <nav>
                 <ul>
                     <li><a href="index.html">Home</a></li>
                     <li><a href="browse.html" class="active">Notes</a></li>
@@ -372,7 +853,6 @@
         </div>
     </header>
 
-    <!-- ── HERO ── -->
     <section class="hero">
         <div class="hero-inner">
             <div class="hero-badge">📚 Academic Resource Library</div>
@@ -399,7 +879,6 @@
         </div>
     </section>
 
-    <!-- ── SEARCH ── -->
     <section class="search-section">
         <div class="search-section-inner">
             <div class="search-box">
@@ -431,23 +910,72 @@
         </div>
     </section>
 
-    <!-- ── NOTES GRID ── -->
     <section class="notes-section">
         <div class="notes-inner">
-            <div class="results-header">
-                <div>
-                    <div class="results-title">Available Notes</div>
-                    <div class="results-sub">Explore approved academic resources</div>
+            
+            <section id="continue-studying-section" style="display:none;">
+                <div class="discovery-section-header">
+                    <h2 class="results-title">⚡ Continue Studying</h2>
                 </div>
-                <div class="filter-chip">📚 Filter: <b>All Notes</b></div>
-            </div>
-            <div id="notes-container"></div>
+                <div id="continue-card"></div>
+            </section>
+
+            <section id="browse-semester-section">
+                <div class="discovery-section-header">
+                    <h2 class="results-title">📅 Browse by Semester</h2>
+                </div>
+                <div id="semester-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;">
+                </div>
+            </section>
+
+            <section id="browse-subject-section">
+                <div class="discovery-section-header">
+                    <h2 class="results-title">🏷️ Browse by Subject</h2>
+                </div>
+                <div class="subject-carousel-wrap">
+                    <div id="subject-grid"></div>
+                </div>
+            </section>
+
+            <section id="search-results-section" class="search-results-context" style="display:none;">
+                <div class="filter-info-bar">
+                    <div class="active-filters-list" id="active-filters-display">
+                        </div>
+                    <button class="clear-filter-btn" onclick="resetAllFilters()">Clear Filters ×</button>
+                </div>
+                <div id="notes-container"></div>
+            </section>
+
+            <section id="trending-notes-section">
+                <div class="discovery-section-header">
+                    <h2 class="results-title">🔥 Trending Notes</h2>
+                </div>
+                <div id="trending-grid"></div>
+            </section>
+
+            <section id="ai-notes-section">
+                <div class="discovery-section-header">
+                    <h2 class="results-title">🤖 AI Ready Notes</h2>
+                </div>
+                <div id="ai-ready-grid"></div>
+            </section>
+
         </div>
     </section>
 
-    <!-- ── SCRIPTS ── -->
+    <footer style="padding: 64px 24px 32px; border-t: 1px solid rgba(99,102,241,0.1); max-width:1280px; margin:0 auto;">
+        <div style="display:flex; flex-direction:column; gap:16px; align-items:center; justify-content:space-between;" class="md:flex-row">
+            <p style="color:#475569; font-size:12px;">© 2026 EduShare. All rights reserved.</p>
+            <div style="display:flex; gap:20px; font-size:12px;">
+                <a href="#" style="color:#475569; text-decoration:none; transition:color 0.2s;" onmouseover="this.style.color='#818cf8'" onmouseout="this.style.color='#475569'">Privacy Policy</a>
+                <a href="#" style="color:#475569; text-decoration:none; transition:color 0.2s;" onmouseover="this.style.color='#818cf8'" onmouseout="this.style.color='#475569'">Terms & Conditions</a>
+                <a href="#" style="color:#475569; text-decoration:none; transition:color 0.2s;" onmouseover="this.style.color='#818cf8'" onmouseout="this.style.color='#475569'">Contact</a>
+            </div>
+        </div>
+    </footer>
+
     <script>
-        const menuBtn    = document.getElementById("menu-btn");
+        const menuBtn = document.getElementById("menu-btn");
         const mobileMenu = document.getElementById("mobile-menu");
         menuBtn.addEventListener("click", () => {
             mobileMenu.style.display = mobileMenu.style.display === "block" ? "none" : "block";
@@ -456,16 +984,18 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        const supabaseUrl  = "https://acdjioftdlsugfycsbvj.supabase.co";
-        const supabaseKey  = "sb_publishable_DtfvA3EJm991gqezfeYNng_jlSS0I9h";
+        const supabaseUrl = "https://acdjioftdlsugfycsbvj.supabase.co";
+        const supabaseKey = "sb_publishable_DtfvA3EJm991gqezfeYNng_jlSS0I9h";
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
         const notesContainer = document.getElementById("notes-container");
-        const filterCollege  = document.getElementById("filter-college");
-        const filterBranch   = document.getElementById("filter-branch");
+        const filterCollege = document.getElementById("filter-college");
+        const filterBranch = document.getElementById("filter-branch");
         const filterSemester = document.getElementById("filter-semester");
         const filterResourceType = document.getElementById("filter-resource-type");
-        const searchInput    = document.getElementById("search-input");
+        const searchInput = document.getElementById("search-input");
+        const searchResultsSection = document.getElementById("search-results-section");
+        const activeFiltersDisplay = document.getElementById("active-filters-display");
 
         async function loadStats() {
             const { count: notesCount } = await supabaseClient
@@ -486,22 +1016,32 @@
             let total = 0;
             downloadData.forEach(i => { total += i.downloads || 0; });
 
-            document.getElementById("notes-count").innerText     = notesCount || 0;
-            document.getElementById("subjects-count").innerText  = uniqueSubjects.length;
-            document.getElementById("downloads-count").innerText = total >= 1000 ? (total/1000).toFixed(1) + "K" : total;
+            document.getElementById("notes-count").innerText = notesCount || 0;
+            document.getElementById("subjects-count").innerText = uniqueSubjects.length;
+            document.getElementById("downloads-count").innerText = total >= 1000 ? (total / 1000).toFixed(1) + "K" : total;
         }
 
         async function fetchNotes() {
-            notesContainer.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:#6366f1;font-size:15px;">Loading notes...</div>`;
+            // Determine if active filtering parameters exist
+            const hasQuery = searchInput.value.trim() || filterCollege.value.trim() || filterBranch.value.trim() || filterSemester.value || filterResourceType.value !== 'notes';
+            
+            if (hasQuery) {
+                searchResultsSection.style.display = "block";
+                updateFilterInfoBar();
+            } else {
+                searchResultsSection.style.display = "none";
+            }
+
+            notesContainer.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:#6366f1;font-size:15px;">Loading discovery items...</div>`;
 
             let query = supabaseClient
                 .from("resources").select("*")
                 .eq("status", "approved").eq("type", filterResourceType.value || "notes");
 
-            if (filterCollege.value.trim())  query = query.ilike("college", `%${filterCollege.value.trim()}%`);
-            if (filterBranch.value.trim())   query = query.ilike("branch",  `%${filterBranch.value.trim()}%`);
-            if (searchInput.value.trim())    query = query.ilike("subject", `%${searchInput.value.trim()}%`);
-            if (filterSemester.value)        query = query.eq("semester", filterSemester.value);
+            if (filterCollege.value.trim()) query = query.ilike("college", `%${filterCollege.value.trim()}%`);
+            if (filterBranch.value.trim()) query = query.ilike("branch", `%${filterBranch.value.trim()}%`);
+            if (searchInput.value.trim()) query = query.ilike("subject", `%${searchInput.value.trim()}%`);
+            if (filterSemester.value) query = query.eq("semester", filterSemester.value);
 
             const { data, error } = await query.order("created_at", { ascending: false });
 
@@ -511,8 +1051,8 @@
                 notesContainer.innerHTML = `
                     <div class="empty-state">
                         <div style="font-size:48px;margin-bottom:16px;">📭</div>
-                        <h3>No Notes Found</h3>
-                        <p>Try adjusting your filters or search query.</p>
+                        <h3>No Materials Formed</h3>
+                        <p>We couldn't find matching options. Try refining your filters or search keywords.</p>
                     </div>`;
                 return;
             }
@@ -534,7 +1074,7 @@
                     <div class="card-meta">🏫 <span>College:</span> ${r.college}</div>
                     <div class="card-meta">🔬 <span>Branch:</span> ${r.branch}</div>
 
-                    <p class="card-desc">${r.description}</p>
+                    <p class="card-desc">${r.description || 'No description provided.'}</p>
 
                     <hr class="card-divider">
 
@@ -544,6 +1084,251 @@
                     </div>
                 </div>`;
             });
+            
+            // Sync highlight styling for Semester/Subject choices
+            syncActiveFiltersVisuals();
+        }
+
+        function updateFilterInfoBar() {
+            activeFiltersDisplay.innerHTML = "";
+            if (searchInput.value.trim()) {
+                activeFiltersDisplay.innerHTML += `<span class="filter-chip">Query: <b>${searchInput.value.trim()}</b></span>`;
+            }
+            if (filterSemester.value) {
+                activeFiltersDisplay.innerHTML += `<span class="filter-chip">Semester: <b>${filterSemester.value}</b></span>`;
+            }
+            if (filterCollege.value.trim()) {
+                activeFiltersDisplay.innerHTML += `<span class="filter-chip">College: <b>${filterCollege.value.trim()}</b></span>`;
+            }
+            if (filterBranch.value.trim()) {
+                activeFiltersDisplay.innerHTML += `<span class="filter-chip">Branch: <b>${filterBranch.value.trim()}</b></span>`;
+            }
+        }
+
+        function syncActiveFiltersVisuals() {
+            // Reset Semesters Active Class
+            document.querySelectorAll(".semester-card").forEach(card => {
+                card.classList.remove("active-sem-filter");
+            });
+            if (filterSemester.value) {
+                const targetSem = document.getElementById(`sem-card-${filterSemester.value}`);
+                if (targetSem) targetSem.classList.add("active-sem-filter");
+            }
+
+            // Reset Subject Chips Active Class
+            document.querySelectorAll(".subject-chip").forEach(chip => {
+                chip.classList.remove("active-sub-filter");
+                if (searchInput.value && chip.getAttribute("data-subject") === searchInput.value) {
+                    chip.classList.add("active-sub-filter");
+                }
+            });
+        }
+
+        function resetAllFilters() {
+            searchInput.value = "";
+            filterCollege.value = "";
+            filterBranch.value = "";
+            filterSemester.value = "";
+            filterResourceType.value = "notes";
+            fetchNotes();
+        }
+
+        function renderSemesterCards() {
+            const container = document.getElementById("semester-grid");
+            container.innerHTML = "";
+
+            for (let i = 1; i <= 8; i++) {
+                container.innerHTML += `
+                    <div class="semester-card" id="sem-card-${i}" onclick="applySemester(${i})">
+                        <div style="font-size:20px; margin-bottom:2px;">📁</div>
+                        <div class="semester-card-title">Semester ${i}</div>
+                        <div class="semester-card-sub">Explore Feed</div>
+                    </div>`;
+            }
+        }
+
+        function applySemester(semester) {
+            if (filterSemester.value == semester) {
+                filterSemester.value = ""; // Toggle option
+            } else {
+                filterSemester.value = semester;
+            }
+            fetchNotes();
+            scrollToSearchResults();
+        }
+
+        async function loadSubjects() {
+            const { data, error } = await supabaseClient
+                .from("resources")
+                .select("subject")
+                .eq("status", "approved")
+                .eq("type", "notes");
+
+            if (error) { console.error(error); return; }
+
+            const subjects = [...new Set(data.map(item => item.subject).filter(Boolean))];
+            const container = document.getElementById("subject-grid");
+            container.innerHTML = "";
+
+            subjects.forEach(subject => {
+                const safeSubject = subject.replace(/'/g, "\\'");
+                container.innerHTML += `
+                    <button class="subject-chip" data-subject="${subject}" onclick="applySubject('${safeSubject}')">
+                        📚 ${subject}
+                    </button>`;
+            });
+        }
+
+        function applySubject(subject) {
+            if (searchInput.value === subject) {
+                searchInput.value = ""; // Toggle out
+            } else {
+                searchInput.value = subject;
+            }
+            fetchNotes();
+            scrollToSearchResults();
+        }
+
+        function scrollToSearchResults() {
+            window.scrollTo({
+                top: document.getElementById("search-results-section").offsetTop - 120,
+                behavior: "smooth"
+            });
+        }
+
+        async function loadTrendingNotes() {
+            const { data, error } = await supabaseClient
+                .from("resources")
+                .select("*")
+                .eq("status", "approved")
+                .eq("type", "notes")
+                .order("downloads", { ascending: false })
+                .limit(6);
+
+            if (error) { console.error(error); return; }
+            renderTrendingNotes(data);
+        }
+
+        function renderTrendingNotes(resources) {
+            const container = document.getElementById("trending-grid");
+            container.innerHTML = "";
+
+            if (!resources.length) {
+                container.innerHTML = `<p style="color:#6366f1; padding:10px;">No trending updates yet.</p>`;
+                return;
+            }
+
+            resources.forEach(resource => {
+                container.innerHTML += `
+                <div class="note-card trending-premium-card">
+                    <div class="card-circle"></div>
+                    <div class="card-circle2"></div>
+
+                    <div class="card-top">
+                        <span class="trending-badge">🔥 TRENDING</span>
+                        <span class="card-sem">Sem ${resource.semester}</span>
+                    </div>
+
+                    <div class="card-title">${resource.subject}</div>
+
+                    <div class="card-meta trending-metric">
+                        ⚡ Downloads: ${resource.downloads || 0}
+                    </div>
+                    <div class="card-meta">🏫 ${resource.college}</div>
+
+                    <p class="card-desc">${resource.description || "Top reviewed learning material assets."}</p>
+
+                    <hr class="card-divider">
+
+                    <div class="card-btns">
+                        <a href="preview.html?id=${resource.id}" class="btn-preview">👁 Preview</a>
+                        <button onclick="downloadResource(${resource.id}, '${resource.pdf_url}')" class="btn-download">⬇ Download</button>
+                    </div>
+                </div>`;
+            });
+        }
+
+        async function loadAiReadyNotes() {
+            const { data, error } = await supabaseClient
+                .from("resources")
+                .select("*")
+                .eq("status", "approved")
+                .eq("type", "notes")
+                .not("extracted_text", "is", null)
+                .limit(6);
+
+            if (error) { console.error(error); return; }
+            renderAiReadyNotes(data);
+        }
+
+        function renderAiReadyNotes(resources) {
+            const container = document.getElementById("ai-ready-grid");
+            container.innerHTML = "";
+
+            if (!resources.length) {
+                container.innerHTML = `<p style="color:#6366f1; padding:10px;">No AI Ready files configured yet.</p>`;
+                return;
+            }
+
+            resources.forEach(resource => {
+                container.innerHTML += `
+                <div class="note-card ai-premium-card">
+                    <div class="card-circle"></div>
+                    <div class="card-circle2"></div>
+
+                    <div class="card-top">
+                        <span class="ai-badge">🤖 AI READY</span>
+                        <span class="card-sem">Sem ${resource.semester}</span>
+                    </div>
+
+                    <div class="card-title">${resource.subject}</div>
+
+                    <div style="margin-bottom: 12px;">
+                        <span class="ai-capability-tag">🧠 OCR Processed</span>
+                        <span class="ai-capability-tag" style="background:rgba(124,58,237,0.1); color:#a78bfa;">⚡ Context Vectorized</span>
+                    </div>
+                    <div class="card-meta">🏫 ${resource.college}</div>
+
+                    <p class="card-desc">${resource.description || "Enhanced structuring enabled for automated summaries."}</p>
+
+                    <hr class="card-divider">
+
+                    <div class="card-btns">
+                        <a href="preview.html?id=${resource.id}" class="btn-preview">👁 Preview</a>
+                        <button onclick="downloadResource(${resource.id}, '${resource.pdf_url}')" class="btn-download">⬇ Download</button>
+                    </div>
+                </div>`;
+            });
+        }
+
+        function renderContinueStudying() {
+            const data = JSON.parse(localStorage.getItem("continue_studying"));
+            if (!data) return;
+
+            const section = document.getElementById("continue-studying-section");
+            const container = document.getElementById("continue-card");
+            section.style.display = "block";
+
+            container.innerHTML = `
+                <div class="note-card continue-premium-card">
+                    <div class="card-circle"></div>
+                    <div class="card-circle2"></div>
+
+                    <div class="card-top">
+                        <span class="continue-badge">⏱️ RESUME LEARNING</span>
+                        <span class="card-sem">Sem ${data.semester}</span>
+                    </div>
+
+                    <div class="card-title" style="margin-bottom:4px;">${data.title || data.subject}</div>
+                    <div class="card-meta">📚 Core Topic: ${data.subject}</div>
+
+                    <div class="continue-cta-bar">
+                        <a href="preview.html?id=${data.id}" style="color:#FDE68A; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+                            Continue Reading →
+                        </a>
+                        <span class="continue-indicator">Last Opened Recents</span>
+                    </div>
+                </div>`;
         }
 
         async function downloadResource(id, pdfUrl) {
@@ -555,8 +1340,14 @@
             window.open(pdfUrl, "_blank");
         }
 
+        // Initial setup load triggers
         loadStats();
         fetchNotes();
+        renderContinueStudying();
+        renderSemesterCards();
+        loadSubjects();
+        loadTrendingNotes();
+        loadAiReadyNotes();
 
         let searchTimeout;
         function triggerSearch() {

@@ -280,6 +280,7 @@
         }
 
         function renderResource(res) {
+        saveContinueStudying(res);
             const isNotes = res.type === "notes";
 
             // Breadcrumbs
@@ -371,6 +372,21 @@
                 grid.appendChild(card);
             });
         }
+        function saveContinueStudying(resource) {
+    const continueStudy = {
+        id: resource.id,
+        title: resource.title,
+        subject: resource.subject,
+        semester: resource.semester,
+        pdf_url: resource.pdf_url,
+        openedAt: Date.now()
+    };
+
+    localStorage.setItem(
+        "continue_studying",
+        JSON.stringify(continueStudy)
+    );
+}
 
         initPage();
     </script>
