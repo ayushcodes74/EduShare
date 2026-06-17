@@ -490,15 +490,23 @@
                 .from("pdfs").getPublicUrl(fileNameUnique);
 
             // AI Tool Upload Flow — private, never enters admin approval
+            console.log({
+  title: subject || file.name,
+  type: "notes",
+  subject: subject || null,
+  pdf_url: publicUrlData.publicUrl,
+  status: "ai_review"
+});
             const { data: inserted, error: dbError } = await supabaseClient
                 .from("resources")
+                
                 .insert([{
                     title: subject || file.name.replace(/\.[^/.]+$/, ""),
                     type: "notes",
                     subject: subject || null,
                     pdf_url: publicUrlData.publicUrl,
                     status: "ai_review",
-                    is_reviewed: false
+                    
                 }])
                 .select()
                 .single();
