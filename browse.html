@@ -144,6 +144,7 @@
             border-radius: 20px;
             padding: 16px;
             box-shadow: 0 20px 60px rgba(99, 102, 241, 0.25);
+            z-index: 100;
         }
 
         #mobile-menu a {
@@ -172,7 +173,7 @@
         .hero {
             background: linear-gradient(135deg, #1e1b4b 0%, #0f0c29 100%);
             border-bottom: 1px solid rgba(99, 102, 241, 0.15);
-            padding: 64px 24px;
+            padding: 48px 20px;
         }
 
         .hero-inner {
@@ -210,12 +211,16 @@
         }
 
         .hero h1 {
-            font-size: 48px;
+            font-size: 36px;
             font-weight: 900;
             color: #fff;
             line-height: 1.1;
             margin-bottom: 12px;
             letter-spacing: -0.02em;
+        }
+
+        @media (min-width: 768px) {
+            .hero h1 { font-size: 48px; }
         }
 
         .hero h1 span {
@@ -225,7 +230,7 @@
         }
 
         .hero p {
-            font-size: 15px;
+            font-size: 14px;
             color: #94a3b8;
             line-height: 1.6;
             max-width: 520px;
@@ -234,23 +239,31 @@
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            min-width: 340px;
+            gap: 12px;
+            width: 100%;
+        }
+
+        @media (min-width: 900px) {
+            .stats-grid { width: 400px; }
         }
 
         .stat-card {
             background: rgba(30, 20, 86, 0.4);
             border: 1px solid rgba(67, 56, 202, 0.3);
-            border-radius: 18px;
-            padding: 16px 12px;
+            border-radius: 14px;
+            padding: 12px 8px;
             text-align: center;
             backdrop-filter: blur(8px);
         }
 
         .stat-num {
-            font-size: 26px;
+            font-size: 20px;
             font-weight: 900;
             color: #fff;
+        }
+
+        @media (min-width: 768px) {
+            .stat-num { font-size: 26px; }
         }
 
         .stat-num.y {
@@ -258,17 +271,17 @@
         }
 
         .stat-label {
-            font-size: 11px;
+            font-size: 10px;
             color: #64748b;
             margin-top: 4px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
 
-        /* ── SEARCH ── */
+        /* ── SEARCH MOBILE OPTIMIZED FIX ── */
         .search-section {
             background: #0b0821;
-            padding: 28px 24px;
+            padding: 20px 16px;
             border-bottom: 1px solid rgba(67, 56, 202, 0.2);
         }
 
@@ -280,23 +293,21 @@
         .search-box {
             background: #140e38;
             border: 1px solid #31257c;
-            border-radius: 24px;
-            padding: 16px;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
+            border-radius: 20px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
             gap: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        @media (max-width: 1100px) {
+        /* Upgrades back seamlessly to high density layouts on desktops */
+        @media (min-width: 960px) {
             .search-box {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .search-box {
-                grid-template-columns: 1fr;
+                display: grid;
+                grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
+                padding: 16px;
+                border-radius: 24px;
             }
         }
 
@@ -305,11 +316,23 @@
         .search-box button {
             background: #0f0c29;
             border: 1px solid #2e2275;
-            border-radius: 14px;
-            padding: 12px 16px;
+            border-radius: 12px;
+            padding: 12px;
             font-size: 14px;
             color: #e2e8f0;
+            width: 100%;
+            height: 46px; /* Explicit uniform baseline touch heights */
             transition: all 0.2s;
+            -webkit-appearance: none; /* Clear mobile styling override */
+        }
+
+        /* Native fix for dropdown arrows on custom styled mobile elements */
+        .search-box select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23818cf8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            padding-right: 36px;
         }
 
         .search-box input::placeholder {
@@ -325,6 +348,7 @@
 
         .search-input-wrap {
             position: relative;
+            width: 100%;
         }
 
         .search-icon {
@@ -338,25 +362,32 @@
 
         .search-input-wrap input {
             padding-left: 42px;
-            width: 100%;
         }
 
         #voice-search-btn {
-            background: linear-gradient(135deg, #1e1b4b, #2e2275);
-            font-weight: 600;
+            background: linear-gradient(135deg, #6C63FF, #3B82F6);
+            font-weight: 700;
             cursor: pointer;
-            border-color: #4338ca;
+            border: none;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         #voice-search-btn:hover {
-            background: #4338ca;
-            color: #fff;
+            opacity: 0.9;
         }
 
         /* ── DISCOVERY FEED LAYOUT ── */
         .notes-section {
             background: #0f0c29;
-            padding: 48px 24px 80px;
+            padding: 32px 16px 80px;
+        }
+
+        @media (min-width: 768px) {
+            .notes-section { padding: 48px 24px 80px; }
         }
 
         .notes-inner {
@@ -364,18 +395,22 @@
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 56px; /* Elegant spacing between sections */
+            gap: 40px;
+        }
+
+        @media (min-width: 768px) {
+            .notes-inner { gap: 56px; }
         }
 
         .discovery-section-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .results-title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 800;
             color: #fff;
             letter-spacing: -0.01em;
@@ -384,23 +419,39 @@
             gap: 8px;
         }
 
+        @media (min-width: 768px) {
+            .results-title { font-size: 24px; }
+        }
+
         /* ── DYNAMIC SEARCH RESULTS CONTEXT ── */
         .search-results-context {
             background: rgba(30, 20, 86, 0.3);
             border: 1px dashed rgba(108, 99, 255, 0.4);
             border-radius: 20px;
-            padding: 24px;
+            padding: 16px;
+        }
+
+        @media (min-width: 768px) {
+            .search-results-context { padding: 24px; }
         }
 
         .filter-info-bar {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 12px;
             margin-bottom: 20px;
             background: rgba(15, 12, 41, 0.6);
-            padding: 10px 16px;
+            padding: 12px;
             border-radius: 12px;
             border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        @media (min-width: 640px) {
+            .filter-info-bar {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
         }
 
         .active-filters-list {
@@ -412,9 +463,9 @@
         .filter-chip {
             background: #1e1456;
             border: 1px solid #4338ca;
-            padding: 6px 14px;
+            padding: 6px 12px;
             border-radius: 999px;
-            font-size: 12px;
+            font-size: 11px;
             color: #a5b4fc;
         }
 
@@ -429,6 +480,7 @@
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
+            text-align: left;
         }
 
         .clear-filter-btn:hover {
@@ -440,14 +492,21 @@
         #trending-grid,
         #ai-ready-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
         }
 
-        /* ── PREMIUM CARDS GENERICS ── */
+        @media (min-width: 768px) {
+            #notes-container, #trending-grid, #ai-ready-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 24px;
+            }
+        }
+
+        /* ── CARDS BASE ── */
         .note-card {
             border-radius: 20px;
-            padding: 24px;
+            padding: 20px;
             position: relative;
             overflow: hidden;
             display: flex;
@@ -455,6 +514,10 @@
             background: linear-gradient(145deg, #1b154c, #120d36);
             border: 1px solid rgba(99, 102, 241, 0.15);
             transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        @media (min-width: 768px) {
+            .note-card { padding: 24px; }
         }
 
         .note-card:hover {
@@ -512,11 +575,15 @@
         }
 
         .card-title {
-            font-size: 19px;
+            font-size: 18px;
             font-weight: 800;
             color: #fff;
             margin-bottom: 12px;
             line-height: 1.3;
+        }
+
+        @media (min-width: 768px) {
+            .card-title { font-size: 20px; }
         }
 
         .card-meta {
@@ -573,7 +640,6 @@
 
         .btn-preview:hover {
             background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
         }
 
         .btn-download {
@@ -586,23 +652,21 @@
             font-weight: 800;
             color: #fff;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s;
         }
 
         .btn-download:hover {
             transform: scale(1.02);
-            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.4);
         }
 
-        /* ── SPECIFIC PREMIUM THEMING ── */
-        /* 2. Premium Continue Studying Card Styling */
+        /* ── CONTINUE STUDYING SPECIAL ACCENT ── */
         #continue-card {
+            width: 100%;
             max-width: 420px;
         }
         .continue-premium-card {
             background: linear-gradient(145deg, #251662, #110935) !important;
             border: 1px solid rgba(253, 230, 138, 0.2) !important;
-            box-shadow: 0 10px 30px rgba(253, 230, 138, 0.03);
         }
         .continue-badge {
             background: rgba(253, 230, 138, 0.15) !important;
@@ -611,7 +675,6 @@
             font-weight: 800;
             padding: 4px 10px;
             border-radius: 999px;
-            letter-spacing: 0.05em;
         }
         .continue-cta-bar {
             display: flex;
@@ -628,65 +691,85 @@
             background: rgba(255,255,255,0.05);
             padding: 2px 8px;
             border-radius: 6px;
-            font-weight: normal;
         }
 
-        /* 3. Modern Glassmorphism Semester Section */
+        /* ── SEMESTERS GRID LAYER ── */
+        .semester-grid-layout {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        @media (min-width: 480px) {
+            .semester-grid-layout { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (min-width: 768px) {
+            .semester-grid-layout { grid-template-columns: repeat(4, 1fr); }
+        }
+        @media (min-width: 1024px) {
+            .semester-grid-layout { grid-template-columns: repeat(8, 1fr); }
+        }
+
         .semester-card {
             background: rgba(30, 20, 86, 0.4);
             border: 1px solid rgba(67, 56, 202, 0.3);
-            border-radius: 18px;
-            padding: 20px 16px;
+            border-radius: 16px;
+            padding: 16px 12px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             backdrop-filter: blur(10px);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 4px;
         }
         .semester-card:hover {
-            transform: translateY(-6px);
+            transform: translateY(-4px);
             background: rgba(38, 26, 94, 0.8);
             border-color: #6C63FF;
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4), 0 0 15px rgba(108, 99, 255, 0.2);
         }
         .semester-card.active-sem-filter {
             background: linear-gradient(135deg, #2e2275, #4338ca);
             border-color: #FDE68A;
-            box-shadow: 0 0 20px rgba(253, 230, 138, 0.2);
+            box-shadow: 0 0 15px rgba(253, 230, 138, 0.2);
         }
         .semester-card-title {
             color: #fff;
             font-weight: 800;
-            font-size: 15px;
+            font-size: 14px;
         }
         .semester-card-sub {
             color: #818cf8;
             font-size: 11px;
+            margin-top: 2px;
         }
 
-        /* 4. Spotify-inspired Subject Chips Section */
+        /* ── SUBJECT CHIPS ROW OVERFLOW CAROUSEL ── */
         .subject-carousel-wrap {
             position: relative;
+            margin: 0 -16px;
+            padding: 0 16px;
+            overflow: hidden;
         }
+        @media (min-width: 768px) {
+            .subject-carousel-wrap { margin: 0; padding: 0; }
+        }
+
         #subject-grid {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             overflow-x: auto;
-            padding: 4px 4px 12px 4px;
-            scrollbar-width: none; /* Hide scrollbar for Firefox */
+            padding-bottom: 12px;
+            scrollbar-width: none;
         }
         #subject-grid::-webkit-scrollbar {
-            display: none; /* Hide scrollbar for Chrome/Safari */
+            display: none;
         }
         .subject-chip {
             background: #181145;
             border: 1px solid #2d217a;
             color: #94a3b8;
-            padding: 10px 20px;
+            padding: 10px 18px;
             border-radius: 999px;
             cursor: pointer;
             white-space: nowrap;
@@ -699,54 +782,42 @@
             background: #251a68;
             border-color: #6C63FF;
             color: #fff;
-            transform: scale(1.03);
         }
         .subject-chip.active-sub-filter {
             background: #6C63FF;
             border-color: #818cf8;
             color: #fff;
-            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
         }
 
-        /* 5. Premium Trending Card Styling */
+        /* ── TRENDING ── */
         .trending-premium-card {
             border: 1px solid rgba(249, 115, 22, 0.25) !important;
-        }
-        .trending-premium-card:hover {
-            border-color: rgba(249, 115, 22, 0.6) !important;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(249, 115, 2Orange, 0.1) !important;
         }
         .trending-badge {
             background: linear-gradient(135deg, #ea580c, #f97316);
             color: white;
-            padding: 4px 12px;
+            padding: 4px 10px;
             border-radius: 999px;
             font-size: 10px;
             font-weight: 800;
-            letter-spacing: 0.05em;
         }
         .trending-metric {
             font-weight: 700 !important;
             color: #f97316 !important;
         }
 
-        /* 6. Premium AI Ready Notes Styling */
+        /* ── AI ACCENTS ── */
         .ai-premium-card {
             border: 1px solid rgba(6, 182, 212, 0.2) !important;
             background: linear-gradient(145deg, #0e1e38, #0b0f24) !important;
         }
-        .ai-premium-card:hover {
-            border-color: #06B6D4 !important;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(6, 182, 212, 0.2) !important;
-        }
         .ai-badge {
             background: linear-gradient(135deg, #7c3aed, #06B6D4);
             color: white;
-            padding: 4px 12px;
+            padding: 4px 10px;
             border-radius: 999px;
             font-size: 10px;
             font-weight: 800;
-            letter-spacing: 0.05em;
         }
         .ai-capability-tag {
             display: inline-flex;
@@ -769,49 +840,19 @@
             padding: 48px 24px;
             text-align: center;
         }
-
         .empty-state h3 {
             font-size: 20px;
-            font-weight: 800;
             color: #fff;
             margin-bottom: 6px;
         }
-
         .empty-state p {
-            font-size: 14px;
             color: #818cf8;
+            font-size: 14px;
         }
 
-        /* ── RESPONSIVE FIXES ── */
         @media (max-width: 640px) {
-            .hero h1 {
-                font-size: 32px;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-                gap: 8px;
-                min-width: 100%;
-            }
-
-            nav ul,
-            .upload-btn {
-                display: none;
-            }
-
-            .hamburger {
-                display: flex;
-            }
-            
-            .notes-section {
-                padding: 32px 16px;
-            }
-        }
-
-        @media (min-width: 641px) {
-            .hamburger {
-                display: none;
-            }
+            nav ul, .upload-btn { display: none; }
+            .hamburger { display: flex; }
         }
     </style>
 </head>
@@ -820,7 +861,6 @@
 
     <header>
         <div class="nav-inner">
-
             <div class="nav-logo">
                 <div class="nav-icon">📚</div>
                 <div>
@@ -828,7 +868,6 @@
                     <div class="nav-sub">AI Academic Resource Ecosystem</div>
                 </div>
             </div>
-
             <nav>
                 <ul>
                     <li><a href="index.html">Home</a></li>
@@ -837,14 +876,11 @@
                     <li><a href="ai-tools.html" class="active-ai">AI Tools</a></li>
                 </ul>
             </nav>
-
             <div style="display:flex;align-items:center;gap:10px;">
                 <a href="upload.html" class="upload-btn">+ Upload Resource</a>
-                <button id="menu-btn" class="hamburger">☰</button>
+                <button id="menu-btn" class="hamburger" aria-label="Toggle Menu">☰</button>
             </div>
-
         </div>
-
         <div id="mobile-menu">
             <a href="index.html">🏠 Home</a>
             <a href="browse.html" class="active">📚 Notes</a>
@@ -888,7 +924,7 @@
                 </div>
                 <input type="text" id="filter-college" placeholder="🏫 College name">
                 <input type="text" id="filter-branch" placeholder="🔬 Branch">
-                <select id="filter-semester">
+                <select id="filter-semester" aria-label="Select Semester">
                     <option value="">📅 Semester</option>
                     <option value="1">1st Semester</option>
                     <option value="2">2nd Semester</option>
@@ -903,8 +939,8 @@
                     <option value="notes">Notes</option>
                     <option value="pyqs">PYQs</option>
                 </select>
-                <button id="voice-search-btn" type="button" aria-label="Start voice search">
-                    Voice Search
+                <button id="voice-search-btn" type="button">
+                    🎤 Voice Search
                 </button>
             </div>
         </div>
@@ -924,8 +960,7 @@
                 <div class="discovery-section-header">
                     <h2 class="results-title">📅 Browse by Semester</h2>
                 </div>
-                <div id="semester-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;">
-                </div>
+                <div id="semester-grid" class="semester-grid-layout"></div>
             </section>
 
             <section id="browse-subject-section">
@@ -939,8 +974,7 @@
 
             <section id="search-results-section" class="search-results-context" style="display:none;">
                 <div class="filter-info-bar">
-                    <div class="active-filters-list" id="active-filters-display">
-                        </div>
+                    <div class="active-filters-list" id="active-filters-display"></div>
                     <button class="clear-filter-btn" onclick="resetAllFilters()">Clear Filters ×</button>
                 </div>
                 <div id="notes-container"></div>
@@ -963,23 +997,26 @@
         </div>
     </section>
 
-    <footer style="padding: 64px 24px 32px; border-t: 1px solid rgba(99,102,241,0.1); max-width:1280px; margin:0 auto;">
-        <div style="display:flex; flex-direction:column; gap:16px; align-items:center; justify-content:space-between;" class="md:flex-row">
+    <footer style="padding: 40px 16px 24px; border-top: 1px solid rgba(99,102,241,0.1); max-width:1280px; margin:0 auto;">
+        <div style="display:flex; flex-direction:column; gap:16px; align-items:center; justify-content:space-between;" id="footer-row">
             <p style="color:#475569; font-size:12px;">© 2026 EduShare. All rights reserved.</p>
             <div style="display:flex; gap:20px; font-size:12px;">
-                <a href="#" style="color:#475569; text-decoration:none; transition:color 0.2s;" onmouseover="this.style.color='#818cf8'" onmouseout="this.style.color='#475569'">Privacy Policy</a>
-                <a href="#" style="color:#475569; text-decoration:none; transition:color 0.2s;" onmouseover="this.style.color='#818cf8'" onmouseout="this.style.color='#475569'">Terms & Conditions</a>
-                <a href="#" style="color:#475569; text-decoration:none; transition:color 0.2s;" onmouseover="this.style.color='#818cf8'" onmouseout="this.style.color='#475569'">Contact</a>
+                <a href="#" style="color:#475569; text-decoration:none;">Privacy Policy</a>
+                <a href="#" style="color:#475569; text-decoration:none;">Terms & Conditions</a>
+                <a href="#" style="color:#475569; text-decoration:none;">Contact</a>
             </div>
         </div>
     </footer>
 
     <script>
+        // Hamburger Menu Handle Toggle Action
         const menuBtn = document.getElementById("menu-btn");
         const mobileMenu = document.getElementById("mobile-menu");
-        menuBtn.addEventListener("click", () => {
+        menuBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
             mobileMenu.style.display = mobileMenu.style.display === "block" ? "none" : "block";
         });
+        document.addEventListener("click", () => { mobileMenu.style.display = "none"; });
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -999,8 +1036,7 @@
 
         async function loadStats() {
             const { count: notesCount } = await supabaseClient
-                .from("resources")
-                .select("*", { count: "exact", head: true })
+                .from("resources").select("*", { count: "exact", head: true })
                 .eq("status", "approved").eq("type", "notes");
 
             const { data: subjectsData } = await supabaseClient
@@ -1022,7 +1058,6 @@
         }
 
         async function fetchNotes() {
-            // Determine if active filtering parameters exist
             const hasQuery = searchInput.value.trim() || filterCollege.value.trim() || filterBranch.value.trim() || filterSemester.value || filterResourceType.value !== 'notes';
             
             if (hasQuery) {
@@ -1050,9 +1085,9 @@
             if (!data.length) {
                 notesContainer.innerHTML = `
                     <div class="empty-state">
-                        <div style="font-size:48px;margin-bottom:16px;">📭</div>
-                        <h3>No Materials Formed</h3>
-                        <p>We couldn't find matching options. Try refining your filters or search keywords.</p>
+                        <div style="font-size:36px;margin-bottom:12px;">📭</div>
+                        <h3>No Materials Found</h3>
+                        <p>Refine your search fields or reset active tags.</p>
                     </div>`;
                 return;
             }
@@ -1063,21 +1098,15 @@
                 <div class="note-card">
                     <div class="card-circle"></div>
                     <div class="card-circle2"></div>
-
                     <div class="card-top">
                         <span class="card-tag">${(r.type || "notes").toUpperCase()}</span>
                         <span class="card-sem">Sem ${r.semester}</span>
                     </div>
-
                     <div class="card-title">${r.subject}</div>
-
                     <div class="card-meta">🏫 <span>College:</span> ${r.college}</div>
                     <div class="card-meta">🔬 <span>Branch:</span> ${r.branch}</div>
-
                     <p class="card-desc">${r.description || 'No description provided.'}</p>
-
                     <hr class="card-divider">
-
                     <div class="card-btns">
                         <a href="preview.html?id=${r.id}" class="btn-preview">👁 Preview</a>
                         <button onclick="downloadResource(${r.id}, '${r.pdf_url}')" class="btn-download">⬇ Download</button>
@@ -1085,37 +1114,23 @@
                 </div>`;
             });
             
-            // Sync highlight styling for Semester/Subject choices
             syncActiveFiltersVisuals();
         }
 
         function updateFilterInfoBar() {
             activeFiltersDisplay.innerHTML = "";
-            if (searchInput.value.trim()) {
-                activeFiltersDisplay.innerHTML += `<span class="filter-chip">Query: <b>${searchInput.value.trim()}</b></span>`;
-            }
-            if (filterSemester.value) {
-                activeFiltersDisplay.innerHTML += `<span class="filter-chip">Semester: <b>${filterSemester.value}</b></span>`;
-            }
-            if (filterCollege.value.trim()) {
-                activeFiltersDisplay.innerHTML += `<span class="filter-chip">College: <b>${filterCollege.value.trim()}</b></span>`;
-            }
-            if (filterBranch.value.trim()) {
-                activeFiltersDisplay.innerHTML += `<span class="filter-chip">Branch: <b>${filterBranch.value.trim()}</b></span>`;
-            }
+            if (searchInput.value.trim()) activeFiltersDisplay.innerHTML += `<span class="filter-chip">Query: <b>${searchInput.value.trim()}</b></span>`;
+            if (filterSemester.value) activeFiltersDisplay.innerHTML += `<span class="filter-chip">Semester: <b>${filterSemester.value}</b></span>`;
+            if (filterCollege.value.trim()) activeFiltersDisplay.innerHTML += `<span class="filter-chip">College: <b>${filterCollege.value.trim()}</b></span>`;
+            if (filterBranch.value.trim()) activeFiltersDisplay.innerHTML += `<span class="filter-chip">Branch: <b>${filterBranch.value.trim()}</b></span>`;
         }
 
         function syncActiveFiltersVisuals() {
-            // Reset Semesters Active Class
-            document.querySelectorAll(".semester-card").forEach(card => {
-                card.classList.remove("active-sem-filter");
-            });
+            document.querySelectorAll(".semester-card").forEach(card => card.classList.remove("active-sem-filter"));
             if (filterSemester.value) {
                 const targetSem = document.getElementById(`sem-card-${filterSemester.value}`);
                 if (targetSem) targetSem.classList.add("active-sem-filter");
             }
-
-            // Reset Subject Chips Active Class
             document.querySelectorAll(".subject-chip").forEach(chip => {
                 chip.classList.remove("active-sub-filter");
                 if (searchInput.value && chip.getAttribute("data-subject") === searchInput.value) {
@@ -1136,34 +1151,24 @@
         function renderSemesterCards() {
             const container = document.getElementById("semester-grid");
             container.innerHTML = "";
-
             for (let i = 1; i <= 8; i++) {
                 container.innerHTML += `
                     <div class="semester-card" id="sem-card-${i}" onclick="applySemester(${i})">
-                        <div style="font-size:20px; margin-bottom:2px;">📁</div>
-                        <div class="semester-card-title">Semester ${i}</div>
-                        <div class="semester-card-sub">Explore Feed</div>
+                        <div style="font-size:18px; margin-bottom:2px;">📁</div>
+                        <div class="semester-card-title">Sem ${i}</div>
+                        <div class="semester-card-sub">Explore</div>
                     </div>`;
             }
         }
 
         function applySemester(semester) {
-            if (filterSemester.value == semester) {
-                filterSemester.value = ""; // Toggle option
-            } else {
-                filterSemester.value = semester;
-            }
+            filterSemester.value = (filterSemester.value == semester) ? "" : semester;
             fetchNotes();
             scrollToSearchResults();
         }
 
         async function loadSubjects() {
-            const { data, error } = await supabaseClient
-                .from("resources")
-                .select("subject")
-                .eq("status", "approved")
-                .eq("type", "notes");
-
+            const { data, error } = await supabaseClient.from("resources").select("subject").eq("status", "approved").eq("type", "notes");
             if (error) { console.error(error); return; }
 
             const subjects = [...new Set(data.map(item => item.subject).filter(Boolean))];
@@ -1180,66 +1185,39 @@
         }
 
         function applySubject(subject) {
-            if (searchInput.value === subject) {
-                searchInput.value = ""; // Toggle out
-            } else {
-                searchInput.value = subject;
-            }
+            searchInput.value = (searchInput.value === subject) ? "" : subject;
             fetchNotes();
             scrollToSearchResults();
         }
 
         function scrollToSearchResults() {
             window.scrollTo({
-                top: document.getElementById("search-results-section").offsetTop - 120,
+                top: document.getElementById("search-results-section").offsetTop - 80,
                 behavior: "smooth"
             });
         }
 
         async function loadTrendingNotes() {
-            const { data, error } = await supabaseClient
-                .from("resources")
-                .select("*")
-                .eq("status", "approved")
-                .eq("type", "notes")
-                .order("downloads", { ascending: false })
-                .limit(6);
-
+            const { data, error } = await supabaseClient.from("resources").select("*").eq("status", "approved").eq("type", "notes").order("downloads", { ascending: false }).limit(6);
             if (error) { console.error(error); return; }
-            renderTrendingNotes(data);
-        }
-
-        function renderTrendingNotes(resources) {
+            
             const container = document.getElementById("trending-grid");
             container.innerHTML = "";
-
-            if (!resources.length) {
-                container.innerHTML = `<p style="color:#6366f1; padding:10px;">No trending updates yet.</p>`;
-                return;
-            }
-
-            resources.forEach(resource => {
+            
+            data.forEach(resource => {
                 container.innerHTML += `
                 <div class="note-card trending-premium-card">
                     <div class="card-circle"></div>
                     <div class="card-circle2"></div>
-
                     <div class="card-top">
                         <span class="trending-badge">🔥 TRENDING</span>
                         <span class="card-sem">Sem ${resource.semester}</span>
                     </div>
-
                     <div class="card-title">${resource.subject}</div>
-
-                    <div class="card-meta trending-metric">
-                        ⚡ Downloads: ${resource.downloads || 0}
-                    </div>
+                    <div class="card-meta trending-metric">⚡ Downloads: ${resource.downloads || 0}</div>
                     <div class="card-meta">🏫 ${resource.college}</div>
-
                     <p class="card-desc">${resource.description || "Top reviewed learning material assets."}</p>
-
                     <hr class="card-divider">
-
                     <div class="card-btns">
                         <a href="preview.html?id=${resource.id}" class="btn-preview">👁 Preview</a>
                         <button onclick="downloadResource(${resource.id}, '${resource.pdf_url}')" class="btn-download">⬇ Download</button>
@@ -1249,50 +1227,28 @@
         }
 
         async function loadAiReadyNotes() {
-            const { data, error } = await supabaseClient
-                .from("resources")
-                .select("*")
-                .eq("status", "approved")
-                .eq("type", "notes")
-                .not("extracted_text", "is", null)
-                .limit(6);
-
+            const { data, error } = await supabaseClient.from("resources").select("*").eq("status", "approved").eq("type", "notes").not("extracted_text", "is", null).limit(6);
             if (error) { console.error(error); return; }
-            renderAiReadyNotes(data);
-        }
-
-        function renderAiReadyNotes(resources) {
+            
             const container = document.getElementById("ai-ready-grid");
             container.innerHTML = "";
-
-            if (!resources.length) {
-                container.innerHTML = `<p style="color:#6366f1; padding:10px;">No AI Ready files configured yet.</p>`;
-                return;
-            }
-
-            resources.forEach(resource => {
+            
+            data.forEach(resource => {
                 container.innerHTML += `
                 <div class="note-card ai-premium-card">
                     <div class="card-circle"></div>
                     <div class="card-circle2"></div>
-
                     <div class="card-top">
                         <span class="ai-badge">🤖 AI READY</span>
                         <span class="card-sem">Sem ${resource.semester}</span>
                     </div>
-
                     <div class="card-title">${resource.subject}</div>
-
-                    <div style="margin-bottom: 12px;">
+                    <div style="margin-bottom:12px; display:flex; gap:4px; flex-wrap:wrap;">
                         <span class="ai-capability-tag">🧠 OCR Processed</span>
-                        <span class="ai-capability-tag" style="background:rgba(124,58,237,0.1); color:#a78bfa;">⚡ Context Vectorized</span>
                     </div>
                     <div class="card-meta">🏫 ${resource.college}</div>
-
-                    <p class="card-desc">${resource.description || "Enhanced structuring enabled for automated summaries."}</p>
-
+                    <p class="card-desc">${resource.description || "Enhanced structuring enabled for summaries."}</p>
                     <hr class="card-divider">
-
                     <div class="card-btns">
                         <a href="preview.html?id=${resource.id}" class="btn-preview">👁 Preview</a>
                         <button onclick="downloadResource(${resource.id}, '${resource.pdf_url}')" class="btn-download">⬇ Download</button>
@@ -1313,34 +1269,25 @@
                 <div class="note-card continue-premium-card">
                     <div class="card-circle"></div>
                     <div class="card-circle2"></div>
-
                     <div class="card-top">
-                        <span class="continue-badge">⏱️ RESUME LEARNING</span>
+                        <span class="continue-badge">⏱️ RESUME</span>
                         <span class="card-sem">Sem ${data.semester}</span>
                     </div>
-
                     <div class="card-title" style="margin-bottom:4px;">${data.title || data.subject}</div>
-                    <div class="card-meta">📚 Core Topic: ${data.subject}</div>
-
                     <div class="continue-cta-bar">
-                        <a href="preview.html?id=${data.id}" style="color:#FDE68A; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
-                            Continue Reading →
-                        </a>
-                        <span class="continue-indicator">Last Opened Recents</span>
+                        <a href="preview.html?id=${data.id}" style="color:#FDE68A; text-decoration:none;">Continue Reading →</a>
+                        <span class="continue-indicator">Recent</span>
                     </div>
                 </div>`;
         }
 
         async function downloadResource(id, pdfUrl) {
-            const { data, error } = await supabaseClient
-                .from("resources").select("downloads").eq("id", id).single();
+            const { data, error } = await supabaseClient.from("resources").select("downloads").eq("id", id).single();
             if (error) { window.open(pdfUrl, "_blank"); return; }
-            await supabaseClient.from("resources")
-                .update({ downloads: (data.downloads || 0) + 1 }).eq("id", id);
+            await supabaseClient.from("resources").update({ downloads: (data.downloads || 0) + 1 }).eq("id", id);
             window.open(pdfUrl, "_blank");
         }
 
-        // Initial setup load triggers
         loadStats();
         fetchNotes();
         renderContinueStudying();
@@ -1365,8 +1312,7 @@
     </script>
     <script src="assets/js/voice-search.js"></script>
     <script>
-        VoiceSearch.init();
+        if(window.VoiceSearch) VoiceSearch.init();
     </script>
-
 </body>
 </html>
