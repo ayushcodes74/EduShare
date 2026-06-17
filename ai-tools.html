@@ -75,6 +75,12 @@
                 class="w-full bg-purple-600 hover:bg-purple-500 py-3 rounded-xl font-semibold">
                 Open Tool
             </button>
+
+            <button
+                onclick="uploadOwnFile('summary')"
+                class="w-full mt-3 bg-transparent border border-purple-500/40 text-purple-300 hover:bg-purple-500/10 py-3 rounded-xl font-semibold text-sm">
+                📤 Upload your own PDF
+            </button>
         </div>
 
         <!-- Topics -->
@@ -93,6 +99,12 @@
                 onclick="openTool('topics')"
                 class="w-full bg-fuchsia-600 hover:bg-fuchsia-500 py-3 rounded-xl font-semibold">
                 Open Tool
+            </button>
+
+            <button
+                onclick="uploadOwnFile('topics')"
+                class="w-full mt-3 bg-transparent border border-fuchsia-500/40 text-fuchsia-300 hover:bg-fuchsia-500/10 py-3 rounded-xl font-semibold text-sm">
+                📤 Upload your own PDF
             </button>
         </div>
 
@@ -115,6 +127,12 @@
                 class="w-full bg-green-600 hover:bg-green-500 py-3 rounded-xl font-semibold">
                 Open Tool
             </button>
+
+            <button
+                onclick="uploadOwnFile('quiz')"
+                class="w-full mt-3 bg-transparent border border-green-500/40 text-green-300 hover:bg-green-500/10 py-3 rounded-xl font-semibold text-sm">
+                📤 Upload your own PDF
+            </button>
         </div>
 
     </div>
@@ -129,6 +147,13 @@ function openTool(tool){
     localStorage.setItem("selected_ai_tool", tool);
 
     window.location.href = "browse.html";
+}
+
+// AI TOOL UPLOAD FLOW — private, never enters admin approval,
+// never shown in Browse Notes / Recent Uploads / Trending.
+function uploadOwnFile(tool){
+
+    window.location.href = "ai-upload.html?tool=" + tool;
 }
 
 </script>

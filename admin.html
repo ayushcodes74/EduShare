@@ -144,7 +144,7 @@
 
 
             <!-- STATS -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-6 mb-12">
 
                 <!-- PENDING -->
                 <div class="bg-white/[0.03] border border-white/10 rounded-3xl p-6">
@@ -156,6 +156,23 @@
                     </p>
 
                     <h3 id="pending-count" class="text-4xl font-bold text-cyan-400">
+
+                        0
+
+                    </h3>
+
+                </div>
+
+                <!-- AI REVIEW QUEUE -->
+                <div class="bg-white/[0.03] border border-white/10 rounded-3xl p-6">
+
+                    <p class="text-slate-400 text-sm mb-2">
+
+                        AI Upload Review
+
+                    </p>
+
+                    <h3 id="ai-review-count" class="text-4xl font-bold text-violet-400">
 
                         0
 
@@ -209,6 +226,28 @@
             <div id="pending-container" class="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
 
             </div>
+
+            <!-- AI UPLOAD REVIEW QUEUE -->
+            <div class="mt-16">
+
+                <h2 class="text-3xl font-bold text-white mb-2">
+
+                    AI Upload Review Queue
+
+                </h2>
+
+                <p class="text-slate-400 mb-8">
+
+                    Files uploaded only to use AI Summary, Quiz, Flashcards, Predictions or Revision. These never appear in Browse Notes, Recent Uploads or Trending until you Publish them.
+
+                </p>
+
+                <div id="ai-review-container" class="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+                </div>
+
+            </div>
+
             <!-- APPROVED RESOURCES -->
 
             <div class="mt-16">
@@ -258,9 +297,13 @@
             document.getElementById("pending-container");
         const approvedContainer =
             document.getElementById("approved-container");
+        const aiReviewContainer =
+            document.getElementById("ai-review-container");
 
         const pendingCount =
             document.getElementById("pending-count");
+        const aiReviewCount =
+            document.getElementById("ai-review-count");
 
 
 
@@ -619,6 +662,157 @@
 
 
 
+        // FETCH AI TOOL UPLOADS AWAITING REVIEW
+        async function fetchAIReviewResources() {
+
+            const { data, error } = await supabaseClient
+                .from("resources")
+                .select("*")
+                .eq("status", "ai_review")
+                .eq("is_reviewed", false)
+                .order("created_at", { ascending: false });
+
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            aiReviewCount.innerText = data.length;
+
+            if (data.length === 0) {
+                aiReviewContainer.innerHTML = `
+                <div class="col-span-full bg-white/[0.03] border border-white/10 rounded-3xl p-10 text-center">
+                    <h3 class="text-3xl font-bold text-white mb-4">
+                        No AI Uploads Waiting
+                    </h3>
+                    <p class="text-slate-400">
+                        Nothing to review right now 🤖
+                    </p>
+                </div>
+                `;
+                return;
+            }
+
+            aiReviewContainer.innerHTML = "";
+            data.forEach(resource => {
+                aiReviewContainer.innerHTML += `
+                <div class="bg-white/[0.03] border border-violet-500/20 rounded-3xl p-6 hover:border-violet-500/40 transition-all duration-300">
+
+                    <div class="flex items-center justify-between mb-5">
+                        <span class="bg-violet-500/10 text-violet-400 px-4 py-1 rounded-full text-xs font-semibold">
+                            AI UPLOAD
+                        </span>
+                        <span class="bg-violet-500/10 text-violet-400 px-3 py-1 rounded-full text-xs font-semibold">
+                            PRIVATE
+                        </span>
+                    </div>
+
+                    <h3 class="text-2xl font-bold text-white mb-3">
+                        ${resource.title || resource.subject || "Untitled upload"}
+                    </h3>
+
+                    <div class="space-y-2 mb-6 text-sm">
+                        <p class="text-slate-400">
+                            <span class="text-slate-500">Subject:</span>
+                            ${resource.subject || "Not provided"}
+                        </p>
+                        <p class="text-slate-400">
+                            <span class="text-slate-500">Uploaded:</span>
+                            ${new Date(resource.created_at).toLocaleString()}
+                        </p>
+                        <p class="text-slate-400">
+                            <span class="text-slate-500">AI tools used:</span>
+                            Summary · Quiz · Flashcards · Predictions · Revision
+                        </p>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <a href="${resource.pdf_url}" target="_blank"
+                            class="flex-1 bg-slate-900 hover:bg-slate-800 border border-white/10 py-3 rounded-2xl text-center font-semibold text-slate-300 transition-all duration-300">
+                            Preview
+                        </a>
+                        <button onclick="publishAIResource(${resource.id})"
+                            class="flex-1 bg-green-500 hover:bg-green-400 text-black py-3 rounded-2xl font-semibold transition-all duration-300">
+                            Publish
+                        </button>
+                    </div>
+
+                    <button onclick="keepPrivateResource(${resource.id})"
+                        class="w-full mt-4 bg-violet-500/10 hover:bg-violet-500 text-violet-400 hover:text-white py-3 rounded-2xl font-semibold transition-all duration-300">
+                        Keep Private
+                    </button>
+
+                    <button onclick="rejectAIResource(${resource.id})"
+                        class="w-full mt-4 bg-red-500/10 hover:bg-red-500 text-red-400 hover:text-white py-3 rounded-2xl font-semibold transition-all duration-300">
+                        Reject &amp; Delete
+                    </button>
+
+                </div>
+                `;
+            });
+        }
+
+        // PUBLISH AI UPLOAD -> BECOMES A NORMAL PUBLIC RESOURCE
+        async function publishAIResource(id) {
+
+            const { error } = await supabaseClient
+                .from("resources")
+                .update({ status: "approved", is_reviewed: true })
+                .eq("id", id);
+
+            if (error) {
+                console.error(error);
+                alert("Publish failed.");
+                return;
+            }
+
+            alert("AI upload published ✅ It is now public.");
+
+            fetchAIReviewResources();
+            fetchApprovedResources();
+        }
+
+        // KEEP AI UPLOAD PRIVATE -> STAYS ai_review, JUST CLEARED FROM THE QUEUE
+        async function keepPrivateResource(id) {
+
+            const { error } = await supabaseClient
+                .from("resources")
+                .update({ is_reviewed: true })
+                .eq("id", id);
+
+            if (error) {
+                console.error(error);
+                alert("Update failed.");
+                return;
+            }
+
+            alert("Kept private 🔒 Still hidden from Browse Notes, Recent Uploads and Trending.");
+
+            fetchAIReviewResources();
+        }
+
+        // REJECT AI UPLOAD -> PERMANENTLY DELETE
+        async function rejectAIResource(id) {
+
+            const confirmDelete = confirm("Delete this AI upload permanently?");
+            if (!confirmDelete) return;
+
+            const { error } = await supabaseClient
+                .from("resources")
+                .delete()
+                .eq("id", id);
+
+            if (error) {
+                console.error(error);
+                alert("Rejection failed.");
+                return;
+            }
+
+            alert("AI upload deleted ❌");
+
+            fetchAIReviewResources();
+        }
+
         // APPROVE RESOURCE
         async function approveResource(id) {
 
@@ -836,6 +1030,7 @@
         // INITIAL FETCH
         fetchPendingResources();
         fetchApprovedResources();
+        fetchAIReviewResources();
 
         // LOGOUT
         function logoutAdmin() {

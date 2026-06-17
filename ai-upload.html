@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tools Upload | EduShare</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: #0a0a1a;
+            color: #e2e8f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(10, 10, 26, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #1e1b4b;
+        }
+
+        .nav-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .nav-name {
+            font-size: 16px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .nav-sub {
+            font-size: 11px;
+            color: #c084fc;
+        }
+
+        nav ul {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+
+        nav a {
+            font-size: 14px;
+            font-weight: 500;
+            color: #94a3b8;
+            text-decoration: none;
+        }
+
+        nav a.active {
+            color: #c084fc;
+            border-bottom: 2px solid #c084fc;
+            padding-bottom: 2px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #5b21b6 0%, #8b5cf6 45%, #ec4899 100%);
+            padding: 72px 24px 56px;
+            text-align: center;
+        }
+
+        .hero-inner {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            color: #fff;
+            padding: 6px 18px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: 44px;
+            font-weight: 900;
+            color: #fff;
+            line-height: 1.15;
+            margin-bottom: 16px;
+        }
+
+        .hero h1 span {
+            color: #fce7f3;
+        }
+
+        .hero p {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.7;
+        }
+
+        .form-section {
+            padding: 48px 24px 80px;
+        }
+
+        .form-wrap {
+            max-width: 620px;
+            margin: 0 auto;
+            background: #12112a;
+            border: 1px solid #2d2a5e;
+            border-radius: 28px;
+            padding: 40px;
+        }
+
+        .privacy-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: rgba(139, 92, 246, 0.08);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            border-radius: 16px;
+            padding: 16px 18px;
+            margin-bottom: 28px;
+            font-size: 13px;
+            color: #c4b5fd;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #cbd5e1;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        input[type="text"] {
+            background: #0a0a1a;
+            border: 1px solid #2d2a5e;
+            border-radius: 14px;
+            padding: 14px 18px;
+            font-size: 14px;
+            color: #e2e8f0;
+            width: 100%;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.18);
+        }
+
+        .upload-box {
+            background: #0a0a1a;
+            border: 2px dashed #2d2a5e;
+            border-radius: 16px;
+            padding: 32px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .upload-box:hover {
+            border-color: #8b5cf6;
+            background: #1a1840;
+        }
+
+        .upload-box.has-file {
+            border-color: #22c55e;
+            border-style: solid;
+            background: rgba(34, 197, 94, 0.06);
+        }
+
+        .upload-box .upload-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .upload-box .upload-text {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .upload-box .upload-sub {
+            font-size: 12px;
+            color: #475569;
+            margin-top: 4px;
+        }
+
+        .upload-box .file-name {
+            font-size: 14px;
+            color: #22c55e;
+            font-weight: 600;
+        }
+
+        .tool-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 28px;
+        }
+
+        .tool-chip {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: rgba(139, 92, 246, 0.12);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            color: #c4b5fd;
+        }
+
+        .submit-row {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .submit-btn {
+            padding: 14px 36px;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .submit-note {
+            font-size: 12px;
+            color: #475569;
+        }
+
+        .success-msg,
+        .error-msg {
+            display: none;
+            border-radius: 16px;
+            padding: 18px 24px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .success-msg {
+            background: rgba(34, 197, 94, 0.08);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #4ade80;
+        }
+
+        .error-msg {
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        footer {
+            background: #0a0a1a;
+            border-top: 1px solid #1e1b4b;
+            padding: 28px 24px;
+            text-align: center;
+        }
+
+        .footer-copy {
+            font-size: 13px;
+            color: #475569;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="nav-inner">
+            <div class="nav-logo">
+                <div class="nav-icon">🤖</div>
+                <div>
+                    <div class="nav-name">EduShare</div>
+                    <div class="nav-sub">Smart AI Tools</div>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="browse.html">Notes</a></li>
+                    <li><a href="ai-upload.html" class="active">AI Tools</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-badge">🔒 Private by default</div>
+            <h1>Use AI on <span>your own file</span></h1>
+            <p>Upload a PDF or image just to run AI Summary, Quiz, Flashcards, Predictions or Revision on it. This
+                file stays private to you — it is never sent to admin approval and never shown in Browse Notes,
+                Recent Uploads or Trending.</p>
+        </div>
+    </section>
+
+    <section class="form-section">
+        <div class="form-wrap">
+
+            <div class="privacy-note">
+                🔒 This upload is for your personal AI study session only. It will not enter the public resource
+                library unless you choose to publish it later from your uploads.
+            </div>
+
+            <div id="success-message" class="success-msg">✅ File ready — opening your AI study session...</div>
+            <div id="error-message" class="error-msg"></div>
+
+            <form id="ai-upload-form">
+
+                <div class="form-group">
+                    <label>Title <span style="color:#475569;font-weight:400;text-transform:none;">(optional)</span></label>
+                    <input type="text" id="ai-subject" placeholder="e.g. My DBMS revision notes">
+                </div>
+
+                <div class="form-group">
+                    <label>File</label>
+                    <input type="file" id="ai-pdf-file" accept=".pdf,.png,.jpg,.jpeg" style="display:none;">
+                    <div class="upload-box" id="ai-upload-box" onclick="document.getElementById('ai-pdf-file').click()">
+                        <div class="upload-icon">☁️</div>
+                        <div class="upload-text">Click to choose a file</div>
+                        <div class="upload-sub">PDF, PNG, JPG — Max 10 MB</div>
+                    </div>
+                </div>
+
+                <div class="tool-row">
+                    <span class="tool-chip">AI Summary</span>
+                    <span class="tool-chip">Quiz</span>
+                    <span class="tool-chip">Flashcards</span>
+                    <span class="tool-chip">Predictions</span>
+                    <span class="tool-chip">Revision</span>
+                </div>
+
+                <div class="submit-row">
+                    <span class="submit-note">Opens instantly — no review needed</span>
+                    <button type="submit" class="submit-btn" id="ai-submit-btn">
+                        🤖 Process with AI
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p class="footer-copy">© 2026 EduShare. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const supabaseUrl = "https://acdjioftdlsugfycsbvj.supabase.co";
+        const supabaseKey = "sb_publishable_DtfvA3EJm991gqezfeYNng_jlSS0I9h";
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // which AI tool to auto-launch once the preview page loads, e.g. ai-upload.html?tool=quiz
+        const params = new URLSearchParams(window.location.search);
+        const requestedTool = params.get("tool") || "summary";
+
+        const pdfFile = document.getElementById("ai-pdf-file");
+        const uploadBox = document.getElementById("ai-upload-box");
+
+        pdfFile.addEventListener("change", () => {
+            if (pdfFile.files.length > 0) {
+                uploadBox.classList.add("has-file");
+                uploadBox.innerHTML = `
+                    <div class="upload-icon">✅</div>
+                    <div class="file-name">${pdfFile.files[0].name}</div>
+                    <div class="upload-sub">Click to change file</div>`;
+            }
+        });
+
+        document.getElementById("ai-upload-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const subject = document.getElementById("ai-subject").value.trim();
+            const file = pdfFile.files[0];
+
+            const successMsg = document.getElementById("success-message");
+            const errorMsg = document.getElementById("error-message");
+            const submitBtn = document.getElementById("ai-submit-btn");
+
+            successMsg.style.display = "none";
+            errorMsg.style.display = "none";
+
+            if (!file) {
+                errorMsg.textContent = "⚠️ Please choose a file first.";
+                errorMsg.style.display = "block";
+                return;
+            }
+
+            const allowedTypes = ["application/pdf", "image/png", "image/jpeg"];
+            if (!allowedTypes.includes(file.type)) {
+                errorMsg.textContent = "⚠️ Only PDF, PNG, and JPG files are allowed.";
+                errorMsg.style.display = "block";
+                return;
+            }
+            if (file.size > 10 * 1024 * 1024) {
+                errorMsg.textContent = "⚠️ File size must be less than 10 MB.";
+                errorMsg.style.display = "block";
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<span class="spinner"></span> Uploading...`;
+
+            const fileNameUnique = Date.now() + "-" + file.name;
+
+            const { error: uploadError } = await supabaseClient.storage
+                .from("pdfs").upload(fileNameUnique, file);
+
+            if (uploadError) {
+                console.error(uploadError);
+                errorMsg.textContent = "❌ File upload failed. Please try again.";
+                errorMsg.style.display = "block";
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = "🤖 Process with AI";
+                return;
+            }
+
+            const { data: publicUrlData } = supabaseClient.storage
+                .from("pdfs").getPublicUrl(fileNameUnique);
+
+            // AI Tool Upload Flow — private, never enters admin approval
+            const { data: inserted, error: dbError } = await supabaseClient
+                .from("resources")
+                .insert([{
+                    title: subject || file.name.replace(/\.[^/.]+$/, ""),
+                    type: "notes",
+                    subject: subject || null,
+                    pdf_url: publicUrlData.publicUrl,
+                    status: "ai_review",
+                    is_reviewed: false
+                }])
+                .select()
+                .single();
+
+            if (dbError) {
+                console.error(dbError);
+                errorMsg.textContent = "❌ Database error. Please try again.";
+                errorMsg.style.display = "block";
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = "🤖 Process with AI";
+                return;
+            }
+
+            successMsg.style.display = "block";
+
+            // hand off to the existing AI study session flow on preview.html
+            localStorage.setItem("selected_ai_tool", requestedTool);
+            window.location.href = `preview.html?id=${inserted.id}`;
+        });
+    </script>
+
+</body>
+
+</html>

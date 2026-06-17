@@ -622,6 +622,13 @@ async function loadResourceFromDb() {
     }
 
     // 3. Dynamic insert for static preview pages not yet in DB
+    //    FIX: this previously inserted with status: "approved", which meant ANY
+    //    call to initAISummarizer() with a pdf_url not yet in the DB silently
+    //    published a brand-new public resource with zero admin review. Default
+    //    to "pending" so it follows the same moderation path as every other
+    //    upload. If you have a specific trusted call site that genuinely needs
+    //    instant publish, pass that override explicitly at the call site rather
+    //    than relying on this shared fallback.
     if (aiState.pdfUrl) {
         const { data, error } = await aiState.supabaseClient
             .from("resources")
@@ -634,7 +641,7 @@ async function loadResourceFromDb() {
                 semester: aiState.semester || "1",
                 description: "Static preview notes registered dynamically by AI Assistant.",
                 pdf_url: aiState.pdfUrl,
-                status: "approved",
+                status: "pending",
                 downloads: 0
             }])
             .select().single();
