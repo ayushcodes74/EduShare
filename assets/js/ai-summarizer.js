@@ -1207,3 +1207,13 @@ window.submitQuizAnswer  = window.submitQuizAnswer;
 window.nextQuizQuestion  = window.nextQuizQuestion;
 window.prevFlashcard     = window.prevFlashcard;
 window.nextFlashcard     = window.nextFlashcard;
+window.aiState = aiState;
+
+window.loadResourceFromDb = loadResourceFromDb;
+window.extractPdfText = extractPdfText;
+window.saveCachedData = saveCachedData;
+
+window.injectAIStyles = injectAIStyles;
+window.openSidebar = openSidebar;
+
+window.initAISummarizer = initializeAISummarizer;
