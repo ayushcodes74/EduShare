@@ -582,6 +582,11 @@ async function initializeAISummarizer(resource, initialTab = "summary") {
     aiState.metadataLoaded   = false;
     aiState.resourceData     = null;
 
+    // If sidebar was previously in PYQ mode, rebuild it for Notes
+    if (typeof window.buildNotesSidebar === "function") {
+        window.buildNotesSidebar();
+    }
+
     document.querySelectorAll(".ai-tab-btn").forEach(b => b.classList.remove("active"));
     document.querySelectorAll(".ai-tab-content").forEach(c => c.classList.remove("active"));
     document.querySelector(`.ai-tab-btn[data-tab="${activeTab}"]`)?.classList.add("active");

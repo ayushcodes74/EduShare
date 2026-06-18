@@ -158,7 +158,7 @@
 
                         <!-- Buttons -->
                         <div class="space-y-3">
-                            <!-- AI Summary trigger -->
+                            <!-- AI Assistant trigger (label changes based on resource type) -->
                             <button id="ai-summary-btn"
                                 class="w-full bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white py-4 rounded-2xl font-bold text-sm transition-all duration-300 hover:scale-[1.01] glow-fuchsia flex items-center justify-center gap-2">
                                 🤖 AI Study Assistant
@@ -209,6 +209,7 @@
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     </script>
     <script src="assets/js/ai-summarizer.js"></script>
+    <script src="assets/js/pyq-ai-assistant.js"></script>
 
     <script>
         const supabaseUrl = "https://acdjioftdlsugfycsbvj.supabase.co";
@@ -244,13 +245,19 @@
                 showState("main");
 
                 const selectedTool = localStorage.getItem("selected_ai_tool");
-                const validAiTools = ["summary", "quiz", "topics", "predictions", "flashcards", "revision"];
+                const isPYQ = data.type === "pyq";
+
+                const validNoteTools = ["summary", "quiz", "topics", "predictions", "flashcards", "revision"];
+                const validPYQTools  = ["predicted_questions", "repeated_topics", "exam_pattern",
+                                        "long_questions", "short_questions", "topic_weightage"];
+                const validAiTools   = isPYQ ? validPYQTools : validNoteTools;
 
                 if (selectedTool && validAiTools.includes(selectedTool)) {
                     localStorage.removeItem("selected_ai_tool");
-
                     setTimeout(async () => {
-                        if (window.initAISummarizer) {
+                        if (isPYQ && window.initPYQAssistant) {
+                            await window.initPYQAssistant(data, selectedTool);
+                        } else if (!isPYQ && window.initAISummarizer) {
                             await window.initAISummarizer(data, selectedTool);
                         }
                     }, 350);
@@ -282,6 +289,7 @@
         function renderResource(res) {
         saveContinueStudying(res);
             const isNotes = res.type === "notes";
+            const isPYQ   = res.type === "pyq";
 
             // Breadcrumbs
             document.getElementById("breadcrumb-type").innerText = res.type;
@@ -307,21 +315,36 @@
             const dlBtn = document.getElementById("download-btn");
             dlBtn.href = res.pdf_url;
             dlBtn.addEventListener("click", async () => {
-                // Increment download count
                 await supabaseClient.from("resources")
                     .update({ downloads: (res.downloads || 0) + 1 })
                     .eq("id", res.id);
             });
 
-            // AI Summary button trigger
+            // ── AI Assistant button: switch label + handler by resource type ──
             const aiBtn = document.getElementById("ai-summary-btn");
-            aiBtn.addEventListener("click", () => {
-                if (window.initAISummarizer) {
-                    window.initAISummarizer(res);
-                } else {
-                    alert("AI engine is currently loading. Please wait.");
-                }
-            });
+
+            if (isPYQ) {
+                aiBtn.innerHTML = "📄 PYQ AI Analyser";
+                aiBtn.className = aiBtn.className
+                    .replace("from-violet-600 to-fuchsia-600", "from-amber-500 to-orange-600")
+                    .replace("hover:from-violet-500 hover:to-fuchsia-500", "hover:from-amber-400 hover:to-orange-500");
+                aiBtn.addEventListener("click", () => {
+                    if (window.initPYQAssistant) {
+                        window.initPYQAssistant(res);
+                    } else {
+                        alert("PYQ AI engine is currently loading. Please wait.");
+                    }
+                });
+            } else {
+                aiBtn.innerHTML = "🤖 AI Study Assistant";
+                aiBtn.addEventListener("click", () => {
+                    if (window.initAISummarizer) {
+                        window.initAISummarizer(res);
+                    } else {
+                        alert("AI engine is currently loading. Please wait.");
+                    }
+                });
+            }
         }
 
         function extractFilename(url) {
